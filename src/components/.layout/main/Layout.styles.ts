@@ -6,7 +6,7 @@ export const useStyles = makeStyles(() => ({
     minWidth: "100%",
     minHeight: "calc(100vh - 64px) !important",
   },
-  
+
   mainContainer: {
     backgroundColor: "#ffffff", // замените на нужный цвет
     minHeight: "calc(100vh - 64px) !important",
@@ -14,7 +14,7 @@ export const useStyles = makeStyles(() => ({
 
   loginContent: {
     maxWidth: "1920px",
-    minHeight: "100vh",
+    minHeight: "calc(100vh - 64px) !important",
     maxHeight: "100vh",
     margin: "0 auto",
     boxSizing: "border-box",
@@ -25,7 +25,8 @@ export const useStyles = makeStyles(() => ({
 
   mainContent: {
     maxWidth: "1920px",
-    padding: "24px",
+    height: "calc(100vh - 64px) !important",
+    padding: "0",
     margin: "0 auto",
     boxSizing: "border-box",
     display: "flex",

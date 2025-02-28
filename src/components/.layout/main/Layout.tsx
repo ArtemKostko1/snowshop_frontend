@@ -11,8 +11,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const isSnowShopRoute = location.pathname === "/";
   return (
     <>
+      <Header />
       <main className={classes.mainContainer}>
-        <Header />
         <div
           className={
             isSnowShopRoute
