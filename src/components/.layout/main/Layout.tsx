@@ -1,6 +1,5 @@
 import React from "react";
 import { useStyles } from "./Layout.styles";
-import Header from "../header/Header";
 import { Outlet, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
@@ -11,13 +10,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const isSnowShopRoute = location.pathname === "/";
   return (
     <>
-      <Header />
       <main className={classes.mainContainer}>
         <div
           className={
-            isSnowShopRoute
-              ? classes.dispatcherMainContent
-              : classes.mainContent
+            isSnowShopRoute ? classes.mainContent : classes.loginContent
           }
         >
           <Outlet />

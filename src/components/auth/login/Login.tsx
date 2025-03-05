@@ -6,15 +6,12 @@ import {
   InputAdornment,
   Box,
   Typography,
-  Stack,
   Tooltip,
-  FormGroup,
-  FormControlLabel,
   Button,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../store/store";
-import { MaterialUISwitch, useStyles } from "./Login.styles";
+import { useStyles } from "./Login.styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import appErrors from "../../../assets/constants/errors";
@@ -27,7 +24,7 @@ import appToolltips from "../../../assets/constants/tooltips";
 const Login: React.FC = () => {
   const classes = useStyles();
   const { isLoading } = useAuth();
-  const dispatch = useDispatch<AppDispatch>(); // Укажите тип AppDispatch
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [password, setPassword] = useState<string>("");
   const [username, setUsername] = useState<string>("");

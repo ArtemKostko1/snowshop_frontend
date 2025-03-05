@@ -9,12 +9,12 @@ export const useStyles = makeStyles(() => ({
 
   mainContainer: {
     backgroundColor: "#ffffff", // замените на нужный цвет
-    minHeight: "calc(100vh - 64px) !important",
+    minHeight: "100vh !important",
   },
 
   loginContent: {
     maxWidth: "1920px",
-    minHeight: "calc(100vh - 64px) !important",
+    minHeight: "100vh !important",
     maxHeight: "100vh",
     margin: "0 auto",
     boxSizing: "border-box",
