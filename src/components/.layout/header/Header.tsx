@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
-  Typography,
   Box,
   Tabs,
   Tab,
@@ -14,11 +13,13 @@ import {
 import { Link } from "react-router-dom";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoSmall from "../../../assets/logo/logo small";
+import { useStyles } from "./Header.styles";
 
 const Header: React.FC = () => {
+  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  // Открытие и закрытие подменю
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -43,34 +44,28 @@ const Header: React.FC = () => {
   ].sort();
 
   return (
-    <AppBar position="static">
-      <Toolbar sx={{ justifyContent: "space-between" }}>
+    <AppBar position="static" sx={{ backgroundColor: "#4dc6cb" }} elevation={0}>
+      <Toolbar className={classes.toolbar}>
         {/* Левая часть */}
-        <Typography
-          variant="h6"
-          component={Link}
-          to="/"
-          sx={{
-            textDecoration: "none",
-            color: "inherit",
-            fontWeight: "bold",
-            flexShrink: 0,
-          }}
-        >
-          SnowShop
-        </Typography>
+        <LogoSmall />
 
         {/* Центральная часть */}
         <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
           <Tabs
+            className={classes.tabs}
             value={false}
-            textColor="inherit"
             indicatorColor="secondary"
             aria-label="navigation tabs"
+            sx={{
+              "& .MuiTab-root": {
+                color: "#ffffff", // Устанавливаем цвет текста
+              },
+            }}
           >
             <Tab
+              className={classes.tab}
               label="Каталог"
-              onMouseEnter={handleMenuOpen}
+              onClick={handleMenuOpen}
               aria-controls="catalog-menu"
               aria-haspopup="true"
             />
@@ -94,9 +89,24 @@ const Header: React.FC = () => {
                 </MenuItem>
               ))}
             </Menu>
-            <Tab label="Доставка и оплата" component={Link} to="/delivery" />
-            <Tab label="Контакты" component={Link} to="/contacts" />
-            <Tab label="О нас" component={Link} to="/about" />
+            <Tab
+              className={classes.tab}
+              label="Доставка и оплата"
+              component={Link}
+              to="/delivery"
+            />
+            <Tab
+              className={classes.tab}
+              label="Контакты"
+              component={Link}
+              to="/contacts"
+            />
+            <Tab
+              className={classes.tab}
+              label="О нас"
+              component={Link}
+              to="/about"
+            />
           </Tabs>
         </Box>
 
@@ -106,7 +116,15 @@ const Header: React.FC = () => {
             <AccountCircleIcon />
           </IconButton>
           <IconButton aria-label="cart" color="inherit">
-            <Badge badgeContent={10} color="secondary">
+            <Badge
+              badgeContent={10}
+              sx={{
+                "& .MuiBadge-badge": {
+                  backgroundColor: "#00adb5", // Устанавливаем цвет фона
+                  color: "white", // Устанавливаем цвет текста внутри Badge
+                },
+              }}
+            >
               <ShoppingCartIcon />
             </Badge>
           </IconButton>

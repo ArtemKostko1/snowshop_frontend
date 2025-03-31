@@ -20,20 +20,21 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../store/hooks/auth/useAuth";
 import appToolltips from "../../../assets/constants/tooltips";
+import Logo from "../../../assets/logo/logo";
 
-const Login: React.FC = () => {
+const Login: React.FC = (): JSX.Element => {
   const classes = useStyles();
   const { isLoading } = useAuth();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [password, setPassword] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
+  const [userName, setUsername] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const validate = (username: string, password: string): boolean => {
+  const validate = (userName: string, password: string): boolean => {
     let errors: { [key: string]: string } = {};
-    if (!username) errors.username = appErrors.fieldValidation.REQUIRED_FIELD;
+    if (!userName) errors.userName = appErrors.fieldValidation.REQUIRED_FIELD;
     if (!password) errors.password = appErrors.fieldValidation.REQUIRED_FIELD;
     setErrors(errors);
     return Object.keys(errors).length === 0;
@@ -47,7 +48,7 @@ const Login: React.FC = () => {
 
   const submit = async (): Promise<void> => {
     const userCredentials = {
-      username,
+      userName,
       password,
     };
 
@@ -77,41 +78,41 @@ const Login: React.FC = () => {
             >
               <Grid item>
                 <div className={classes.logo}>
-                  <div>Snow Shop</div>
+                  <Logo />
                 </div>
               </Grid>
               <Grid item>
                 <TextField
                   className={classes.textField}
-                  id="username"
+                  id="userName"
                   label="Логин"
                   variant="outlined"
                   size="small"
                   fullWidth
-                  autoComplete="new-username"
-                  error={!!errors["username"]}
+                  autoComplete="new-userName"
+                  error={!!errors["userName"]}
                   onKeyDown={(event) => {
                     if (event.key === "Enter") {
-                      if (validate(username, password)) {
+                      if (validate(userName, password)) {
                         event.preventDefault();
                         submit();
                       }
                     }
                   }}
-                  value={username}
+                  value={userName}
                   onChange={(e) => {
-                    "username" in errors && clearError("username");
+                    "username" in errors && clearError("userName");
                     setUsername(e.target.value);
                   }}
                 />
                 <Box sx={{ height: "6px !important" }}>
-                  {errors["username"] && (
+                  {errors["userName"] && (
                     <Typography
                       variant="caption"
                       color="error"
                       className={classes.errorMessage}
                     >
-                      {errors["username"]}
+                      {errors["userName"]}
                     </Typography>
                   )}
                 </Box>
@@ -156,7 +157,7 @@ const Login: React.FC = () => {
                   }}
                   onKeyDown={(event) => {
                     if (event.key === "Enter") {
-                      if (validate(username, password)) {
+                      if (validate(userName, password)) {
                         event.preventDefault();
                         submit();
                       }
@@ -185,7 +186,7 @@ const Login: React.FC = () => {
                   loading={isLoading}
                   variant="contained"
                   onClick={(event: any) => {
-                    if (validate(username, password)) {
+                    if (validate(userName, password)) {
                       event.preventDefault();
                       submit();
                     }

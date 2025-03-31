@@ -8,14 +8,14 @@ import { errorsHandling } from "../_utils/errorsHandling";
 const auth_baseError = appErrors.authErrors.AUTH_ERROR;
 
 interface UserCredentials {
-  username: string;
+  userName: string;
   password: string;
 }
 
 interface LoginResponse {
   token: string;
   user: {
-    username: string;
+    userName: string;
     role: string;
   };
   status: number;
@@ -33,7 +33,7 @@ export const loginThunk = createAsyncThunk(
 
       // Добавление токена и username в session storage (хранит данные в течении открытой вкладки)
       sessionStorage.setItem("token", data.token);
-      sessionStorage.setItem("username", data.user.username);
+      sessionStorage.setItem("userName", data.user.userName);
       sessionStorage.setItem("userRole", data.user.role);
       data && toast.success(toastMessages.authMessages.USER_AUTHORUZED);
       return data;

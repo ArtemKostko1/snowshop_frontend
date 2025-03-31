@@ -32,20 +32,22 @@ export const useStyles = makeStyles(() => ({
     alignItems: "center",
     flexDirection: "column",
   },
+  gridItem: {
+    "&.MuiGrid-item": {
+      paddingLeft: "0 !important", // Убираем padding слева
+      paddingTop: "0 !important",  // Убираем padding сверху
+      paddingBottom: "24px !important",
+    },
+  },
   loginForm: {
     width: 500,
-    padding: 48,
-    backgroundColor: "#ffffff",
-    borderRadius: 25,
     "@media (max-width: 960px)": {
       width: "50%",
       padding: 0,
-      backgroundColor: "#f0f0f0",
     },
     "@media (max-width: 600px)": {
       width: "75%",
       padding: 0,
-      backgroundColor: "#f0f0f0",
     },
     "& button": {
       width: "100%",
@@ -57,16 +59,10 @@ export const useStyles = makeStyles(() => ({
   },
   logo: {
     cursor: "pointer",
-    color: "#333",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: "2.5rem",
-    fontWeight: "800",
     marginBottom: "24px",
-    "@media (max-width: 960px)": {
-      color: "#333",
-    },
   },
   textField: {
     "& .MuiOutlinedInput-root": {
@@ -105,6 +101,7 @@ export const useStyles = makeStyles(() => ({
     },
   },
   submitButton: {
+    backgroundColor: "#00adb5 !important",
     borderRadius: "50px !important",
   },
   errorMessage: {

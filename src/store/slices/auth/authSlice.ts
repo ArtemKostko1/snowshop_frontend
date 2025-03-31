@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { loginThunk } from "../../thunks/auth/authThunk";
 
 interface User {
-  username?: string;
+  userName?: string;
   role?: string;
 }
 
@@ -15,7 +15,7 @@ interface AuthState {
 interface LoginResponse {
   token: string;
   user: {
-    username: string;
+    userName: string;
     role: string;
   };
   status: number;
@@ -35,7 +35,7 @@ export const authSlice = createSlice({
       state.user = {};
       state.isAuth = false;
       sessionStorage.removeItem("token");
-      sessionStorage.removeItem("username");
+      sessionStorage.removeItem("userName");
       sessionStorage.removeItem("userRole");
     },
   },
@@ -50,7 +50,7 @@ export const authSlice = createSlice({
       (state, action: PayloadAction<LoginResponse | undefined>) => {
         if (action.payload) {
           state.user = {
-            username: action.payload.user.username,
+            userName: action.payload.user.userName,
             role: action.payload.user.role,
           };
           state.isAuth = true;
