@@ -10,7 +10,7 @@ import HomePage from "./components/home/HomePage";
 import PrivateRoute from "./common/utils/router/PrivateRoute";
 import Layout from "./components/.layout/main/Layout";
 import store from "./store/store";
-import Login from "./components/auth/login/Login";
+import AuthRootPage from "./components/auth/AuthRootPage";
 
 const AppContent: React.FC = () => {
   // Определение путей навигации
@@ -30,7 +30,8 @@ const AppContent: React.FC = () => {
               <Route key={index} path={path} element={elements[index]} />
             ))}
           </Route>
-          <Route path="login" element={<Login />} />
+          <Route path="login" element={<AuthRootPage />} />
+          <Route path="register" element={<AuthRootPage />} />
         </Route>
       </Routes>
     </div>
