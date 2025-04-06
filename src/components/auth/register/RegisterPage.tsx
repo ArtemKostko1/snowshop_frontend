@@ -8,7 +8,7 @@ import { useRegisterPageStyles } from "./RegisterPage.styles";
 const RegisterPage: React.FC<IPropsRegister> = (
   props: IPropsRegister
 ): JSX.Element => {
-  const { navigate, setName, setUserName, setPassword, setRepeatPassword } =
+  const { navigate, register, errors } =
     props;
   const classes = useRegisterPageStyles();
   return (
@@ -25,31 +25,31 @@ const RegisterPage: React.FC<IPropsRegister> = (
       </Typography> */}
       <TextField
         className={classes.textField}
-        //error={!!errors.name}
+        error={!!errors.name}
         size="small"
         fullWidth={true}
         margin="normal"
         label="Имя"
         variant="outlined"
         placeholder="Введите ваше имя"
-        //helperText={errors.name ? `${errors.name.message}` : ""}
-        //{...register("name")}
+        helperText={errors.name ? `${errors.name.message}` : ""}
+        {...register("name")}
       />
       <TextField
         className={classes.textField}
-        //error={!!errors.userName}
+        error={!!errors.email}
         size="small"
         fullWidth={true}
         margin="normal"
-        label="Имя пользователя"
+        label="Email"
         variant="outlined"
-        placeholder="Введите ваше имя пользователя"
-        //helperText={errors.userName ? `${errors.userName.message}` : ""}
-        //{...register("userName")}
+        placeholder="Введите ваш email"
+        helperText={errors.email ? `${errors.email.message}` : ""}
+        {...register("email")}
       />
       <TextField
         className={classes.textField}
-        //error={!!errors.password}
+        error={!!errors.password}
         size="small"
         type="password"
         fullWidth={true}
@@ -57,20 +57,20 @@ const RegisterPage: React.FC<IPropsRegister> = (
         label="Пароль"
         variant="outlined"
         placeholder="Введите ваш пароль"
-        //helperText={errors.password ? `${errors.password.message}` : ""}
-        //{...register("password")}
+        helperText={errors.password ? `${errors.password.message}` : ""}
+        {...register("password")}
       />
       <TextField
         className={classes.textField}
-        //error={!!errors.confirmPassword}
+        error={!!errors.confirmPassword}
         size="small"
         fullWidth={true}
         margin="normal"
         label="Подтверждение пароля"
         variant="outlined"
         placeholder="Повторите ваш пароль"
-        //helperText={errors.confirmPassword ? `${errors.confirmPassword.message}` : ""}
-        //{...register("confirmPassword")}
+        helperText={errors.confirmPassword ? `${errors.confirmPassword.message}` : ""}
+        {...register("confirmPassword")}
       />
       <AppLoadingButton
         //loading={loading}

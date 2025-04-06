@@ -8,7 +8,7 @@ import { IPropsLogin } from "../../../common/types/auth/authTypes";
 import AppLoadingButton from "../../AppLoadingButton/AppLoadingButton";
 
 const Login: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
-  const { navigate, setUserName, setPassword } = props;
+  const { navigate, register, errors } = props;
   const classes = useLoginPageStyles();
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -26,19 +26,21 @@ const Login: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
       </Typography> */}
       <TextField
         className={classes.textField}
-        //error={!!errors.email}
+        error={!!errors.email}
         size="small"
         fullWidth={true}
         margin="normal"
-        label="Имя пользователя"
+        label="Email"
         variant="outlined"
-        placeholder="Введите ваше имя пользователя"
-        //helperText={errors.email ? `${errors.email.message}` : ""}
-        //{...register("email")}
+        placeholder="Введите ваш email"
+        helperText={errors.email ? `${errors.email.message}` : ""}
+        {...register("email", {
+          required: "Это поле обязательное",
+        })}
       />
       <TextField
         className={classes.textField}
-        //error={!!errors.password}
+        error={!!errors.password}
         size="small"
         type="password"
         fullWidth={true}
@@ -46,8 +48,10 @@ const Login: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
         label="Пароль"
         variant="outlined"
         placeholder="Введите ваш пароль"
-        //helperText={errors.password ? `${errors.password.message}` : ""}
-        //{...register("password")}
+        helperText={errors.password ? `${errors.password.message}` : ""}
+        {...register("password", {
+          required: "Это поле обязательное",
+        })}
       />
       <AppLoadingButton
         //loading={loading}

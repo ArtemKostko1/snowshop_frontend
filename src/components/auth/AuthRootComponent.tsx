@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import LoginPage from "./login/LoginPage";
 import RegisterPage from "./register/RegisterPage";
 import { Box } from "@mui/material";
-//import { useAppDispatch, useAppSelector } from '../../utils/hook'
-//import { AppErrors } from '../../common/errors'
+import { AppErrors } from "../../common/constants/errors/appErrors";
 import { useForm } from "react-hook-form";
 //import { yupResolver } from '@hookform/resolvers/yup'
 //import { LoginSchema, RegisterSchema } from '../../utils/yup'
 import { useStyles } from "./AuthRootComponent.styles";
 import { loginThunk } from "../../store/thunks/auth/authThunk";
-import { useAppDispatch } from "../../store/hooks/app";
+import { useAppDispatch, useAppSelector } from "../../store/hooks/app";
 
 const AuthRootComponent: React.FC = (): JSX.Element => {
   const location = useLocation();
@@ -18,21 +17,11 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const classes = useStyles();
 
-  const [name, setName] = useState("");
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
-
-  // const {
-  //     register,
-  //     formState: { errors },
-  //     handleSubmit,
-  // } = useForm({
-  //     resolver: yupResolver(
-  //         location.pathname === '/login' ? LoginSchema : RegisterSchema,
-  //     ),
-  // })
-  // const loading = useAppSelector((state) => state.auth.isLoading)
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
 
   const handleSubmitForm = async (data: any) => {
     if (location.pathname === "/login") {
@@ -46,8 +35,7 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
       if (data.password === data.confirmPassword) {
         try {
           const userData = {
-            firstName: data.name,
-            username: data.username,
+            name: data.name,
             email: data.email,
             password: data.password,
           };
@@ -58,14 +46,14 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
           return e;
         }
       } else {
-        //throw new Error(AppErrors.PasswordDoNotMatch)
+        throw new Error(AppErrors.PasswordDoNotMatch);
       }
     }
   };
 
   return (
     <div className={classes.root}>
-      <form noValidate className={classes.form}>
+      <form className={classes.form} onSubmit={handleSubmit(handleSubmitForm)}>
         <Box
           display="flex"
           justifyContent="center"
@@ -74,22 +62,16 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
         >
           {location.pathname === "/login" ? (
             <LoginPage
-              setUserName={setUserName}
-              setPassword={setPassword}
               navigate={navigate}
-              //register={register}
-              //errors={errors}
+              register={register}
+              errors={errors}
               //loading={loading}
             />
           ) : location.pathname === "/register" ? (
             <RegisterPage
-              setName={setName}
-              setUserName={setUserName}
-              setPassword={setPassword}
-              setRepeatPassword={setRepeatPassword}
               navigate={navigate}
-              //register={register}
-              //errors={errors}
+              register={register}
+              errors={errors}
               //loading={loading}
             />
           ) : null}

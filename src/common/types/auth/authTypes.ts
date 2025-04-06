@@ -1,13 +1,19 @@
-export interface IPropsLogin {
+import { FieldValues, UseFormRegister, FieldErrors } from "react-hook-form";
+
+export interface IPropsLogin<
+  TFieldValues extends FieldValues = FieldValues,
+  TabContext = any
+> {
+  register: UseFormRegister<TFieldValues>;
   navigate: (to: string) => void;
-  setUserName: (value: string) => void;
-  setPassword: (value: string) => void;
+  errors: FieldErrors<TFieldValues>;
 }
 
-export interface IPropsRegister {
+export interface IPropsRegister<
+  TFieldValues extends FieldValues = FieldValues,
+  TabContext = any
+> {
+  register: UseFormRegister<TFieldValues>;
   navigate: (to: string) => void;
-  setName: (value: string) => void;
-  setUserName: (value: string) => void;
-  setPassword: (value: string) => void;
-  setRepeatPassword: (value: string) => void;
+  errors: FieldErrors<TFieldValues>;
 }
