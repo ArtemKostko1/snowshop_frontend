@@ -1,23 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../store/store";
 import LoginPage from "./login/LoginPage";
 import RegisterPage from "./register/RegisterPage";
 import { Box } from "@mui/material";
 //import { useAppDispatch, useAppSelector } from '../../utils/hook'
 //import { AppErrors } from '../../common/errors'
-//import { useForm } from 'react-hook-form'
+import { useForm } from "react-hook-form";
 //import { yupResolver } from '@hookform/resolvers/yup'
 //import { LoginSchema, RegisterSchema } from '../../utils/yup'
-import { useStyles } from "./AuthRootPage.styles";
+import { useStyles } from "./AuthRootComponent.styles";
 import { loginThunk } from "../../store/thunks/auth/authThunk";
+import { useAppDispatch } from "../../store/hooks/app";
 
-const AuthRootPage: React.FC = (): JSX.Element => {
+const AuthRootComponent: React.FC = (): JSX.Element => {
   const location = useLocation();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const classes = useStyles();
+
+  const [name, setName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
+
   // const {
   //     register,
   //     formState: { errors },
@@ -27,7 +32,7 @@ const AuthRootPage: React.FC = (): JSX.Element => {
   //         location.pathname === '/login' ? LoginSchema : RegisterSchema,
   //     ),
   // })
-  //const loading = useAppSelector((state) => state.auth.isLoading)
+  // const loading = useAppSelector((state) => state.auth.isLoading)
 
   const handleSubmitForm = async (data: any) => {
     if (location.pathname === "/login") {
@@ -59,28 +64,39 @@ const AuthRootPage: React.FC = (): JSX.Element => {
   };
 
   return (
-    <Box className={classes.root}>
-      <div className={classes.loginForm}>
-        <form noValidate className={classes.form}>
+    <div className={classes.root}>
+      <form noValidate className={classes.form}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          flexDirection="column"
+        >
           {location.pathname === "/login" ? (
             <LoginPage
-              //navigate={navigate}
+              setUserName={setUserName}
+              setPassword={setPassword}
+              navigate={navigate}
               //register={register}
               //errors={errors}
               //loading={loading}
             />
           ) : location.pathname === "/register" ? (
             <RegisterPage
-              //navigate={navigate}
+              setName={setName}
+              setUserName={setUserName}
+              setPassword={setPassword}
+              setRepeatPassword={setRepeatPassword}
+              navigate={navigate}
               //register={register}
               //errors={errors}
               //loading={loading}
             />
           ) : null}
-        </form>
-      </div>
-    </Box>
+        </Box>
+      </form>
+    </div>
   );
 };
 
-export default AuthRootPage;
+export default AuthRootComponent;

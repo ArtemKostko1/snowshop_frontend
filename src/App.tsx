@@ -10,7 +10,7 @@ import HomePage from "./components/home/HomePage";
 import PrivateRoute from "./common/utils/router/PrivateRoute";
 import Layout from "./components/.layout/main/Layout";
 import store from "./store/store";
-import AuthRootPage from "./components/auth/AuthRootPage";
+import AuthRootPage from "./components/auth/AuthRootComponent";
 
 const AppContent: React.FC = () => {
   // Определение путей навигации

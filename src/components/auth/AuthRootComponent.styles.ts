@@ -13,22 +13,14 @@ export const useStyles = makeStyles(() => ({
     alignItems: "center",
     flexDirection: "column",
   },
-  loginForm: {
-    width: 500,
-    "@media (max-width: 960px)": {
-      width: "50%",
-      padding: 0,
-    },
-    "@media (max-width: 600px)": {
-      width: "75%",
-      padding: 0,
-    },
-    "& button": {
-      width: "100%",
-    },
-  },
   form: {
+    width: "100%",
+    maxWidth: "500px",
     display: "flex",
     flexDirection: "column",
+    boxSizing: "border-box",
+    "@media (max-width: 600px)": {
+      padding: "8px", // Уменьшение отступов на маленьких экранах
+    },
   },
 }));
