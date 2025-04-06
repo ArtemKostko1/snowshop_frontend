@@ -8,21 +8,11 @@ import { useRegisterPageStyles } from "./RegisterPage.styles";
 const RegisterPage: React.FC<IPropsRegister> = (
   props: IPropsRegister
 ): JSX.Element => {
-  const { navigate, register, errors } =
-    props;
+  const { navigate, register, errors, loading } = props;
   const classes = useRegisterPageStyles();
   return (
     <>
       <Logo className={classes.logo} />
-      {/* <Typography
-        variant="h1"
-        textAlign="center"
-        fontSize={32}
-        color="#393e46"
-        fontWeight="bold"
-      >
-        АВТОРИЗАЦИЯ
-      </Typography> */}
       <TextField
         className={classes.textField}
         error={!!errors.name}
@@ -69,11 +59,13 @@ const RegisterPage: React.FC<IPropsRegister> = (
         label="Подтверждение пароля"
         variant="outlined"
         placeholder="Повторите ваш пароль"
-        helperText={errors.confirmPassword ? `${errors.confirmPassword.message}` : ""}
+        helperText={
+          errors.confirmPassword ? `${errors.confirmPassword.message}` : ""
+        }
         {...register("confirmPassword")}
       />
       <AppLoadingButton
-        //loading={loading}
+        loading={loading}
         type="submit"
         fullWidth={true}
         variant="contained"

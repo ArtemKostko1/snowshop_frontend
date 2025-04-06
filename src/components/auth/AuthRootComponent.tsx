@@ -5,8 +5,8 @@ import RegisterPage from "./register/RegisterPage";
 import { Box } from "@mui/material";
 import { AppErrors } from "../../common/constants/errors/appErrors";
 import { useForm } from "react-hook-form";
-//import { yupResolver } from '@hookform/resolvers/yup'
-//import { LoginSchema, RegisterSchema } from '../../utils/yup'
+import { yupResolver } from "@hookform/resolvers/yup";
+import { LoginSchema, RegisterSchema } from "../../utils/yup/yupSchemas";
 import { useStyles } from "./AuthRootComponent.styles";
 import { loginThunk } from "../../store/thunks/auth/authThunk";
 import { useAppDispatch, useAppSelector } from "../../store/hooks/app";
@@ -15,13 +15,17 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
   const location = useLocation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const loading = useAppSelector((state) => state.auth.isLoading);
+  const isLogin = location.pathname === "/login";
   const classes = useStyles();
 
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(isLogin ? LoginSchema : RegisterSchema),
+  });
 
   const handleSubmitForm = async (data: any) => {
     if (location.pathname === "/login") {
@@ -65,14 +69,14 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
               navigate={navigate}
               register={register}
               errors={errors}
-              //loading={loading}
+              loading={loading}
             />
           ) : location.pathname === "/register" ? (
             <RegisterPage
               navigate={navigate}
               register={register}
               errors={errors}
-              //loading={loading}
+              loading={loading}
             />
           ) : null}
         </Box>

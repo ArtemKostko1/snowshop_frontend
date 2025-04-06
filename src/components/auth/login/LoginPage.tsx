@@ -1,29 +1,20 @@
 import React, { useState } from "react";
 import { TextField, Typography } from "@mui/material";
 import { useLoginPageStyles } from "./LoginPage.styles";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+//import VisibilityIcon from "@mui/icons-material/Visibility";
+//import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Logo from "../../../assets/logo/logo";
 import { IPropsLogin } from "../../../common/types/auth/authTypes";
 import AppLoadingButton from "../../AppLoadingButton/AppLoadingButton";
 
 const Login: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
-  const { navigate, register, errors } = props;
+  const { navigate, register, errors, loading } = props;
   const classes = useLoginPageStyles();
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  //const [showPassword, setShowPassword] = useState<boolean>(false);
 
   return (
     <>
       <Logo className={classes.logo} />
-      {/* <Typography
-        variant="h1"
-        textAlign="center"
-        fontSize={32}
-        color="#393e46"
-        fontWeight="bold"
-      >
-        АВТОРИЗАЦИЯ
-      </Typography> */}
       <TextField
         className={classes.textField}
         error={!!errors.email}
@@ -34,9 +25,7 @@ const Login: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
         variant="outlined"
         placeholder="Введите ваш email"
         helperText={errors.email ? `${errors.email.message}` : ""}
-        {...register("email", {
-          required: "Это поле обязательное",
-        })}
+        {...register('email')}
       />
       <TextField
         className={classes.textField}
@@ -49,12 +38,10 @@ const Login: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
         variant="outlined"
         placeholder="Введите ваш пароль"
         helperText={errors.password ? `${errors.password.message}` : ""}
-        {...register("password", {
-          required: "Это поле обязательное",
-        })}
+        {...register('password')}
       />
       <AppLoadingButton
-        //loading={loading}
+        loading={loading}
         type="submit"
         fullWidth={true}
         variant="contained"
