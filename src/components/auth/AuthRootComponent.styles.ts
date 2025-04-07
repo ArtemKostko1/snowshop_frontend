@@ -18,6 +18,7 @@ export const useStyles = makeStyles(() => ({
     maxWidth: "500px",
     display: "flex",
     flexDirection: "column",
+    alignItems: "center",
     boxSizing: "border-box",
     "@media (max-width: 600px)": {
       padding: "8px", // Уменьшение отступов на маленьких экранах

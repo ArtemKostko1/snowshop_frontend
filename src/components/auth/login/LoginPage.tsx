@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { TextField, Typography } from "@mui/material";
 import { useLoginPageStyles } from "./LoginPage.styles";
 //import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -7,7 +7,7 @@ import Logo from "../../../assets/logo/logo";
 import { IPropsLogin } from "../../../common/types/auth/authTypes";
 import AppLoadingButton from "../../AppLoadingButton/AppLoadingButton";
 
-const Login: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
+const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
   const { navigate, register, errors, loading } = props;
   const classes = useLoginPageStyles();
   //const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -61,4 +61,4 @@ const Login: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
   );
 };
 
-export default Login;
+export default LoginPage;

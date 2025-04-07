@@ -54,6 +54,7 @@ const RegisterPage: React.FC<IPropsRegister> = (
         className={classes.textField}
         error={!!errors.confirmPassword}
         size="small"
+        type="password"
         fullWidth={true}
         margin="normal"
         label="Подтверждение пароля"
@@ -70,7 +71,7 @@ const RegisterPage: React.FC<IPropsRegister> = (
         fullWidth={true}
         variant="contained"
       >
-        Войти
+        ЗАРЕГИСТРИРОВАТЬСЯ
       </AppLoadingButton>
       <Typography>
         У вас есть аккаунт?&nbsp;

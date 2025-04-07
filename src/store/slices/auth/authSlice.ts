@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { loginThunk } from "../../thunks/auth/authThunk";
+import { loginThunk, registerThunk } from "../../thunks/auth/authThunk";
 
 interface User {
-  userName?: string;
+  email?: string;
   role?: string;
 }
 
@@ -12,10 +12,10 @@ interface AuthState {
   isLoading: boolean;
 }
 
-interface LoginResponse {
+interface AuthResponse {
   token: string;
   user: {
-    userName: string;
+    email: string;
     role: string;
   };
   status: number;
@@ -35,8 +35,8 @@ export const authSlice = createSlice({
       state.user = {};
       state.isAuth = false;
       sessionStorage.removeItem("token");
-      sessionStorage.removeItem("userName");
-      sessionStorage.removeItem("userRole");
+      sessionStorage.removeItem("email");
+      sessionStorage.removeItem("role");
     },
   },
 
@@ -47,10 +47,10 @@ export const authSlice = createSlice({
     });
     builder.addCase(
       loginThunk.fulfilled,
-      (state, action: PayloadAction<LoginResponse | undefined>) => {
+      (state, action: PayloadAction<AuthResponse | undefined>) => {
         if (action.payload) {
           state.user = {
-            userName: action.payload.user.userName,
+            email: action.payload.user.email,
             role: action.payload.user.role,
           };
           state.isAuth = true;
@@ -59,6 +59,29 @@ export const authSlice = createSlice({
       }
     );
     builder.addCase(loginThunk.rejected, (state) => {
+      state.isAuth = false;
+      state.isLoading = false;
+    });
+
+
+    builder.addCase(registerThunk.pending, (state) => {
+      state.isAuth = false;
+      state.isLoading = true;
+    });
+    builder.addCase(
+      registerThunk.fulfilled,
+      (state, action: PayloadAction<AuthResponse | undefined>) => {
+        if (action.payload) {
+          state.user = {
+            email: action.payload.user.email,
+            role: action.payload.user.role,
+          };
+          state.isAuth = true;
+        }
+        state.isLoading = false;
+      }
+    );
+    builder.addCase(registerThunk.rejected, (state) => {
       state.isAuth = false;
       state.isLoading = false;
     });

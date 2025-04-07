@@ -3,13 +3,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import LoginPage from "./login/LoginPage";
 import RegisterPage from "./register/RegisterPage";
 import { Box } from "@mui/material";
-import { AppErrors } from "../../common/constants/errors/appErrors";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginSchema, RegisterSchema } from "../../utils/yup/yupSchemas";
 import { useStyles } from "./AuthRootComponent.styles";
-import { loginThunk } from "../../store/thunks/auth/authThunk";
+import { loginThunk, registerThunk } from "../../store/thunks/auth/authThunk";
 import { useAppDispatch, useAppSelector } from "../../store/hooks/app";
+import { ILoginForm, IRegisterForm } from "../../common/types/auth/authTypes";
 
 const AuthRootComponent: React.FC = (): JSX.Element => {
   const location = useLocation();
@@ -19,68 +19,73 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
   const isLogin = location.pathname === "/login";
   const classes = useStyles();
 
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm({
-    resolver: yupResolver(isLogin ? LoginSchema : RegisterSchema),
+  const loginForm = useForm<ILoginForm>({
+    resolver: yupResolver(LoginSchema),
   });
 
-  const handleSubmitForm = async (data: any) => {
-    if (location.pathname === "/login") {
-      try {
-        await dispatch(loginThunk(data));
-        navigate("/");
-      } catch (error) {
-        return error;
-      }
-    } else {
-      if (data.password === data.confirmPassword) {
-        try {
-          const userData = {
-            name: data.name,
-            email: data.email,
-            password: data.password,
-          };
-          //await dispatch(registerThunk(userData))
-          navigate("/");
-        } catch (e) {
-          console.log(e);
-          return e;
-        }
-      } else {
-        throw new Error(AppErrors.PasswordDoNotMatch);
-      }
+  const registerForm = useForm<IRegisterForm>({
+    resolver: yupResolver(RegisterSchema),
+  });
+
+  const handleLoginSubmit: SubmitHandler<ILoginForm> = async (data) => {
+    try {
+      await dispatch(loginThunk(data));
+      navigate("/");
+    } catch (error) {
+      return error;
+    }
+  };
+
+  const handleRegisterSubmit: SubmitHandler<IRegisterForm> = async (data) => {
+    try {
+      const userData = {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      };
+
+      await dispatch(registerThunk(userData));
+      navigate("/");
+    } catch (e) {
+      return e;
     }
   };
 
   return (
     <div className={classes.root}>
-      <form className={classes.form} onSubmit={handleSubmit(handleSubmitForm)}>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          flexDirection="column"
-        >
-          {location.pathname === "/login" ? (
+      <Box
+        width="100%"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        flexDirection="column"
+      >
+        {isLogin ? (
+          <form
+            className={classes.form}
+            onSubmit={loginForm.handleSubmit(handleLoginSubmit)}
+          >
             <LoginPage
               navigate={navigate}
-              register={register}
-              errors={errors}
+              register={loginForm.register}
+              errors={loginForm.formState.errors}
               loading={loading}
             />
-          ) : location.pathname === "/register" ? (
+          </form>
+        ) : (
+          <form
+            className={classes.form}
+            onSubmit={registerForm.handleSubmit(handleRegisterSubmit)}
+          >
             <RegisterPage
               navigate={navigate}
-              register={register}
-              errors={errors}
+              register={registerForm.register}
+              errors={registerForm.formState.errors}
               loading={loading}
             />
-          ) : null}
-        </Box>
-      </form>
+          </form>
+        )}
+      </Box>
     </div>
   );
 };
