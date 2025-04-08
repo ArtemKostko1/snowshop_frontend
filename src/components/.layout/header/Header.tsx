@@ -9,16 +9,26 @@ import {
   Badge,
   Menu,
   MenuItem,
+  ListItemIcon,
+  ListItemText,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoSmall from "../../../assets/logo/logo small";
 import { useStyles } from "./Header.styles";
+import { useAppDispatch } from "../../../store/hooks/app";
+import LogoutIcon from "@mui/icons-material/Logout";
+import PersonIcon from "@mui/icons-material/Person";
+import { logoutAction } from "../../../store/slices/auth/authSlice";
 
 const Header: React.FC = () => {
   const classes = useStyles();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [profileMenuAnchorEl, setProfileMenuAnchorEl] =
+    useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -26,6 +36,20 @@ const Header: React.FC = () => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setProfileMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileMenuClose = () => {
+    setProfileMenuAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutAction());
+    setProfileMenuAnchorEl(null);
+    navigate("/login");
   };
 
   const catalogItems = [
@@ -112,9 +136,32 @@ const Header: React.FC = () => {
 
         {/* Правая часть */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <IconButton aria-label="profile" color="inherit">
+          <IconButton
+            aria-label="profile"
+            color="inherit"
+            onClick={handleProfileMenuOpen}
+          >
             <AccountCircleIcon />
           </IconButton>
+          <Menu
+            id="profile-menu"
+            anchorEl={profileMenuAnchorEl}
+            open={Boolean(profileMenuAnchorEl)}
+            onClose={handleProfileMenuClose}
+          >
+            <MenuItem onClick={handleProfileMenuClose}>
+              <ListItemIcon>
+                <PersonIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Профиль</ListItemText>
+            </MenuItem>
+            <MenuItem onClick={handleLogout}>
+              <ListItemIcon>
+                <LogoutIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Выход</ListItemText>
+            </MenuItem>
+          </Menu>
           <IconButton aria-label="cart" color="inherit">
             <Badge
               badgeContent={10}

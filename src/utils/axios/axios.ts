@@ -1,7 +1,12 @@
 import axios from "axios";
 import { API_URL } from "./apiRoutes";
-import store from "../../store/store";
 import { logoutAction } from "../../store/slices/auth/authSlice";
+
+let appDispatch: any;
+
+export const setAppDispatch = (dispatch: any) => {
+  appDispatch = dispatch;
+};
 
 export const instance = axios.create({
   baseURL: API_URL,
@@ -34,7 +39,9 @@ instanceAuth.interceptors.response.use(
   },
   (error) => {
     if (error.response && error.response.status === 401) {
-      store.dispatch(logoutAction());
+      if (appDispatch) {
+        appDispatch(logoutAction());
+      }
       window.location.href = "/login";
     }
 
