@@ -21,9 +21,15 @@ interface AuthResponse {
   status: number;
 }
 
+const getInitialUser = (): User => {
+  const email = sessionStorage.getItem("email");
+  const role = sessionStorage.getItem("role");
+  return email && role ? { email, role } : {};
+};
+
 const initialState: AuthState = {
-  user: {},
-  isAuth: false,
+  user: getInitialUser(),
+  isAuth: !!sessionStorage.getItem("token"),
   isLoading: false,
 };
 
