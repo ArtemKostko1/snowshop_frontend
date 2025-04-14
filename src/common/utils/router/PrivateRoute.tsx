@@ -17,7 +17,7 @@ const PrivateRoute: React.FC = () => {
     const role = user.role.toUpperCase();
 
     if (location.pathname === "/") {
-      if (role === "ADMIN") navigate("/admin/goods");
+      if (role === "ADMIN") navigate("/admin/products");
     }
   }, [isAuth, user, location, navigate]);
 
