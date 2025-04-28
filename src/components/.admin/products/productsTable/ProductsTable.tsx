@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-//import DataTable from "../../../dataTable/DataTable";
+import DataTable from "../../../.common/dataTable/dataTable";
 import { productColumns } from "./tableColumns";
 
-const ProductsTable: React.FC = (): JSX.Element => {
+const ProductsTable: React.FC = ({createProduct, updateProduct, deleteProduct}): JSX.Element => {
   //const { products, isProductsLoading } = useProducts();
 
   //   useEffect(() => {
@@ -50,13 +50,12 @@ const ProductsTable: React.FC = (): JSX.Element => {
   };
 
   return (
-    // <DataTable
-    //   tableOptions={tableOptions}
-    //   createFunction={createProduct}
-    //   updateFunction={updateProduct}
-    //   deleteFunction={deleteProduct}
-    // />
-    <></>
+    <DataTable
+      tableOptions={tableOptions}
+      createFunction={createProduct}
+      updateFunction={updateProduct}
+      deleteFunction={deleteProduct}
+    />
   );
 };
 

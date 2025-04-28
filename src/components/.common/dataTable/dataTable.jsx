@@ -66,7 +66,6 @@ const EditToolbar = ({
 
 const DataTable = ({
   tableOptions,
-  getRowsFunction,
   createFunction,
   updateFunction,
   deleteFunction,

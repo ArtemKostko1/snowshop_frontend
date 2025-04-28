@@ -28,28 +28,28 @@ const ProductsPage: React.FC = (): JSX.Element => {
   }, [fetchData]);
 
   // Функция для создания продукта
-  // const createProduct = (newProducteData) => {
-  //   return dispatch(createProductThunk(newProducteData));
-  // };
+  const createProduct = (newProducteData) => {
+    //return dispatch(createProductThunk(newProducteData));
+  };
 
   // Функция для обновления продукта
-  // const updateProduct = async (updatedProductData) => {
-  //   const updateProduct = await dispatch(updateProductThunk(updatedProductData));
-  //   return updateProduct;
-  // };
+  const updateProduct = async (updatedProductData) => {
+    // const updateProduct = await dispatch(updateProductThunk(updatedProductData));
+    // return updateProduct;
+  };
 
   // Функция для удаления продукта
-  // const deleteProduct = (productId) => {
-  //   dispatch(deleteProductThunk(productId));
-  // };
+  const deleteProduct = (productId) => {
+    //dispatch(deleteProductThunk(productId));
+  };
 
   return (
     <Grid container className={classes.gridContainer}>
       <Grid size={12} className={classes.productTable}>
         <ProductsTable
-        // createProduct={createProduct}
-        // updateProduct={updateProduct}
-        // deleteProduct={deleteProduct}
+        createProduct={createProduct}
+        updateProduct={updateProduct}
+        deleteProduct={deleteProduct}
         />
       </Grid>
     </Grid>
