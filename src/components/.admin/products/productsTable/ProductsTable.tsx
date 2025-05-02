@@ -1,8 +1,13 @@
 import React, { useEffect } from "react";
 import DataTable from "../../../.common/dataTable/dataTable";
 import { productColumns } from "./tableColumns";
+import { IProductTable } from "../../../../common/types/table/tableTypes";
 
-const ProductsTable: React.FC = ({createProduct, updateProduct, deleteProduct}): JSX.Element => {
+const ProductsTable: React.FC<IProductTable> = ({
+  createProduct,
+  updateProduct,
+  deleteProduct,
+}): JSX.Element => {
   //const { products, isProductsLoading } = useProducts();
 
   //   useEffect(() => {

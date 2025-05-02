@@ -35,7 +35,7 @@ export const getActionsColumn = (
             label="Save"
             onClick={handleSaveClick(id)}
             color="primary"
-            sx={{ position: "relative" }}
+            //sx={{ position: "relative" }}
           />
         </Tooltip>,
         <Tooltip key={`cancel-${id}`} title={appToolltips.systemToolltips.CANCEL}>
@@ -43,7 +43,7 @@ export const getActionsColumn = (
             icon={<CancelIcon />}
             label="Cancel"
             onClick={handleCancelClick(id)}
-            color="error"
+            color="primary"
           />
         </Tooltip>,
       ];
@@ -63,7 +63,7 @@ export const getActionsColumn = (
           icon={<DeleteIcon />}
           label="Delete"
           onClick={handleDeleteClick(id)}
-          color="error"
+          color="primary"
         />
       </Tooltip>,
     ];

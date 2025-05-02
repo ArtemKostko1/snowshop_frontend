@@ -1,7 +1,10 @@
 import { toast } from "react-toastify";
 import toastMessages from "../../../../assets/constants/toastMessages";
 
-export const checkRequiredFields = (data, columns) => {
+export const checkRequiredFields = (
+  data: Record<string, unknown>,
+  columns: string[]
+) => {
   const isEmpty = columns.some((column) => {
     const value = data[column];
     return value === null || value === undefined || value === "";

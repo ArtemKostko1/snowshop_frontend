@@ -4,8 +4,9 @@ import AddIcon from "@mui/icons-material/Add";
 import {
   GridRowModes,
   DataGrid,
-  GridToolbarContainer,
+  Toolbar,
   GridRowEditStopReasons,
+  GridRowModesModel,
 } from "@mui/x-data-grid";
 import { randomId } from "@mui/x-data-grid-generator";
 import { useStyles } from "./dataTable.styles";
@@ -13,9 +14,14 @@ import { russianLocaleText } from "./utils/russianLocaleText";
 import { checkRequiredFields } from "./utils/checkingTableRequiredFields";
 import appToolltips from "../../../assets/constants/tooltips";
 import { getActionsColumn } from "./tableActions";
+import {
+  IDataTable,
+  IEditToolbar,
+  ITableRow,
+} from "../../../common/types/table/tableTypes";
 
 // Компонент EditToolbar, который представляет верхнюю панель инструментов
-const EditToolbar = ({
+const EditToolbar: React.FC<IEditToolbar> = ({
   tableName,
   addingRows,
   fieldsInitial,
@@ -39,15 +45,23 @@ const EditToolbar = ({
   };
 
   return (
-    <GridToolbarContainer>
+    <Toolbar>
       <Grid container direction="row" alignItems="center">
-        <Grid item xs={6} lg={6} display="flex" justifyContent="flex-start">
+        <Grid
+          size={{ xs: 6, lg: 6 }}
+          display="flex"
+          justifyContent="flex-start"
+        >
           <Typography variant="h6" ml={1}>
             {tableName}
           </Typography>
         </Grid>
         {addingRows && (
-          <Grid item xs={6} lg={6} display="flex" justifyContent="flex-end">
+          <Grid
+            size={{ xs: 6, lg: 6 }}
+            display="flex"
+            justifyContent="flex-end"
+          >
             <Tooltip title={appToolltips.systemToolltips.ADD_NEW_ROW}>
               <Button
                 color="primary"
@@ -60,19 +74,19 @@ const EditToolbar = ({
           </Grid>
         )}
       </Grid>
-    </GridToolbarContainer>
+    </Toolbar>
   );
 };
 
-const DataTable = ({
+const DataTable: React.FC<IDataTable> = ({
   tableOptions,
   createFunction,
   updateFunction,
   deleteFunction,
 }) => {
   const classes = useStyles();
-  const [rows, setRows] = useState([]);
-  const [rowModesModel, setRowModesModel] = useState({});
+  const [rows, setRows] = useState<ITableRow[]>([]);
+  const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
   const tableName = tableOptions.name;
   const addingRows = tableOptions.addingRows;
@@ -90,14 +104,14 @@ const DataTable = ({
   );
 
   // Обработчики события клика по строке
-  const handleRowClick = (params) => {
-    if (tableOptions.table !== "devices") return;
+  // const handleRowClick = (params: any) => {
+  //   if (tableOptions.table !== "devices") return;
 
-    getRowsFunction(params.row);
-  };
+  //   getRowsFunction(params.row);
+  // };
 
   // Обработчики событий кнопок редактирования
-  const handleEditClick = (id) => () => {
+  const handleEditClick = (id: string) => () => {
     setRowModesModel({
       ...rowModesModel,
       [id]: { mode: GridRowModes.Edit },
@@ -105,35 +119,35 @@ const DataTable = ({
   };
 
   // Обработчик события окончания редактирования строки
-  const handleRowEditStop = (params, event) => {
+  const handleRowEditStop = (params: any, event: React.SyntheticEvent) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-      event.defaultMuiPrevented = true;
+      event.defaultPrevented = true;
     }
   };
 
   // Обработчик события кнопки отмены
-  const handleCancelClick = (id) => () => {
-    setRowModesModel({
-      ...rowModesModel,
+  const handleCancelClick = (id: string) => () => {
+    setRowModesModel((prev) => ({
+      ...prev,
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
-    });
+    }));
 
     const editedRow = rows.find((row) => row.id === id);
-    if (editedRow.isNew) {
+    if (editedRow?.isNew) {
       setRows(rows.filter((row) => row.id !== id));
     }
   };
 
   // Обработчик события кнопки сохранения
-  const handleSaveClick = (id) => async () => {
-    setRowModesModel({
-      ...rowModesModel,
+  const handleSaveClick = (id: string) => async () => {
+    setRowModesModel((prev) => ({
+      ...prev,
       [id]: { mode: GridRowModes.View },
-    });
+    }));
   };
 
   // Обновление или создание строки
-  const handleSaveRow = async (rowData) => {
+  const handleSaveRow = async (rowData: ITableRow) => {
     // Проверка заполняемости всех обязательных полей
     const isNewRow = rowData.isNew;
     const requiredColumns = tableOptions.requiredColumns(isNewRow); // Получение списка обязательных полей
@@ -142,31 +156,30 @@ const DataTable = ({
       return null;
     }
 
-    let succsess = {};
+    let success: any;
 
     // Проверка на новую строку
-    if (rowData.isNew) {
+    if (isNewRow) {
       const { id, isNew, ...newRow } = rowData;
       success = await createFunction(newRow);
     } else {
-      succsess = await updateFunction(rowData);
+      success = await updateFunction(rowData);
     }
 
     const updatedRow = { ...rowData, isNew: false };
 
     // Если ответ успешен, изменить состояние rows, иначе сохранение строки не выполняется
-    if (succsess.meta.requestStatus === "fulfilled") {
+    if (success?.meta?.requestStatus === "fulfilled") {
       setRows((prevRows) =>
         prevRows.map((row) => (row.id === rowData.id ? updatedRow : row))
       );
       return updatedRow;
-    } else {
-      return null;
     }
+    return null;
   };
 
   // Обработчик события кнопки удаления
-  const handleDeleteClick = (id) => async () => {
+  const handleDeleteClick = (id: string) => async () => {
     await deleteFunction(id);
     setRows(rows.filter((row) => row.id !== id));
   };
@@ -197,7 +210,7 @@ const DataTable = ({
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
-        onRowClick={handleRowClick}
+        //onRowClick={handleRowClick}
         processRowUpdate={(updatedRow, originalRow) =>
           handleSaveRow(updatedRow)
         }
