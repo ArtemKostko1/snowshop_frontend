@@ -1,19 +1,24 @@
 import React from "react";
-import { GridRowModes, GridActionsCellItem } from "@mui/x-data-grid";
+import {
+  GridRowModes,
+  GridActionsCellItem,
+  GridColDef,
+} from "@mui/x-data-grid";
 import { Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 import EditIcon from "@mui/icons-material/Edit";
 import appToolltips from "../../../assets/constants/tooltips";
+import { IActionsColumn } from "../../../common/types/table/tableTypes";
 
-export const getActionsColumn = (
+export const getActionsColumn = ({
   rowModesModel,
   handleSaveClick,
   handleCancelClick,
   handleEditClick,
-  handleDeleteClick
-) => ({
+  handleDeleteClick,
+}: IActionsColumn): GridColDef => ({
   field: "actions",
   headerName: "Инструменты",
   type: "actions",
@@ -33,16 +38,19 @@ export const getActionsColumn = (
           <GridActionsCellItem
             icon={<SaveIcon />}
             label="Save"
-            onClick={handleSaveClick(id)}
+            onClick={handleSaveClick(String(id))}
             color="primary"
             //sx={{ position: "relative" }}
           />
         </Tooltip>,
-        <Tooltip key={`cancel-${id}`} title={appToolltips.systemToolltips.CANCEL}>
+        <Tooltip
+          key={`cancel-${id}`}
+          title={appToolltips.systemToolltips.CANCEL}
+        >
           <GridActionsCellItem
             icon={<CancelIcon />}
             label="Cancel"
-            onClick={handleCancelClick(id)}
+            onClick={handleCancelClick(String(id))}
             color="primary"
           />
         </Tooltip>,
@@ -54,7 +62,7 @@ export const getActionsColumn = (
         <GridActionsCellItem
           icon={<EditIcon />}
           label="Edit"
-          onClick={handleEditClick(id)}
+          onClick={handleEditClick(String(id))}
           color="primary"
         />
       </Tooltip>,
@@ -62,7 +70,7 @@ export const getActionsColumn = (
         <GridActionsCellItem
           icon={<DeleteIcon />}
           label="Delete"
-          onClick={handleDeleteClick(id)}
+          onClick={handleDeleteClick(String(id))}
           color="primary"
         />
       </Tooltip>,

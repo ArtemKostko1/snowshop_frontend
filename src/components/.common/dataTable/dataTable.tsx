@@ -149,15 +149,12 @@ const DataTable: React.FC<IDataTable> = ({
   // Обновление или создание строки
   const handleSaveRow = async (rowData: ITableRow) => {
     // Проверка заполняемости всех обязательных полей
-    const isNewRow = rowData.isNew;
-    const requiredColumns = tableOptions.requiredColumns(isNewRow); // Получение списка обязательных полей
+    const isNewRow = rowData?.isNew;
+    const requiredColumns = tableOptions.requiredColumns(); // Получение списка обязательных полей
 
-    if (!checkRequiredFields(rowData, requiredColumns)) {
-      return null;
-    }
+    if (!checkRequiredFields(rowData, requiredColumns)) return null;
 
     let success: any;
-
     // Проверка на новую строку
     if (isNewRow) {
       const { id, isNew, ...newRow } = rowData;
@@ -185,23 +182,21 @@ const DataTable: React.FC<IDataTable> = ({
   };
 
   // Обработчик изменений в модели режимов строк
-  const handleRowModesModelChange = (newRowModesModel) => {
+  const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
     setRowModesModel(newRowModesModel);
   };
-
-  const actionsColumn = getActionsColumn(
-    rowModesModel,
-    handleSaveClick,
-    handleCancelClick,
-    handleEditClick,
-    handleDeleteClick
-  );
 
   return (
     <Box className={classes.dataGridContainer}>
       <DataGrid
         className={classes.dataGrid}
-        columns={[...columns, actionsColumn]}
+        columns={[...columns, getActionsColumn({
+          rowModesModel,
+          handleSaveClick,
+          handleCancelClick,
+          handleEditClick,
+          handleDeleteClick
+        })]}
         rows={rows}
         editMode="row"
         loading={tableOptions.isLoading}
@@ -220,7 +215,7 @@ const DataTable: React.FC<IDataTable> = ({
             paginationModel: {
               page: 0,
               pageSize: tableOptions.pageSize,
-              onPageSizeChange: (newPageSize) => setPageSize(newPageSize),
+              //onPageSizeChange: (newPageSize) => setPageSize(newPageSize),
             },
           },
         }}
