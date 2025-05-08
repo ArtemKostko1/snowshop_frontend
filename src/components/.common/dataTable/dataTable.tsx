@@ -7,6 +7,15 @@ import {
   Toolbar,
   GridRowEditStopReasons,
   GridRowModesModel,
+  MuiEvent,
+  MuiBaseEvent,
+  GridToolbarProps,
+  GridToolbarContainer,
+  GridRowsProp,
+  GridSlotProps,
+  ToolbarButton,
+  GridEventListener,
+  GridRowId,
 } from "@mui/x-data-grid";
 import { randomId } from "@mui/x-data-grid-generator";
 import { useStyles } from "./dataTable.styles";
@@ -14,69 +23,69 @@ import { russianLocaleText } from "./utils/russianLocaleText";
 import { checkRequiredFields } from "./utils/checkingTableRequiredFields";
 import appToolltips from "../../../assets/constants/tooltips";
 import { getActionsColumn } from "./tableActions";
+import EditToolbar from "./EditToolbar";
 import {
   IDataTable,
-  IEditToolbar,
   ITableRow,
 } from "../../../common/types/table/tableTypes";
 
-// Компонент EditToolbar, который представляет верхнюю панель инструментов
-const EditToolbar: React.FC<IEditToolbar> = ({
-  tableName,
-  addingRows,
-  fieldsInitial,
-  setRows,
-  setRowModesModel,
-}) => {
-  const handleAddRowClick = () => {
-    // Добавление новой строки с уникальным id и начальными значениями полей
+// // Компонент EditToolbar, который представляет верхнюю панель инструментов
+// const CustomToolbarWrapper: React.FC<
+//   GridToolbarProps & {
+//     tableName: string;
+//     addingRows: boolean;
+//     fieldsInitial: Partial<any>;
+//     setRows: React.Dispatch<React.SetStateAction<any[]>>;
+//     setRowModesModel: React.Dispatch<React.SetStateAction<GridRowModesModel>>;
+//   }
+// > = ({ tableName, addingRows, fieldsInitial, setRows, setRowModesModel }) => {
+//   return (
+//     <GridToolbarContainer>
+//       <EditToolbar
+//         tableName={tableName}
+//         addingRows={addingRows}
+//         fieldsInitial={fieldsInitial}
+//         setRows={setRows}
+//         setRowModesModel={setRowModesModel}
+//       />
+//     </GridToolbarContainer>
+//   );
+// };
+
+declare module '@mui/x-data-grid' {
+  interface ToolbarPropsOverrides {
+    setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
+    setRowModesModel: (
+      newModel: (oldModel: GridRowModesModel) => GridRowModesModel,
+    ) => void;
+  }
+}
+
+function EditToolbar(props: GridSlotProps['toolbar']) {
+  const { setRows, setRowModesModel } = props;
+
+  const handleClick = () => {
     const id = randomId();
     setRows((oldRows) => [
-      {
-        id,
-        ...fieldsInitial,
-      },
       ...oldRows,
+      { id, name: '', age: '', role: '', isNew: true },
     ]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
-      [id]: { mode: GridRowModes.Edit },
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
     }));
   };
 
   return (
     <Toolbar>
-      <Grid container direction="row" alignItems="center">
-        <Grid
-          size={{ xs: 6, lg: 6 }}
-          display="flex"
-          justifyContent="flex-start"
-        >
-          <Typography variant="h6" ml={1}>
-            {tableName}
-          </Typography>
-        </Grid>
-        {addingRows && (
-          <Grid
-            size={{ xs: 6, lg: 6 }}
-            display="flex"
-            justifyContent="flex-end"
-          >
-            <Tooltip title={appToolltips.systemToolltips.ADD_NEW_ROW}>
-              <Button
-                color="primary"
-                startIcon={<AddIcon />}
-                onClick={handleAddRowClick}
-              >
-                Добавить
-              </Button>
-            </Tooltip>
-          </Grid>
-        )}
-      </Grid>
+      <Tooltip title="Add record">
+        <ToolbarButton onClick={handleClick}>
+          <AddIcon fontSize="small" />
+        </ToolbarButton>
+      </Tooltip>
     </Toolbar>
   );
-};
+}
 
 const DataTable: React.FC<IDataTable> = ({
   tableOptions,
@@ -111,7 +120,7 @@ const DataTable: React.FC<IDataTable> = ({
   // };
 
   // Обработчики событий кнопок редактирования
-  const handleEditClick = (id: string) => () => {
+  const handleEditClick = (id: GridRowId) => () => {
     setRowModesModel({
       ...rowModesModel,
       [id]: { mode: GridRowModes.Edit },
@@ -119,14 +128,14 @@ const DataTable: React.FC<IDataTable> = ({
   };
 
   // Обработчик события окончания редактирования строки
-  const handleRowEditStop = (params: any, event: React.SyntheticEvent) => {
+  const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-      event.defaultPrevented = true;
+      event.defaultMuiPrevented = true;
     }
   };
 
   // Обработчик события кнопки отмены
-  const handleCancelClick = (id: string) => () => {
+  const handleCancelClick = (id: GridRowId) => () => {
     setRowModesModel((prev) => ({
       ...prev,
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
@@ -190,13 +199,16 @@ const DataTable: React.FC<IDataTable> = ({
     <Box className={classes.dataGridContainer}>
       <DataGrid
         className={classes.dataGrid}
-        columns={[...columns, getActionsColumn({
-          rowModesModel,
-          handleSaveClick,
-          handleCancelClick,
-          handleEditClick,
-          handleDeleteClick
-        })]}
+        columns={[
+          ...columns,
+          getActionsColumn({
+            rowModesModel,
+            handleSaveClick,
+            handleCancelClick,
+            handleEditClick,
+            handleDeleteClick,
+          }),
+        ]}
         rows={rows}
         editMode="row"
         loading={tableOptions.isLoading}
@@ -220,22 +232,22 @@ const DataTable: React.FC<IDataTable> = ({
           },
         }}
         disableIgnoreModificationsIfProcessingProps={true}
-        slots={{ toolbar: EditToolbar }}
-        slotProps={{
-          toolbar: {
-            tableName,
-            addingRows,
-            fieldsInitial,
-            setRows,
-            setRowModesModel,
-          },
-          // basePopper: {
-          //   sx: {
-          //     transform: "translateY(92.5px) !important",
-          //     marginLeft: "25px !important"
-          //   },
-          // },
-        }}
+        slots={{ toolbar: CustomToolbarWrapper }}
+        // slotProps={{
+        //   toolbar: {
+        //     tableName,
+        //     addingRows,
+        //     fieldsInitial,
+        //     setRows,
+        //     setRowModesModel,
+        //   },
+        //   // basePopper: {
+        //   //   sx: {
+        //   //     transform: "translateY(92.5px) !important",
+        //   //     marginLeft: "25px !important"
+        //   //   },
+        //   // },
+        // }}
       />
     </Box>
   );

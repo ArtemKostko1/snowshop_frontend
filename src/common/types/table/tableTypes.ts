@@ -1,4 +1,4 @@
-import { GridColDef, GridRowModesModel } from "@mui/x-data-grid";
+import { GridColDef, GridRowModesModel, GridToolbarProps } from "@mui/x-data-grid";
 
 export interface IProductTable {
   createProduct: (value: string) => void;
@@ -26,7 +26,7 @@ export interface ITableOptions {
   requiredColumns: () => string[];
 }
 
-export interface IEditToolbar {
+export interface IEditToolbar extends GridToolbarProps {
   tableName: string;
   addingRows: boolean;
   fieldsInitial: Partial<ITableRow>;
