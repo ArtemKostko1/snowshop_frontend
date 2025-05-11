@@ -9,6 +9,7 @@ import Grid from "@mui/material/Grid";
 import ProductsTable from "./productsTable/ProductsTable";
 import { useStyles } from "./ProductsPage.styles";
 import { useAppDispatch } from "../../../store/hooks/app";
+import Box from "@mui/material/Box";
 
 const ProductsPage: React.FC = (): JSX.Element => {
   const classes = useStyles();
@@ -44,15 +45,15 @@ const ProductsPage: React.FC = (): JSX.Element => {
   };
 
   return (
-    <Grid container className={classes.gridContainer}>
-      <Grid size={12} className={classes.productTable}>
+    <div className={classes.productsPageContainer}>
+      <div className={classes.productTable}>
         <ProductsTable
         createProduct={createProduct}
         updateProduct={updateProduct}
         deleteProduct={deleteProduct}
         />
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   );
 };
 

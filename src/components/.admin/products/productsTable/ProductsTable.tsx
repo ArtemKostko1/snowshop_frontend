@@ -1,7 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import DataTable from "../../../.common/dataTable/dataTable";
 import { productColumns } from "./tableColumns";
-import { IProductTable } from "../../../../common/types/table/tableTypes";
+import {
+  IProductTable,
+  ITableOptions,
+  IProduct,
+} from "../../../../common/types/table/tableTypes";
 
 const ProductsTable: React.FC<IProductTable> = ({
   createProduct,
@@ -14,14 +18,14 @@ const ProductsTable: React.FC<IProductTable> = ({
 
   //   }, [products])
 
-  const fieldsInitial = {
+  const fieldsInitial: Partial<IProduct> = {
     name: "",
-    price: "",
+    price: 0,
     categoryId: "",
     brandId: "",
     size: "",
     article: "",
-    inStock: "",
+    inStock: false,
     internalCode: "",
     description: "",
     isNew: true,
@@ -40,17 +44,16 @@ const ProductsTable: React.FC<IProductTable> = ({
     return baseRequiredColumns;
   };
 
-  const tableOptions = {
+  const tableOptions: ITableOptions = {
     name: "Товары",
     table: "products",
     columns: productColumns(),
     requiredColumns: getRequiredColumns, // Список обязательных колонок
     //data: products,
     fieldsInitial: fieldsInitial,
-    addingRows: false, // Возможность добавлять строки
-    pageSize: 15,
-    pageSizeOptions: [5, 10, 15, 25, 50],
-    rowHeight: 26,
+    pageSize: 20,
+    pageSizeOptions: [20, 50, 100, 200, 500],
+    rowHeight: 32,
     //isLoading: isProductsLoading,
   };
 

@@ -15,27 +15,27 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   dataGrid: {
-    backgroundColor: `${theme.palette.background.paper} !important`,
+    //backgroundColor: `${theme.palette.background.paper} !important`,
     backgroundImage:
     "linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09)) !important",
 
     "& .MuiDataGrid-toolbarContainer": {
-      height: "36.5px"
+      height: "48px"
     },
 
     "& .MuiDataGrid-columnHeaders": {
       // Высота строки заголовков полей
-      height: "34px !important",
-      minHeight: "34px !important",
-      maxHeight: "34px !important",
+      height: "48px !important",
+      minHeight: "48px !important",
+      maxHeight: "48px !important",
     },
 
     "& .MuiDataGrid-columnHeader": {
       // Высота ячейки конкретного заголовка поля
-      height: "34px !important",
-      minHeight: "34px !important",
-      maxHeight: "34px !important",
-      lineHeight: "34px !important"
+      height: "48px !important",
+      minHeight: "48px !important",
+      maxHeight: "48px !important",
+      lineHeight: "48px !important"
     },
   },
 }));

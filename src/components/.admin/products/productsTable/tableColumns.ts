@@ -1,5 +1,7 @@
-export const productColumns = () => {
-  const columns = [
+import { GridColDef } from "@mui/x-data-grid";
+
+export const productColumns = (): GridColDef[] => {
+  const columns: GridColDef[] = [
     {
       field: "name",
       headerName: "Наименование",
@@ -63,7 +65,7 @@ export const productColumns = () => {
     {
       field: "inStock",
       headerName: "Наличие",
-      type: "string",
+      type: "boolean",
       align: "center",
       headerAlign: "center",
       editable: false,

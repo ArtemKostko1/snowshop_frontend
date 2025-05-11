@@ -1,43 +1,63 @@
-import { GridColDef, GridRowModesModel, GridToolbarProps } from "@mui/x-data-grid";
+import {
+  GridColDef,
+  GridRowModesModel,
+  GridToolbarProps,
+  GridValidRowModel,
+} from "@mui/x-data-grid";
 
-export interface IProductTable {
-  createProduct: (value: string) => void;
-  updateProduct: (value: string) => void;
-  deleteProduct: (value: string) => void;
+export interface IProduct {
+  id: string;
+  name: string;
+  price: number;
+  categoryId: string;
+  brandId: string;
+  size?: string;
+  article: string;
+  inStock: boolean;
+  internalCode: string;
+  description: string;
+  isNew?: boolean;
+  [key: string]: unknown;
 }
 
-export interface ITableRow {
-  id: string;
-  isNew?: boolean;
+export interface ITableRow extends IProduct {
   [key: string]: any;
+}
+
+export interface IProductTable {
+  createProduct: (product: Omit<IProduct, "id" | "isNew">) => Promise<IProduct>;
+  updateProduct: (product: IProduct) => Promise<IProduct>;
+  deleteProduct: (id: string) => Promise<void>;
 }
 
 export interface ITableOptions {
   name: string;
-  data: ITableRow[];
   table: string;
-  addingRows: boolean;
-  isLoading: boolean;
-  rowHeight: number;
+  columns: GridColDef[];
+  requiredColumns: () => string[];
+  //data: ITableRow[];
+  fieldsInitial: Partial<ITableRow>;
   pageSize: number;
   pageSizeOptions: number[];
-  columns: GridColDef[];
-  fieldsInitial: Partial<ITableRow>;
-  requiredColumns: () => string[];
+  rowHeight: number;
+  //isLoading: boolean;
 }
 
 export interface IEditToolbar extends GridToolbarProps {
   tableName: string;
-  addingRows: boolean;
   fieldsInitial: Partial<ITableRow>;
-  setRows: React.Dispatch<React.SetStateAction<ITableRow[]>>;
+  setRows: (
+    newRows: (
+      oldRows: readonly GridValidRowModel[]
+    ) => readonly GridValidRowModel[]
+  ) => void;
   setRowModesModel: React.Dispatch<React.SetStateAction<GridRowModesModel>>;
 }
 
 export interface IDataTable {
   tableOptions: ITableOptions;
-  createFunction: (row: Omit<ITableRow, "id" | "isNew">) => Promise<any>;
-  updateFunction: (row: ITableRow) => Promise<any>;
+  createFunction: (row: Omit<IProduct, "id" | "isNew">) => Promise<IProduct>;
+  updateFunction: (row: IProduct) => Promise<IProduct>;
   deleteFunction: (id: string) => Promise<void>;
 }
 

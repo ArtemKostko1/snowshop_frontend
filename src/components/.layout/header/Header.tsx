@@ -68,13 +68,33 @@ const Header: React.FC = () => {
   ].sort();
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#4dc6cb" }} elevation={0}>
+    <AppBar
+      className={classes.appBar}
+      position="static"
+      sx={{ backgroundColor: "#4dc6cb" }}
+      elevation={0}
+    >
       <Toolbar className={classes.toolbar}>
         {/* Левая часть */}
-        <LogoSmall />
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            minWidth: "fit-content",
+          }}
+        >
+          <LogoSmall />
+        </Box>
 
         {/* Центральная часть */}
-        <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            justifyContent: "center",
+            mx: 3,
+          }}
+        >
           <Tabs
             className={classes.tabs}
             value={false}
@@ -82,7 +102,7 @@ const Header: React.FC = () => {
             aria-label="navigation tabs"
             sx={{
               "& .MuiTab-root": {
-                color: "#ffffff", // Устанавливаем цвет текста
+                color: "#ffffff",
               },
             }}
           >
@@ -135,7 +155,14 @@ const Header: React.FC = () => {
         </Box>
 
         {/* Правая часть */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            minWidth: "fit-content",
+          }}
+        >
           <IconButton
             aria-label="profile"
             color="inherit"
