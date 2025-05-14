@@ -1,33 +1,14 @@
 import {
   GridColDef,
+  GridRowId,
   GridRowModesModel,
   GridToolbarProps,
   GridValidRowModel,
 } from "@mui/x-data-grid";
-
-export interface IProduct {
-  id: string;
-  name: string;
-  price: number;
-  categoryId: string;
-  brandId: string;
-  size?: string;
-  article: string;
-  inStock: boolean;
-  internalCode: string;
-  description: string;
-  isNew?: boolean;
-  [key: string]: unknown;
-}
+import { IProduct } from "../product/productTypes";
 
 export interface ITableRow extends IProduct {
   [key: string]: any;
-}
-
-export interface IProductTable {
-  createProduct: (product: Omit<IProduct, "id" | "isNew">) => Promise<IProduct>;
-  updateProduct: (product: IProduct) => Promise<IProduct>;
-  deleteProduct: (id: string) => Promise<void>;
 }
 
 export interface ITableOptions {
@@ -35,12 +16,12 @@ export interface ITableOptions {
   table: string;
   columns: GridColDef[];
   requiredColumns: () => string[];
-  //data: ITableRow[];
+  data: ITableRow[];
   fieldsInitial: Partial<ITableRow>;
   pageSize: number;
   pageSizeOptions: number[];
   rowHeight: number;
-  //isLoading: boolean;
+  isLoading: boolean;
 }
 
 export interface IEditToolbar extends GridToolbarProps {
@@ -58,13 +39,13 @@ export interface IDataTable {
   tableOptions: ITableOptions;
   createFunction: (row: Omit<IProduct, "id" | "isNew">) => Promise<IProduct>;
   updateFunction: (row: IProduct) => Promise<IProduct>;
-  deleteFunction: (id: string) => Promise<void>;
+  deleteFunction: (id: number) => Promise<void>;
 }
 
 export interface IActionsColumn {
   rowModesModel: GridRowModesModel;
-  handleSaveClick: (id: string) => () => void;
-  handleCancelClick: (id: string) => () => void;
-  handleEditClick: (id: string) => () => void;
-  handleDeleteClick: (id: string) => () => void;
+  handleSaveClick: (id: GridRowId) => () => void;
+  handleCancelClick: (id: GridRowId) => () => void;
+  handleEditClick: (id: GridRowId) => () => void;
+  handleDeleteClick: (id: GridRowId) => () => void;
 }

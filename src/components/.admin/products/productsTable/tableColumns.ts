@@ -1,6 +1,11 @@
 import { GridColDef } from "@mui/x-data-grid";
+import { ICategory } from "../../../../common/types/category/categoryTypes";
+import { IBrand } from "../../../../common/types/brand/brandTypes";
 
-export const productColumns = (): GridColDef[] => {
+export const productColumns = (
+  categories: ICategory[],
+  brands: IBrand[]
+): GridColDef[] => {
   const columns: GridColDef[] = [
     {
       field: "name",
@@ -25,22 +30,34 @@ export const productColumns = (): GridColDef[] => {
     {
       field: "categoryId",
       headerName: "Категория",
-      type: "string",
+      type: "singleSelect",
       align: "center",
       headerAlign: "center",
       editable: true,
       flex: 1,
       width: 200,
+      valueOptions: [...categories]
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((category) => ({
+          value: category.id,
+          label: category.name,
+        })),
     },
     {
       field: "brandId",
       headerName: "Бренд",
-      type: "string",
+      type: "singleSelect",
       align: "center",
       headerAlign: "center",
       editable: true,
       flex: 1,
       minWidth: 150,
+      valueOptions: [...brands]
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((brand) => ({
+          value: brand.id,
+          label: brand.name,
+        })),
     },
     {
       field: "size",
@@ -48,7 +65,7 @@ export const productColumns = (): GridColDef[] => {
       type: "string",
       align: "center",
       headerAlign: "center",
-      editable: false,
+      editable: true,
       flex: 1,
       minWidth: 75,
     },
@@ -58,7 +75,7 @@ export const productColumns = (): GridColDef[] => {
       type: "string",
       align: "center",
       headerAlign: "center",
-      editable: false,
+      editable: true,
       flex: 1,
       minWidth: 75,
     },
@@ -68,7 +85,7 @@ export const productColumns = (): GridColDef[] => {
       type: "boolean",
       align: "center",
       headerAlign: "center",
-      editable: false,
+      editable: true,
       flex: 1,
       minWidth: 75,
     },
@@ -78,7 +95,7 @@ export const productColumns = (): GridColDef[] => {
       type: "string",
       align: "center",
       headerAlign: "center",
-      editable: false,
+      editable: true,
       flex: 1,
       minWidth: 75,
     },

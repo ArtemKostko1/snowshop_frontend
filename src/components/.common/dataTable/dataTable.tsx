@@ -1,17 +1,18 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Box, Button, Grid, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Tooltip } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import {
   GridRowModes,
   DataGrid,
   GridRowEditStopReasons,
   GridRowModesModel,
-  GridToolbarContainer,
   GridRowsProp,
   GridSlotProps,
   GridEventListener,
   GridRowId,
   GridValidRowModel,
+  Toolbar,
+  ToolbarButton,
 } from "@mui/x-data-grid";
 import { randomId } from "@mui/x-data-grid-generator";
 import { useStyles } from "./dataTable.styles";
@@ -20,7 +21,8 @@ import { checkRequiredFields } from "./utils/checkingTableRequiredFields";
 import appToolltips from "../../../assets/constants/tooltips";
 import { getActionsColumn } from "./tableActions";
 //import EditToolbar from "./EditToolbar";
-import { IDataTable, IProduct } from "../../../common/types/table/tableTypes";
+import { IDataTable } from "../../../common/types/table/tableTypes";
+import { IProduct } from "../../../common/types/product/productTypes";
 
 declare module "@mui/x-data-grid" {
   interface ToolbarPropsOverrides {
@@ -47,11 +49,11 @@ function EditToolbar(props: GridSlotProps["toolbar"]) {
   };
 
   return (
-    <GridToolbarContainer>
+    <Toolbar>
       <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
         Добавить товар
       </Button>
-    </GridToolbarContainer>
+    </Toolbar>
   );
 }
 
@@ -68,10 +70,10 @@ const DataTable: React.FC<IDataTable> = ({
   const tableName = tableOptions.name;
   const fieldsInitial = tableOptions.fieldsInitial;
 
-  // useEffect(() => {
-  //   // Устанавливает начальные данные строк таблицы из props
-  //   setRows(tableOptions.data);
-  // }, [tableOptions.data]);
+  useEffect(() => {
+    // Устанавливает начальные данные строк таблицы из props
+    setRows(tableOptions.data);
+  }, [tableOptions.data]);
 
   // Неизменяемые колонки таблицы
   const columns = useMemo(
@@ -118,11 +120,11 @@ const DataTable: React.FC<IDataTable> = ({
   };
 
   // Обработчик события кнопки сохранения
-  const handleSaveClick = (id: string) => async () => {
-    setRowModesModel((prev) => ({
-      ...prev,
+  const handleSaveClick = (id: GridRowId) => async () => {
+    setRowModesModel({
+      ...rowModesModel,
       [id]: { mode: GridRowModes.View },
-    }));
+    });
   };
 
   // Обновление или создание строки
@@ -130,9 +132,11 @@ const DataTable: React.FC<IDataTable> = ({
     const isNewRow = newRow?.isNew;
     const requiredColumns = tableOptions.requiredColumns(); // Получение списка обязательных полей
 
-    if (!checkRequiredFields(newRow, requiredColumns)) return oldRow;
+    if (!checkRequiredFields(newRow, requiredColumns)) {
+      throw new Error("Заполните обязательные поля");
+    }
 
-    let success: IProduct;
+    let success: IProduct | null;
     // Проверка на новую строку
     if (isNewRow) {
       const { id, isNew, ...newRowData } = newRow;
@@ -141,19 +145,16 @@ const DataTable: React.FC<IDataTable> = ({
       success = await updateFunction(newRow);
     }
 
-    // Если ответ успешен, изменить состояние rows, иначе сохранение строки не выполняется
-    if (success) {
-      setRows((prevRows: IProduct[]) =>
-        prevRows.map((row: IProduct) => (row.id === newRow.id ? success : row))
-      );
-      return success;
+    if (!success) {
+      throw new Error("Не удалось сохранить изменения");
     }
-    return oldRow;
+
+    return success;
   };
 
   // Обработчик события кнопки удаления
-  const handleDeleteClick = (id: string) => async () => {
-    await deleteFunction(id);
+  const handleDeleteClick = (id: GridRowId) => async () => {
+    await deleteFunction(Number(id));
     setRows(rows.filter((row: IProduct) => row.id !== id));
   };
 
@@ -178,7 +179,7 @@ const DataTable: React.FC<IDataTable> = ({
         ]}
         rows={rows}
         editMode="row"
-        //loading={tableOptions.isLoading}
+        loading={tableOptions.isLoading}
         rowHeight={tableOptions.rowHeight}
         localeText={russianLocaleText}
         rowModesModel={rowModesModel}
@@ -210,6 +211,7 @@ const DataTable: React.FC<IDataTable> = ({
             setRowModesModel,
           },
         }}
+        showToolbar
       />
     </Box>
   );

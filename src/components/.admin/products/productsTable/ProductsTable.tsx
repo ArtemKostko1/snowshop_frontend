@@ -1,28 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DataTable from "../../../.common/dataTable/dataTable";
 import { productColumns } from "./tableColumns";
+import { ITableOptions } from "../../../../common/types/table/tableTypes";
 import {
-  IProductTable,
-  ITableOptions,
   IProduct,
-} from "../../../../common/types/table/tableTypes";
+  IProductTable,
+} from "../../../../common/types/product/productTypes";
+import { useProducts } from "../../../../store/hooks/products/useProducts";
+import { useBrands } from "../../../../store/hooks/brands/useBrands";
+import { useCategories } from "../../../../store/hooks/categories/useCategories";
 
 const ProductsTable: React.FC<IProductTable> = ({
   createProduct,
   updateProduct,
   deleteProduct,
 }): JSX.Element => {
-  //const { products, isProductsLoading } = useProducts();
+  const { products, isProductsLoading } = useProducts();
+  const { categories, isCategoriesLoading } = useCategories();
+  const { brands, isBrandsLoading } = useBrands();
 
-  //   useEffect(() => {
-
-  //   }, [products])
+  useEffect(() => {}, [products]);
 
   const fieldsInitial: Partial<IProduct> = {
     name: "",
-    price: 0,
-    categoryId: "",
-    brandId: "",
+    price: undefined,
+    categoryId: undefined,
+    brandId: undefined,
     size: "",
     article: "",
     inStock: false,
@@ -47,14 +50,14 @@ const ProductsTable: React.FC<IProductTable> = ({
   const tableOptions: ITableOptions = {
     name: "Товары",
     table: "products",
-    columns: productColumns(),
+    columns: productColumns(categories, brands),
     requiredColumns: getRequiredColumns, // Список обязательных колонок
-    //data: products,
+    data: products,
     fieldsInitial: fieldsInitial,
     pageSize: 20,
-    pageSizeOptions: [20, 50, 100, 200, 500],
-    rowHeight: 32,
-    //isLoading: isProductsLoading,
+    pageSizeOptions: [15, 20, 50, 100],
+    rowHeight: 42,
+    isLoading: isProductsLoading,
   };
 
   return (

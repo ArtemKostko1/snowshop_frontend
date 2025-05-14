@@ -15,14 +15,6 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   dataGrid: {
-    //backgroundColor: `${theme.palette.background.paper} !important`,
-    backgroundImage:
-    "linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09)) !important",
-
-    "& .MuiDataGrid-toolbarContainer": {
-      height: "48px"
-    },
-
     "& .MuiDataGrid-columnHeaders": {
       // Высота строки заголовков полей
       height: "48px !important",
@@ -35,7 +27,7 @@ export const useStyles = makeStyles((theme) => ({
       height: "48px !important",
       minHeight: "48px !important",
       maxHeight: "48px !important",
-      lineHeight: "48px !important"
+      lineHeight: "48px !important",
     },
   },
 }));

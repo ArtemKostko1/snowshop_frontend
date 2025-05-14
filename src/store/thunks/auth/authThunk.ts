@@ -6,7 +6,8 @@ import appErrors from "../../../assets/constants/errors";
 import { errorsHandling } from "../_utils/errorsHandling";
 import { ILoginForm, IRegisterData } from "../../../common/types/auth/authTypes";
 
-const auth_baseError = appErrors.authErrors.AUTH_ERROR;
+const login_baseError = appErrors.authErrors.LOGIN_ERROR;
+const register_baseError = appErrors.authErrors.REGISTER_ERROR;
 
 interface AuthResponse {
   token: string;
@@ -34,7 +35,7 @@ export const loginThunk = createAsyncThunk(
       data && toast.success(toastMessages.authMessages.USER_AUTHORUZED);
       return data;
     } catch (error: any) {
-      const errorMessage = errorsHandling(auth_baseError, error);
+      const errorMessage = errorsHandling(login_baseError, error);
       return rejectWithValue(errorMessage);
     }
   }
@@ -57,7 +58,7 @@ export const registerThunk = createAsyncThunk(
       data && toast.success(toastMessages.authMessages.USER_AUTHORUZED);
       return data;
     } catch (error: any) {
-      const errorMessage = errorsHandling(auth_baseError, error);
+      const errorMessage = errorsHandling(register_baseError, error);
       return rejectWithValue(errorMessage);
     }
   }

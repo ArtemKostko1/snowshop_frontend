@@ -38,7 +38,7 @@ export const getActionsColumn = ({
           <GridActionsCellItem
             icon={<SaveIcon />}
             label="Save"
-            onClick={handleSaveClick(String(id))}
+            onClick={handleSaveClick(id)}
             color="primary"
             //sx={{ position: "relative" }}
           />
@@ -50,8 +50,8 @@ export const getActionsColumn = ({
           <GridActionsCellItem
             icon={<CancelIcon />}
             label="Cancel"
-            onClick={handleCancelClick(String(id))}
-            color="primary"
+            onClick={handleCancelClick(id)}
+            color="default"
           />
         </Tooltip>,
       ];
@@ -62,7 +62,7 @@ export const getActionsColumn = ({
         <GridActionsCellItem
           icon={<EditIcon />}
           label="Edit"
-          onClick={handleEditClick(String(id))}
+          onClick={handleEditClick(id)}
           color="primary"
         />
       </Tooltip>,
@@ -70,8 +70,8 @@ export const getActionsColumn = ({
         <GridActionsCellItem
           icon={<DeleteIcon />}
           label="Delete"
-          onClick={handleDeleteClick(String(id))}
-          color="primary"
+          onClick={handleDeleteClick(id)}
+          color="error"
         />
       </Tooltip>,
     ];
