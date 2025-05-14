@@ -15,7 +15,8 @@ export const productColumns = (
       headerAlign: "center",
       editable: true,
       flex: 1,
-      minWidth: 150,
+      maxWidth: 300,
+      minWidth: 200,
     },
     {
       field: "price",
@@ -25,7 +26,9 @@ export const productColumns = (
       headerAlign: "center",
       editable: true,
       flex: 1,
-      minWidth: 150,
+      maxWidth: 150,
+      minWidth: 100,
+      cellClassName: "cell-center",
     },
     {
       field: "categoryId",
@@ -35,7 +38,8 @@ export const productColumns = (
       headerAlign: "center",
       editable: true,
       flex: 1,
-      width: 200,
+      maxWidth: 200,
+      minWidth: 200,
       valueOptions: [...categories]
         .sort((a, b) => a.name.localeCompare(b.name))
         .map((category) => ({
@@ -51,7 +55,9 @@ export const productColumns = (
       headerAlign: "center",
       editable: true,
       flex: 1,
-      minWidth: 150,
+      maxWidth: 150,
+      minWidth: 100,
+      cellClassName: "cell-center",
       valueOptions: [...brands]
         .sort((a, b) => a.name.localeCompare(b.name))
         .map((brand) => ({
@@ -67,7 +73,9 @@ export const productColumns = (
       headerAlign: "center",
       editable: true,
       flex: 1,
-      minWidth: 75,
+      maxWidth: 150,
+      minWidth: 100,
+      cellClassName: "cell-center",
     },
     {
       field: "article",
@@ -77,7 +85,8 @@ export const productColumns = (
       headerAlign: "center",
       editable: true,
       flex: 1,
-      minWidth: 75,
+      maxWidth: 200,
+      minWidth: 200,
     },
     {
       field: "inStock",
@@ -87,7 +96,9 @@ export const productColumns = (
       headerAlign: "center",
       editable: true,
       flex: 1,
-      minWidth: 75,
+      maxWidth: 150,
+      minWidth: 100,
+      cellClassName: "cell-center",
     },
     {
       field: "internalCode",
@@ -97,17 +108,20 @@ export const productColumns = (
       headerAlign: "center",
       editable: true,
       flex: 1,
-      minWidth: 75,
+      maxWidth: 150,
+      minWidth: 100,
+      cellClassName: "cell-center",
     },
     {
       field: "description",
       headerName: "Описание",
       type: "string",
       align: "left",
-      headerAlign: "left",
+      headerAlign: "center",
       editable: true,
       flex: 1,
-      minWidth: 250,
+      maxWidth: 300,
+      minWidth: 200,
     },
   ];
 

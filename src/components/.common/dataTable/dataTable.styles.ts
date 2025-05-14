@@ -29,5 +29,42 @@ export const useStyles = makeStyles((theme) => ({
       maxHeight: "48px !important",
       lineHeight: "48px !important",
     },
+
+    // Стили для корректного отображения singleSelect
+    "& .MuiDataGrid-cell": {
+      "& .MuiSelect-select": {
+        height: "100% !important",
+        minHeight: "unset !important",
+        maxHeight: "100% !important",
+        display: "flex",
+        alignItems: "center",
+        padding: "0 14px !important",
+        lineHeight: "1 !important",
+      },
+      "& .MuiSelect-icon": {
+        top: "50%",
+        transform: "translateY(-50%)",
+      },
+      "& .MuiInputBase-root": {
+        height: "100% !important",
+        minHeight: "unset !important",
+        maxHeight: "100% !important",
+      },
+    },
+
+    // Стили для центрирования в режиме редактирования
+    "& .cell-center": {
+      "&.MuiDataGrid-cell--editing": {
+        "& .MuiInputBase-root": {
+          justifyContent: "center",
+          "& .MuiInputBase-input": {
+            textAlign: "center",
+          },
+        },
+        "& .MuiSelect-select": {
+          justifyContent: "center",
+        },
+      },
+    },
   },
 }));
