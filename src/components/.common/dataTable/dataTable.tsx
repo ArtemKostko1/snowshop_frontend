@@ -1,94 +1,58 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Box, Button, Tooltip } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
+import { Box } from "@mui/material";
 import {
   GridRowModes,
   DataGrid,
   GridRowEditStopReasons,
   GridRowModesModel,
-  GridRowsProp,
-  GridSlotProps,
   GridEventListener,
   GridRowId,
   GridValidRowModel,
-  Toolbar,
-  ToolbarButton,
 } from "@mui/x-data-grid";
 import { randomId } from "@mui/x-data-grid-generator";
 import { useStyles } from "./dataTable.styles";
 import { russianLocaleText } from "./utils/russianLocaleText";
 import { checkRequiredFields } from "./utils/checkingTableRequiredFields";
-import appToolltips from "../../../assets/constants/tooltips";
 import { getActionsColumn } from "./tableActions";
-//import EditToolbar from "./EditToolbar";
-import { IDataTable } from "../../../common/types/table/tableTypes";
+import { EditToolbar } from "./toolbar/EditToolbar";
+import { IDataTable, TableRow } from "../../../common/types/table/tableTypes";
 import { IProduct } from "../../../common/types/product/productTypes";
+import { IBrand } from "../../../common/types/brand/brandTypes";
+import { ICategory } from "../../../common/types/category/categoryTypes";
 
-declare module "@mui/x-data-grid" {
-  interface ToolbarPropsOverrides {
-    setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
-    setRowModesModel: (
-      newModel: (oldModel: GridRowModesModel) => GridRowModesModel
-    ) => void;
-  }
-}
-
-function EditToolbar(props: GridSlotProps["toolbar"]) {
-  const { setRows, setRowModesModel } = props;
-
-  const handleClick = () => {
-    const id = randomId();
-    setRows((oldRows: readonly GridValidRowModel[]) => [
-      ...oldRows,
-      { id, isNew: true },
-    ]);
-    setRowModesModel((oldModel: GridRowModesModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit },
-    }));
-  };
-
-  return (
-    <Toolbar>
-      <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-        Добавить товар
-      </Button>
-    </Toolbar>
-  );
-}
-
-const DataTable: React.FC<IDataTable> = ({
+const DataTable = <T extends IProduct | IBrand | ICategory>({
   tableOptions,
   createFunction,
   updateFunction,
   deleteFunction,
-}) => {
+}: IDataTable<T>): JSX.Element => {
   const classes = useStyles();
-  const [rows, setRows] = useState<IProduct[]>([]);
+  const [rows, setRows] = useState<TableRow<T>[]>([]);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
-  const tableName = tableOptions.name;
-  const fieldsInitial = tableOptions.fieldsInitial;
-
   useEffect(() => {
-    // Устанавливает начальные данные строк таблицы из props
-    setRows(tableOptions.data);
+    setRows(tableOptions.data as TableRow<T>[]);
   }, [tableOptions.data]);
 
-  // Неизменяемые колонки таблицы
   const columns = useMemo(
     () => [...tableOptions.columns],
     [tableOptions.columns]
   );
 
-  // Обработчики события клика по строке
-  // const handleRowClick = (params: any) => {
-  //   if (tableOptions.table !== "devices") return;
+  const handleAddRow = useCallback(() => {
+    const id = randomId();
+    const newRow = {
+      id,
+      isNew: true,
+    } as TableRow<T>;
 
-  //   getRowsFunction(params.row);
-  // };
+    setRows((oldRows) => [newRow, ...oldRows]);
+    setRowModesModel((oldModel) => ({
+      ...oldModel,
+      [id]: { mode: GridRowModes.Edit },
+    }));
+  }, []);
 
-  // Обработчики событий кнопок редактирования
   const handleEditClick = (id: GridRowId) => () => {
     setRowModesModel({
       ...rowModesModel,
@@ -96,7 +60,6 @@ const DataTable: React.FC<IDataTable> = ({
     });
   };
 
-  // Обработчик события окончания редактирования строки
   const handleRowEditStop: GridEventListener<"rowEditStop"> = (
     params,
     event
@@ -106,59 +69,65 @@ const DataTable: React.FC<IDataTable> = ({
     }
   };
 
-  // Обработчик события кнопки отмены
   const handleCancelClick = (id: GridRowId) => () => {
     setRowModesModel({
       ...rowModesModel,
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
 
-    const editedRow = rows.find((row: IProduct) => row.id === id);
+    const editedRow = rows.find((row) => row.id === id);
     if (editedRow?.isNew) {
-      setRows(rows.filter((row: IProduct) => row.id !== id));
+      setRows(rows.filter((row) => row.id !== id));
     }
   };
 
-  // Обработчик события кнопки сохранения
-  const handleSaveClick = (id: GridRowId) => async () => {
+  const handleSaveClick = (id: GridRowId) => () => {
     setRowModesModel({
       ...rowModesModel,
       [id]: { mode: GridRowModes.View },
     });
   };
 
-  // Обновление или создание строки
-  const handleSaveRow = async (newRow: IProduct, oldRow: IProduct) => {
+  const handleSaveRow = async (newRow: TableRow<T>, oldRow: TableRow<T>) => {
     const isNewRow = newRow?.isNew;
-    const requiredColumns = tableOptions.requiredColumns(); // Получение списка обязательных полей
+    const requiredColumns = tableOptions.requiredColumns();
 
     if (!checkRequiredFields(newRow, requiredColumns)) {
       throw new Error("Заполните обязательные поля");
     }
 
-    let success: IProduct | null;
-    // Проверка на новую строку
-    if (isNewRow) {
-      const { id, isNew, ...newRowData } = newRow;
-      success = await createFunction(newRowData);
-    } else {
-      success = await updateFunction(newRow);
-    }
+    try {
+      let success: T | null;
+      if (isNewRow) {
+        const { id, isNew, ...newRowData } = newRow;
+        success = await createFunction(newRowData);
+      } else {
+        success = await updateFunction(newRow);
+      }
 
-    if (!success) {
-      throw new Error("Не удалось сохранить изменения");
-    }
+      if (!success) {
+        throw new Error("Не удалось сохранить изменения");
+      }
 
-    return success;
+      return success;
+    } catch (error) {
+      throw new Error(
+        error instanceof Error ? error.message : "Неизвестная ошибка"
+      );
+    }
   };
 
-  // Обработчик события кнопки удаления
   const handleDeleteClick = (id: GridRowId) => async () => {
-    await deleteFunction(Number(id));
-    setRows(rows.filter((row: IProduct) => row.id !== id));
+    try {
+      await deleteFunction(typeof id === "string" ? parseInt(id) : id);
+      setRows(rows.filter((row) => row.id !== id));
+    } catch (error) {
+      throw new Error(
+        error instanceof Error ? error.message : "Не удалось удалить запись"
+      );
+    }
   };
 
-  // Обработчик изменений в модели режимов строк
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
     setRowModesModel(newRowModesModel);
   };
@@ -185,7 +154,6 @@ const DataTable: React.FC<IDataTable> = ({
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
-        //onRowClick={handleRowClick}
         processRowUpdate={handleSaveRow}
         pageSizeOptions={tableOptions.pageSizeOptions}
         initialState={{
@@ -193,23 +161,19 @@ const DataTable: React.FC<IDataTable> = ({
             paginationModel: {
               page: 0,
               pageSize: tableOptions.pageSize,
-              //onPageSizeChange: (newPageSize) => setPageSize(newPageSize),
             },
+          },
+          sorting: {
+            sortModel: tableOptions.defaultSort || [],
           },
         }}
-        //disableIgnoreModificationsIfProcessingProps={true}
-        slots={{ toolbar: EditToolbar }}
-        slotProps={{
-          toolbar: {
-            setRows: (
-              newRows: (
-                oldRows: readonly GridValidRowModel[]
-              ) => readonly GridValidRowModel[]
-            ) => {
-              setRows(newRows(rows) as IProduct[]);
-            },
-            setRowModesModel,
-          },
+        slots={{
+          toolbar: (props) => (
+            <EditToolbar<T>
+              onAdd={handleAddRow}
+              navigation={tableOptions.navigation}
+            />
+          ),
         }}
         showToolbar
       />

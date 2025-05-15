@@ -4,41 +4,45 @@ import {
   GridRowModesModel,
   GridToolbarProps,
   GridValidRowModel,
+  GridSortModel,
 } from "@mui/x-data-grid";
 import { IProduct } from "../product/productTypes";
+import { ICategory } from "../category/categoryTypes";
+import { IBrand } from "../brand/brandTypes";
+import { INavigationItem } from "./toolbarTypes";
 
-export interface ITableRow extends IProduct {
+// Базовый интерфейс для всех типов строк
+export interface IBaseRow {
+  id: number | string;
+  isNew?: boolean;
   [key: string]: any;
 }
 
-export interface ITableOptions {
+// Дженерик тип для строк таблицы
+export type TableRow<T extends IProduct | ICategory | IBrand> = T & IBaseRow;
+
+export interface ITableOptions<T extends IProduct | ICategory | IBrand> {
   name: string;
   table: string;
   columns: GridColDef[];
   requiredColumns: () => string[];
-  data: ITableRow[];
-  fieldsInitial: Partial<ITableRow>;
+  data: TableRow<T>[];
   pageSize: number;
   pageSizeOptions: number[];
   rowHeight: number;
   isLoading: boolean;
+  defaultSort?: GridSortModel;
+  navigation?: {
+    items: INavigationItem[];
+    value: number;
+    onChange: (value: number) => void;
+  };
 }
 
-export interface IEditToolbar extends GridToolbarProps {
-  tableName: string;
-  fieldsInitial: Partial<ITableRow>;
-  setRows: (
-    newRows: (
-      oldRows: readonly GridValidRowModel[]
-    ) => readonly GridValidRowModel[]
-  ) => void;
-  setRowModesModel: React.Dispatch<React.SetStateAction<GridRowModesModel>>;
-}
-
-export interface IDataTable {
-  tableOptions: ITableOptions;
-  createFunction: (row: Omit<IProduct, "id" | "isNew">) => Promise<IProduct>;
-  updateFunction: (row: IProduct) => Promise<IProduct>;
+export interface IDataTable<T extends IProduct | ICategory | IBrand> {
+  tableOptions: ITableOptions<T>;
+  createFunction: (row: Omit<T, "id" | "isNew">) => Promise<T>;
+  updateFunction: (row: T) => Promise<T>;
   deleteFunction: (id: number) => Promise<void>;
 }
 

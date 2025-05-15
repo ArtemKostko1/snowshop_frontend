@@ -78,6 +78,7 @@ const AdminHeader: React.FC = () => {
         {/* Левая часть */}
         <Box
           sx={{
+            width: "300px",
             display: "flex",
             alignItems: "center",
             minWidth: "fit-content",
@@ -114,9 +115,9 @@ const AdminHeader: React.FC = () => {
             />
             <Tab
               className={classes.tab}
-              label="Пользователи"
+              label="Словари"
               component={Link}
-              to="/users"
+              to="/admin/dictionaries"
             />
           </Tabs>
         </Box>
@@ -124,7 +125,9 @@ const AdminHeader: React.FC = () => {
         {/* Правая часть */}
         <Box
           sx={{
+            width: "300px",
             display: "flex",
+            justifyContent: "flex-end",
             alignItems: "center",
             gap: 2,
             minWidth: "fit-content",

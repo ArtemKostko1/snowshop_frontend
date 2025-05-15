@@ -12,9 +12,3 @@ export interface IProduct {
   isNew?: boolean;
   [key: string]: unknown;
 }
-
-export interface IProductTable {
-  createProduct: (product: Omit<IProduct, "id" | "isNew">) => Promise<IProduct>;
-  updateProduct: (product: IProduct) => Promise<IProduct>;
-  deleteProduct: (id: number) => Promise<void>;
-}

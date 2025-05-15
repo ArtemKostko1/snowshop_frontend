@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import HomePage from "./components/home/HomePage";
 import ProductsPage from "./components/.admin/products/ProductsPage";
+import DictionariesPage from "./components/.admin/dictionaries/DictionariesPage";
 import PrivateRoute from "./common/utils/router/PrivateRoute";
 import Layout from "./components/.layout/main/Layout";
 import store from "./store/store";
@@ -18,7 +19,7 @@ import RoleBasedRoute from "./common/utils/router/RoleBasedRoute";
 const clientRoutes = [{ path: "/", element: <HomePage /> }];
 
 // Админские маршруты
-const adminRoutes = [{ path: "/admin/products", element: <ProductsPage /> }];
+const adminRoutes = [{ path: "/admin/products", element: <ProductsPage /> }, { path: "/admin/dictionaries", element: <DictionariesPage /> }];
 
 const AppContent: React.FC = () => {
   return (
