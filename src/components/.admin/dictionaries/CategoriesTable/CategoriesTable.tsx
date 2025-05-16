@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from "react";
-import DataTable from "../../../.common/dataTable/dataTable";
+import DataTable from "../../../_common/dataTable/dataTable";
 import { categoryColumns } from "./tableColumns";
 import { ITableOptions } from "../../../../common/types/table/tableTypes";
 import { useCategories } from "../../../../store/hooks/categories/useCategories";
@@ -86,6 +86,9 @@ const CategoriesTable: React.FC<ICategoriesTableProps> = ({
     pageSizeOptions: [15, 20, 50, 100],
     rowHeight: 42,
     isLoading: isCategoriesLoading,
+    fieldsInitial: {
+      name: "",
+    },
     navigation: {
       items: navigationItems,
       value: navigationValue,

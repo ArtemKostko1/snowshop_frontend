@@ -1,7 +1,17 @@
 import React from "react";
 import { FormControl, Select, MenuItem, InputLabel } from "@mui/material";
+import {
+  SelectDefaultProps,
+  SelectDefaultOption,
+} from "../../../common/types/product/selectDefaultTypes";
 
-const SelectDefault = ({ label, value, options, onChange, disabled }) => {
+const SelectDefault: React.FC<SelectDefaultProps> = ({
+  label,
+  value,
+  options,
+  onChange,
+  disabled,
+}) => {
   return (
     <FormControl variant="outlined" fullWidth size="small">
       <InputLabel>{label}</InputLabel>
@@ -12,7 +22,7 @@ const SelectDefault = ({ label, value, options, onChange, disabled }) => {
         onChange={onChange}
         disabled={disabled}
       >
-        {options.map((option, index) => (
+        {options.map((option: SelectDefaultOption, index: number) => (
           <MenuItem key={index} value={option.value}>
             {option.label}
           </MenuItem>

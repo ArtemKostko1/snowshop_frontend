@@ -6,11 +6,11 @@ import {
   BrowserRouter as Router,
   Routes,
 } from "react-router-dom";
-import HomePage from "./components/home/HomePage";
+import HomePage from "./components/catalog/CatalogPage";
 import ProductsPage from "./components/.admin/products/ProductsPage";
 import DictionariesPage from "./components/.admin/dictionaries/DictionariesPage";
 import PrivateRoute from "./common/utils/router/PrivateRoute";
-import Layout from "./components/.layout/main/Layout";
+import Layout from "./components/_layout/main/Layout";
 import store from "./store/store";
 import AuthRootPage from "./components/auth/AuthRootComponent";
 import RoleBasedRoute from "./common/utils/router/RoleBasedRoute";
@@ -19,7 +19,10 @@ import RoleBasedRoute from "./common/utils/router/RoleBasedRoute";
 const clientRoutes = [{ path: "/", element: <HomePage /> }];
 
 // Админские маршруты
-const adminRoutes = [{ path: "/admin/products", element: <ProductsPage /> }, { path: "/admin/dictionaries", element: <DictionariesPage /> }];
+const adminRoutes = [
+  { path: "/admin/products", element: <ProductsPage /> },
+  { path: "/admin/dictionaries", element: <DictionariesPage /> },
+];
 
 const AppContent: React.FC = () => {
   return (

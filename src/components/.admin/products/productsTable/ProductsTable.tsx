@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from "react";
-import DataTable from "../../../.common/dataTable/dataTable";
+import DataTable from "../../../_common/dataTable/dataTable";
 import { productColumns } from "./tableColumns";
 import { ITableOptions } from "../../../../common/types/table/tableTypes";
 import { IProduct } from "../../../../common/types/product/productTypes";
@@ -95,6 +95,17 @@ const ProductsTable: React.FC = (): JSX.Element => {
     pageSizeOptions: [15, 20, 50, 100],
     rowHeight: 42,
     isLoading: isProductsLoading && isCategoriesLoading && isBrandsLoading,
+    fieldsInitial: {
+      name: "",
+      price: undefined,
+      categoryId: undefined,
+      brandId: undefined,
+      size: "",
+      article: "",
+      inStock: false,
+      internalCode: "",
+      description: "",
+    },
   };
 
   return (

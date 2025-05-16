@@ -7,7 +7,6 @@ import {
   GridRowModesModel,
   GridEventListener,
   GridRowId,
-  GridValidRowModel,
 } from "@mui/x-data-grid";
 import { randomId } from "@mui/x-data-grid-generator";
 import { useStyles } from "./dataTable.styles";
@@ -41,17 +40,20 @@ const DataTable = <T extends IProduct | IBrand | ICategory>({
 
   const handleAddRow = useCallback(() => {
     const id = randomId();
-    const newRow = {
+
+    // Создаем новую строку с начальными значениями из fieldsInitial
+    const newRow: TableRow<T> = {
+      ...(tableOptions.fieldsInitial || {}),
       id,
       isNew: true,
-    } as TableRow<T>;
+    } as unknown as TableRow<T>;
 
     setRows((oldRows) => [newRow, ...oldRows]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
       [id]: { mode: GridRowModes.Edit },
     }));
-  }, []);
+  }, [tableOptions]);
 
   const handleEditClick = (id: GridRowId) => () => {
     setRowModesModel({

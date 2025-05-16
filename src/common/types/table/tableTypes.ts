@@ -32,6 +32,7 @@ export interface ITableOptions<T extends IProduct | ICategory | IBrand> {
   rowHeight: number;
   isLoading: boolean;
   defaultSort?: GridSortModel;
+  fieldsInitial?: Partial<T>;
   navigation?: {
     items: INavigationItem[];
     value: number;

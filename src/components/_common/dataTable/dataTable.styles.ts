@@ -67,4 +67,7 @@ export const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  deleteIcon: {
+    color: "red",
+  },
 }));

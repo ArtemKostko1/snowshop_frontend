@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from "react";
-import DataTable from "../../../.common/dataTable/dataTable";
+import DataTable from "../../../_common/dataTable/dataTable";
 import { brandColumns } from "./tableColumns";
 import { ITableOptions } from "../../../../common/types/table/tableTypes";
 import { useBrands } from "../../../../store/hooks/brands/useBrands";
@@ -84,6 +84,9 @@ const BrandsTable: React.FC<IBrandsTableProps> = ({
     pageSizeOptions: [15, 20, 50, 100],
     rowHeight: 42,
     isLoading: isBrandsLoading,
+    fieldsInitial: {
+      name: "",
+    },
     navigation: {
       items: navigationItems,
       value: navigationValue,

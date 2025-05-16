@@ -2,7 +2,7 @@ import React from "react";
 import { IPropsRegister } from "../../../common/types/auth/authTypes";
 import Logo from "../../../assets/logo/logo";
 import { TextField, Typography } from "@mui/material";
-import AppLoadingButton from "../../AppLoadingButton/AppLoadingButton";
+import { AppLoadingButton } from "../../_common/loading-button/AppLoadingButton.styles";
 import { useRegisterPageStyles } from "./RegisterPage.styles";
 
 const RegisterPage: React.FC<IPropsRegister> = (

@@ -40,7 +40,6 @@ export const getActionsColumn = ({
             label="Save"
             onClick={handleSaveClick(id)}
             color="primary"
-            //sx={{ position: "relative" }}
           />
         </Tooltip>,
         <Tooltip
@@ -68,10 +67,10 @@ export const getActionsColumn = ({
       </Tooltip>,
       <Tooltip title={appToolltips.systemToolltips.DELETE}>
         <GridActionsCellItem
-          icon={<DeleteIcon />}
+          icon={<DeleteIcon sx={{ color: "error.main" }} />}
           label="Delete"
           onClick={handleDeleteClick(id)}
-          color="error"
+          color="default"
         />
       </Tooltip>,
     ];

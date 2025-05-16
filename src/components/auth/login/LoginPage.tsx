@@ -5,7 +5,7 @@ import { useLoginPageStyles } from "./LoginPage.styles";
 //import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Logo from "../../../assets/logo/logo";
 import { IPropsLogin } from "../../../common/types/auth/authTypes";
-import AppLoadingButton from "../../AppLoadingButton/AppLoadingButton";
+import { AppLoadingButton } from "../../_common/loading-button/AppLoadingButton.styles";
 
 const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
   const { navigate, register, errors, loading } = props;
@@ -25,7 +25,7 @@ const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
         variant="outlined"
         placeholder="Введите ваш email"
         helperText={errors.email ? `${errors.email.message}` : ""}
-        {...register('email')}
+        {...register("email")}
       />
       <TextField
         className={classes.textField}
@@ -38,7 +38,7 @@ const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
         variant="outlined"
         placeholder="Введите ваш пароль"
         helperText={errors.password ? `${errors.password.message}` : ""}
-        {...register('password')}
+        {...register("password")}
       />
       <AppLoadingButton
         loading={loading}

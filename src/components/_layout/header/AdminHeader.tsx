@@ -74,7 +74,7 @@ const AdminHeader: React.FC = () => {
       sx={{ backgroundColor: "#4dc6cb" }}
       elevation={0}
     >
-      <Toolbar className={classes.toolbar}>
+      <Toolbar className={classes.adminToolbar}>
         {/* Левая часть */}
         <Box
           sx={{

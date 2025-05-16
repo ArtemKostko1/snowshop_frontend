@@ -4,10 +4,21 @@ export const useStyles = makeStyles(() => ({
   appBar: {
     width: "100vw",
   },
-  toolbar: {
+  adminToolbar: {
     height: "64px", // Устанавливаем фиксированную высоту Toolbar
     minHeight: "64px", // Убираем минимальную высоту по умолчанию
     maxWidth: "1920px",
+    width: "100%",
+    margin: "0 auto",
+    display: "flex",
+    justifyContent: "space-between",
+    padding: "0 24px !important",
+    boxSizing: "border-box",
+  },
+  toolbar: {
+    height: "64px", // Устанавливаем фиксированную высоту Toolbar
+    minHeight: "64px", // Убираем минимальную высоту по умолчанию
+    maxWidth: "1140px",
     width: "100%",
     margin: "0 auto",
     display: "flex",
