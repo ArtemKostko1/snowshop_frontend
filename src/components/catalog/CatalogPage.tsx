@@ -9,14 +9,20 @@ import { getAllProductsThunk } from "../../store/thunks/products/productsThunk";
 import { getAllCategoriesThunk } from "../../store/thunks/categories/categoriesThunk";
 import { useProducts } from "../../store/hooks/products/useProducts";
 import { useCategories } from "../../store/hooks/categories/useCategories";
-import { SortType } from "../../common/types/product/sortTypes";
-import { Box, SelectChangeEvent, Pagination } from "@mui/material";
+import { SortType } from "../../common/types/sorting/sortTypes";
+import {
+  Box,
+  SelectChangeEvent,
+  Pagination,
+  Stack,
+  Typography,
+} from "@mui/material";
 
 const pageSizeOptions = [
   { value: 8, label: "8" },
-  { value: 12, label: "12" },
-  { value: 16, label: "16" },
-  { value: 20, label: "20" },
+  { value: 12, label: "32" },
+  { value: 16, label: "64" },
+  { value: 20, label: "128" },
 ];
 
 const CatalogPage: React.FC = (): JSX.Element => {
@@ -72,45 +78,59 @@ const CatalogPage: React.FC = (): JSX.Element => {
     return cat ? cat.name : "-";
   };
 
+  const totalPages = Math.ceil(sortedProducts.length / pageSize);
+
   return (
     <Box>
-      <div style={styles.layout}>
-        <div style={styles.leftPanel}>
-          <CatalogSort value={sort} onChange={setSort} />
-        </div>
-        <div style={styles.rightPanel}>
-          <div style={styles.topBar}>
-            <span>Показать</span>
-            <div style={{ width: 90 }}>
-              <SelectDefault
-                label="Кол-во"
-                value={pageSize}
-                options={pageSizeOptions}
-                onChange={(e: SelectChangeEvent<string | number>) =>
-                  setPageSize(Number(e.target.value))
-                }
-                disabled={isProductsLoading}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <Box>
-        <CatalogGrid
-          products={pagedProducts.map((p) => ({
-            ...p,
-            category: getCategoryName(p.categoryId),
-          }))}
-        />
-        <Box display="flex" justifyContent="center" mt={4}>
+      <Stack spacing={3}>
+        <Box sx={styles.sortingPanel}>
+          <Box sx={styles.sorting}>
+            <Typography>Сортировка</Typography>
+            <CatalogSort
+              value={sort}
+              onChange={setSort}
+              isProductsLoading={isProductsLoading}
+            />
+          </Box>
+
+          <Box sx={styles.showSize}>
+            <Typography>Показать</Typography>
+            <SelectDefault
+              label=""
+              value={pageSize}
+              options={pageSizeOptions}
+              onChange={(e: SelectChangeEvent<string | number>) =>
+                setPageSize(Number(e.target.value))
+              }
+              disabled={isProductsLoading}
+              width="75px"
+            />
+          </Box>
+        </Box>
+
+        <Box>
+          <CatalogGrid
+            products={pagedProducts.map((p) => ({
+              ...p,
+              category: getCategoryName(p.categoryId),
+            }))}
+          />
+        </Box>
+
+        <Box sx={{ display: "flex", justifyContent: "center"}}>
           <Pagination
-            count={Math.ceil(sortedProducts.length / pageSize)}
+            count={totalPages}
             page={page}
             onChange={(_, value) => setPage(value)}
             color="primary"
+            size="large"
+            showFirstButton
+            showLastButton
+            siblingCount={1}
+            boundaryCount={1}
           />
         </Box>
-      </Box>
+      </Stack>
     </Box>
   );
 };

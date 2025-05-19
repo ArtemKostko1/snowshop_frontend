@@ -8,9 +8,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <>
-      <main className={classes.mainContainer}>
+      <div className={classes.mainContainer}>
         <Outlet />
-      </main>
+      </div>
       <ToastContainer
         position="bottom-right"
         hideProgressBar={false}

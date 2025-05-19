@@ -1,30 +1,27 @@
-const layout = {
-  display: "flex",
-  flexDirection: "row" as const,
-  alignItems: "flex-start",
-  gap: 32,
+const sortingPanel = {
   width: "100%",
-};
-
-const leftPanel = {
-  minWidth: 220,
-  marginTop: 8,
-};
-
-const rightPanel = {
-  flex: 1,
-};
-
-const topBar = {
   display: "flex",
-  justifyContent: "space-between",
+  flexDirection: "row",
   alignItems: "center",
-  marginBottom: 16,
+  justifyContent: "space-between",
+};
+
+const sorting = {
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  gap: 2,
+};
+
+const showSize = {
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  gap: 2,
 };
 
 export default {
-  layout,
-  leftPanel,
-  rightPanel,
-  topBar,
+  sortingPanel,
+  sorting,
+  showSize,
 };

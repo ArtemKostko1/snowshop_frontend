@@ -11,4 +11,5 @@ export interface SelectDefaultProps {
   options: SelectDefaultOption[];
   onChange: (event: SelectChangeEvent<string | number>) => void;
   disabled?: boolean;
+  width?: string;
 }

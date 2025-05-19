@@ -9,7 +9,7 @@ interface CatalogGridProps {
 
 const CatalogGrid: React.FC<CatalogGridProps> = ({ products }) => {
   return (
-    <Grid container spacing={3} sx={{ marginTop: 4 }}>
+    <Grid container spacing={2}>
       {products.map((product) => (
         <Grid size={3} key={product.id}>
           <ProductCard product={product} />

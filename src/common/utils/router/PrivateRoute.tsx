@@ -30,16 +30,20 @@ const PrivateRoute: React.FC = () => {
         {user.role === "ADMIN" ? (
           <>
             <AdminHeader />
-            <div className={classes.adminContent}>
-              <Outlet />
-            </div>
+            <main className={classes.main}>
+              <div className={classes.adminContent}>
+                <Outlet />
+              </div>
+            </main>
           </>
         ) : (
           <>
             <Header />
-            <div className={classes.mainContent}>
-              <Outlet />
-            </div>
+            <main className={classes.main}>
+              <div className={classes.mainContent}>
+                <Outlet />
+              </div>
+            </main>
           </>
         )}
       </>
