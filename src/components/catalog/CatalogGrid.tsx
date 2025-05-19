@@ -1,7 +1,7 @@
 import React from "react";
 import { IProduct } from "../../common/types/product/productTypes";
-import ProductCard from "./ProductCard";
-import Grid from '@mui/material/Grid';
+import ProductCard from "./productCard/ProductCard";
+import Grid from "@mui/material/Grid";
 
 interface CatalogGridProps {
   products: IProduct[];

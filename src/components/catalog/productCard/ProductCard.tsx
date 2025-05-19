@@ -1,5 +1,5 @@
 import React from "react";
-import { IProduct } from "../../common/types/product/productTypes";
+import { IProduct } from "../../../common/types/product/productTypes";
 import styles from "./ProductCard.styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
