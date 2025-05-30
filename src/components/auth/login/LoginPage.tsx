@@ -1,15 +1,17 @@
-import React from "react";
-import { TextField, Typography } from "@mui/material";
-import { useLoginPageStyles } from "./LoginPage.styles";
+import React from 'react';
+import { TextField, Typography } from '@mui/material';
+import { useLoginPageStyles } from './LoginPage.styles';
 //import VisibilityIcon from "@mui/icons-material/Visibility";
 //import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import Logo from "../../../assets/logo/logo";
-import { IPropsLogin } from "../../../common/types/auth/authTypes";
-import { AppLoadingButton } from "../../_common/loading-button/AppLoadingButton.styles";
+import Logo from '../../../assets/logo/logo';
+import { IPropsLogin } from '../../../common/types/auth/authTypes';
+import { AppLoadingButton } from '../../_common/loading-button/AppLoadingButton.styles';
+import { useAuth } from '../../../store/hooks/auth/useAuth';
 
 const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
   const { navigate, register, errors, loading } = props;
   const classes = useLoginPageStyles();
+  const isAuth = useAuth();
   //const [showPassword, setShowPassword] = useState<boolean>(false);
 
   return (
@@ -24,8 +26,8 @@ const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
         label="Email"
         variant="outlined"
         placeholder="Введите ваш email"
-        helperText={errors.email ? `${errors.email.message}` : ""}
-        {...register("email")}
+        helperText={errors.email ? `${errors.email.message}` : ''}
+        {...register('email')}
       />
       <TextField
         className={classes.textField}
@@ -37,23 +39,15 @@ const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
         label="Пароль"
         variant="outlined"
         placeholder="Введите ваш пароль"
-        helperText={errors.password ? `${errors.password.message}` : ""}
-        {...register("password")}
+        helperText={errors.password ? `${errors.password.message}` : ''}
+        {...register('password')}
       />
-      <AppLoadingButton
-        loading={loading}
-        type="submit"
-        fullWidth={true}
-        variant="contained"
-      >
-        Войти
+      <AppLoadingButton loading={loading} type="submit" fullWidth={true} variant="contained">
+        {loading ? '' : 'Войти'}
       </AppLoadingButton>
       <Typography>
         У вас нет аккаунта?
-        <span
-          className={classes.incitingText}
-          onClick={() => navigate("/register")}
-        >
+        <span className={classes.incitingText} onClick={() => navigate('/register')}>
           Регистрация
         </span>
       </Typography>

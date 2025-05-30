@@ -11,6 +11,11 @@ const productsErrors = {
     DELETE_PRODUCT: "Ошибка при удалении товара",
 }
 
+const catalogErrors = {
+    GET_ALL_CATALOG_PRODUCTS: "Ошибка при получении товаров каталога",
+    GET_PRODUCT_BY_ARTICLE_ROUTE: "Ошибка при получении товара по артиклу",
+}
+
 const categoriesErrors = {
     GET_ALL_CATEGORIES: "Ошибка при получении категорий",
     GET_CATEGORY_BY_ID: "Ошибка при получении категории",
@@ -37,6 +42,7 @@ const appErrors = {
     productsErrors,
     categoriesErrors,
     brandsErrors,
+    catalogErrors,
 }
 
 export default appErrors;

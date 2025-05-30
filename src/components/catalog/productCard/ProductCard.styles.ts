@@ -1,64 +1,63 @@
-import { SxProps } from "@mui/material";
+import { SxProps } from '@mui/material';
 
 const card: SxProps = {
-  height: 420,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "stretch",
-  background: "none",
-  border: "none",
-  boxShadow: "none",
-  transition: "box-shadow 0.2s",
-  cursor: "pointer",
-  ":hover": {
-    boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'stretch',
+  background: 'none',
+  border: 'none',
+  boxShadow: 'none',
+  transition: 'box-shadow 0.2s',
+  cursor: 'pointer',
+  ':hover': {
+    boxShadow: '0 4px 16px rgba(0,0,0,0.15)',
   },
-};
-
-const imageWrapper: SxProps = {
-  flex: "1 1 auto",
-  minHeight: 220,
-  maxHeight: 260,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  marginBottom: 2,
+  boxSizing: 'border-box',
 };
 
 const image: SxProps = {
-  maxHeight: 220,
-  maxWidth: "100%",
-  objectFit: "contain",
+  height: '250px',
+  width: '100%',
+  objectFit: 'contain',
+  marginTop: '24px',
 };
 
 const name: SxProps = {
   fontWeight: 700,
-  fontSize: 18,
-  margin: "12px 0 8px 0",
-  textAlign: "left",
+  fontSize: 16,
+  lineHeight: 1.3,
+  height: '62px',
+  overflow: 'hidden',
+  display: '-webkit-box',
+  WebkitLineClamp: 3,
+  WebkitBoxOrient: 'vertical',
+  margin: '8px 0',
+  textAlign: 'left',
 };
 
 const infoRow: SxProps = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  fontSize: 16,
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginTop: 'auto',
+  padding: '8px 0',
 };
 
 const price: SxProps = {
   fontWeight: 500,
-  color: "#222",
+  color: '#222',
+  fontSize: 16,
 };
 
-const inStock: SxProps = {
+const inStock = (inStock: boolean): SxProps => ({
   fontWeight: 400,
-  color: "#4caf50",
-  fontSize: 15,
-};
+  color: inStock ? '#4caf50' : '#f44336',
+  fontSize: 14,
+});
 
 export default {
   card,
-  imageWrapper,
   image,
   name,
   infoRow,

@@ -1,34 +1,71 @@
-import React from "react";
-import { IProduct } from "../../../common/types/product/productTypes";
-import styles from "./ProductCard.styles";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import React from 'react';
+import { IProduct } from '../../../common/types/product/productTypes';
+import styles from './ProductCard.styles';
+import { Card, CardContent, CardMedia, Typography, Box, IconButton } from '@mui/material';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import { useShoppingCart } from '../../../store/hooks/useShoppingCart';
+import { useNavigate } from 'react-router-dom';
 
 interface ProductCardProps {
   product: IProduct;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const { items, addToCart, removeFromCart } = useShoppingCart();
+  const previewCarImage = product.images[0];
+  const navigate = useNavigate();
+
+  const isInCart = items.some((item) => item.product.id === product.id);
+
+  const handleCartClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Предотвращаем всплытие события клика
+    if (isInCart) {
+      removeFromCart(product.id);
+    } else {
+      addToCart(product);
+    }
+  };
+
   return (
-    <Box sx={styles.card}>
-      <Box sx={styles.imageWrapper}>
-        {/* Здесь будет изображение товара */}
-        <Box
-          component="img"
-          src={"/no-image.png"}
-          alt={product.name}
-          sx={styles.image}
-        />
-      </Box>
-      <Typography sx={styles.name}>{product.name}</Typography>
-      <Box sx={styles.infoRow}>
-        <Typography sx={styles.price} component="span">
-          {product.price ? product.price + " ₽" : "-"}
-        </Typography>
-        <Typography sx={styles.inStock} component="span">
-          {product.inStock ? "в наличии" : "нет в наличии"}
-        </Typography>
-      </Box>
+    <Box onClick={() => navigate(`/catalog/${product.articleRoute}`)} style={{ cursor: 'pointer' }}>
+      <Card sx={styles.card}>
+        <CardMedia component="img" image={previewCarImage} alt={product.name} sx={styles.image} />
+        <CardContent
+          sx={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <Typography sx={styles.name}>{product.name}</Typography>
+          <Box sx={styles.infoRow}>
+            <Typography sx={styles.price}>
+              {product.price ? product.price + ' BYN' : '-'}
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography sx={styles.inStock(product.inStock)}>
+                {product.inStock ? 'в наличии' : 'предзаказ'}
+              </Typography>
+              {product.inStock && (
+                <IconButton
+                  onClick={handleCartClick}
+                  sx={{
+                    color: isInCart ? '#4caf50' : '#f44336',
+                    '&:hover': {
+                      backgroundColor: isInCart
+                        ? 'rgba(76, 175, 80, 0.1)'
+                        : 'rgba(244, 67, 54, 0.1)',
+                    },
+                  }}
+                >
+                  {isInCart ? <ShoppingCartCheckoutIcon /> : <ShoppingCartIcon />}
+                </IconButton>
+              )}
+            </Box>
+          </Box>
+        </CardContent>
+      </Card>
     </Box>
   );
 };

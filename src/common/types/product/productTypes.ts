@@ -10,5 +10,6 @@ export interface IProduct {
   internalCode: string;
   description: string;
   isNew?: boolean;
+  images: string[];
   [key: string]: unknown;
 }

@@ -72,7 +72,7 @@ const CategoriesTable: React.FC<ICategoriesTableProps> = ({
   const { categories, isCategoriesLoading } = useCategories();
 
   const getRequiredColumns = () => {
-    const baseRequiredColumns = ["name"];
+    const baseRequiredColumns = ["name", "value"];
     return baseRequiredColumns;
   };
 
@@ -88,6 +88,7 @@ const CategoriesTable: React.FC<ICategoriesTableProps> = ({
     isLoading: isCategoriesLoading,
     fieldsInitial: {
       name: "",
+      value: "",
     },
     navigation: {
       items: navigationItems,

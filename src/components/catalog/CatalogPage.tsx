@@ -3,13 +3,12 @@ import CatalogSort from "./CatalogSort";
 import CatalogGrid from "./CatalogGrid";
 import SelectDefault from "../../components/_common/select/SelectDefault";
 import styles from "./CatalogPage.styles";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../store/store";
-import { getAllProductsThunk } from "../../store/thunks/products/productsThunk";
+import { getAllCatalogProductsThunk } from "../../store/thunks/catalog/catalogThunk";
 import { getAllCategoriesThunk } from "../../store/thunks/categories/categoriesThunk";
-import { useProducts } from "../../store/hooks/products/useProducts";
+import { useCatalog } from "../../store/hooks/catalog/useCatalog";
 import { useCategories } from "../../store/hooks/categories/useCategories";
 import { SortType } from "../../common/types/sorting/sortTypes";
+import { useAppDispatch } from "../../store/hooks/app";
 import {
   Box,
   SelectChangeEvent,
@@ -17,7 +16,6 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-
 const pageSizeOptions = [
   { value: 8, label: "8" },
   { value: 12, label: "32" },
@@ -26,21 +24,21 @@ const pageSizeOptions = [
 ];
 
 const CatalogPage: React.FC = (): JSX.Element => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { products, isProductsLoading } = useProducts();
+  const dispatch = useAppDispatch();
+  const { catalogProducts, isCatalogProductsLoading } = useCatalog();
   const { categories } = useCategories();
   const [sort, setSort] = useState<SortType>("default");
   const [pageSize, setPageSize] = useState<number>(12);
   const [page, setPage] = useState<number>(1);
 
   useEffect(() => {
-    dispatch(getAllProductsThunk());
+    dispatch(getAllCatalogProductsThunk());
     dispatch(getAllCategoriesThunk());
   }, [dispatch]);
 
   // сортировка
   const sortedProducts = useMemo(() => {
-    let arr = [...products];
+    let arr = [...catalogProducts];
     switch (sort) {
       case "name-asc":
         arr.sort((a, b) => a.name.localeCompare(b.name));
@@ -58,7 +56,7 @@ const CatalogPage: React.FC = (): JSX.Element => {
         break;
     }
     return arr;
-  }, [products, sort]);
+  }, [catalogProducts, sort]);
 
   // пагинация
   const pagedProducts = useMemo(() => {
@@ -89,7 +87,7 @@ const CatalogPage: React.FC = (): JSX.Element => {
             <CatalogSort
               value={sort}
               onChange={setSort}
-              isProductsLoading={isProductsLoading}
+              isCatalogProductsLoading={isCatalogProductsLoading}
             />
           </Box>
 
@@ -102,7 +100,7 @@ const CatalogPage: React.FC = (): JSX.Element => {
               onChange={(e: SelectChangeEvent<string | number>) =>
                 setPageSize(Number(e.target.value))
               }
-              disabled={isProductsLoading}
+              disabled={isCatalogProductsLoading}
               width="75px"
             />
           </Box>

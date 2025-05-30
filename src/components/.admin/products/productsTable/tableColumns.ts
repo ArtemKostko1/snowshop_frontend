@@ -27,7 +27,7 @@ export const productColumns = (
       editable: true,
       flex: 1,
       maxWidth: 150,
-      minWidth: 100,
+      minWidth: 75,
       cellClassName: "cell-center",
     },
     {
@@ -39,7 +39,7 @@ export const productColumns = (
       editable: true,
       flex: 1,
       maxWidth: 200,
-      minWidth: 200,
+      minWidth: 150,
       valueOptions: [...categories]
         .sort((a, b) => a.name.localeCompare(b.name))
         .map((category) => ({
@@ -56,7 +56,7 @@ export const productColumns = (
       editable: true,
       flex: 1,
       maxWidth: 150,
-      minWidth: 100,
+      minWidth: 75,
       cellClassName: "cell-center",
       valueOptions: [...brands]
         .sort((a, b) => a.name.localeCompare(b.name))
@@ -74,7 +74,7 @@ export const productColumns = (
       editable: true,
       flex: 1,
       maxWidth: 150,
-      minWidth: 100,
+      minWidth: 75,
       cellClassName: "cell-center",
     },
     {
@@ -89,6 +89,17 @@ export const productColumns = (
       minWidth: 200,
     },
     {
+      field: "articleRoute",
+      headerName: "Артикул запроса",
+      type: "string",
+      align: "center",
+      headerAlign: "center",
+      editable: true,
+      flex: 1,
+      maxWidth: 200,
+      minWidth: 150,
+    },
+    {
       field: "inStock",
       headerName: "Наличие",
       type: "boolean",
@@ -97,7 +108,7 @@ export const productColumns = (
       editable: true,
       flex: 1,
       maxWidth: 150,
-      minWidth: 100,
+      minWidth: 75,
       cellClassName: "cell-center",
     },
     {
@@ -108,8 +119,8 @@ export const productColumns = (
       headerAlign: "center",
       editable: true,
       flex: 1,
-      maxWidth: 150,
-      minWidth: 100,
+      maxWidth: 200,
+      minWidth: 150,
       cellClassName: "cell-center",
     },
     {
@@ -120,7 +131,18 @@ export const productColumns = (
       headerAlign: "center",
       editable: true,
       flex: 1,
-      maxWidth: 300,
+      maxWidth: 500,
+      minWidth: 200,
+    },
+    {
+      field: "images",
+      headerName: "Изображения",
+      type: "string",
+      align: "left",
+      headerAlign: "center",
+      editable: true,
+      flex: 1,
+      maxWidth: 500,
       minWidth: 200,
     },
   ];

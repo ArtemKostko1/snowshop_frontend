@@ -12,6 +12,16 @@ export const categoryColumns = (): GridColDef[] => {
       flex: 1,
       minWidth: 300,
     },
+    {
+      field: "value",
+      headerName: "Значение",
+      type: "string",
+      align: "left",
+      headerAlign: "left",
+      editable: true,
+      flex: 1,
+      minWidth: 300,
+    },
   ];
 
   return columns;

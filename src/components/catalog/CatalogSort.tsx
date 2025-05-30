@@ -5,13 +5,13 @@ import SelectDefault from "../_common/select/SelectDefault";
 interface CatalogSortProps {
   value: SortType;
   onChange: (value: SortType) => void;
-  isProductsLoading: boolean;
+  isCatalogProductsLoading: boolean;
 }
 
 const CatalogSort: React.FC<CatalogSortProps> = ({
   value,
   onChange,
-  isProductsLoading,
+  isCatalogProductsLoading,
 }) => {
   return (
     <SelectDefault
@@ -19,7 +19,7 @@ const CatalogSort: React.FC<CatalogSortProps> = ({
       value={value}
       options={sortOptions}
       onChange={(e) => onChange(e.target.value as SortType)}
-      disabled={isProductsLoading}
+      disabled={isCatalogProductsLoading}
       width="200px"
     />
   );

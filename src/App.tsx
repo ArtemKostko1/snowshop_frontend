@@ -1,27 +1,26 @@
-import React, { ReactNode } from "react";
-import { Provider } from "react-redux";
-import {
-  Outlet,
-  Route,
-  BrowserRouter as Router,
-  Routes,
-} from "react-router-dom";
-import HomePage from "./components/catalog/CatalogPage";
-import ProductsPage from "./components/.admin/products/ProductsPage";
-import DictionariesPage from "./components/.admin/dictionaries/DictionariesPage";
-import PrivateRoute from "./common/utils/router/PrivateRoute";
-import Layout from "./components/_layout/main/Layout";
-import store from "./store/store";
-import AuthRootPage from "./components/auth/AuthRootComponent";
-import RoleBasedRoute from "./common/utils/router/RoleBasedRoute";
+import React, { ReactNode } from 'react';
+import { Provider } from 'react-redux';
+import { Outlet, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import HomePage from './components/catalog/CatalogPage';
+import ProductsPage from './components/.admin/products/ProductsPage';
+import DictionariesPage from './components/.admin/dictionaries/DictionariesPage';
+import PrivateRoute from './common/utils/router/PrivateRoute';
+import Layout from './components/_layout/main/Layout';
+import store from './store/store';
+import AuthRootPage from './components/auth/AuthRootComponent';
+import RoleBasedRoute from './common/utils/router/RoleBasedRoute';
+import ProductDetailsWrapper from './components/catalog/productDetails/ProductDetailsWrapper';
 
 // Клиентские маршруты
-const clientRoutes = [{ path: "/", element: <HomePage /> }];
+const clientRoutes = [
+  { path: '/', element: <HomePage /> },
+  { path: '/catalog/:articleRoute', element: <ProductDetailsWrapper /> },
+];
 
 // Админские маршруты
 const adminRoutes = [
-  { path: "/admin/products", element: <ProductsPage /> },
-  { path: "/admin/dictionaries", element: <DictionariesPage /> },
+  { path: '/admin/products', element: <ProductsPage /> },
+  { path: '/admin/dictionaries', element: <DictionariesPage /> },
 ];
 
 const AppContent: React.FC = () => {
@@ -41,11 +40,7 @@ const AppContent: React.FC = () => {
               <Route
                 key={path}
                 path={path}
-                element={
-                  <RoleBasedRoute allowedRoles={["ADMIN"]}>
-                    {element}
-                  </RoleBasedRoute>
-                }
+                element={<RoleBasedRoute allowedRoles={['ADMIN']}>{element}</RoleBasedRoute>}
               />
             ))}
           </Route>
