@@ -61,10 +61,18 @@ const useStyles = makeStyles(() => ({
   inStock: {
     color: '#43a047',
     fontWeight: 600,
+    textAlign: 'end',
   },
   preOrder: {
     color: '#e53935',
     fontWeight: 600,
+    textAlign: 'end',
+  },
+  inCart: {
+    backgroundColor: '#e53935 !important',
+  },
+  notInCart: {
+    backgroundColor: '#1975d1 !important',
   },
   description: {
     marginBottom: '8px',

@@ -94,12 +94,13 @@ const Header: React.FC = () => {
             minWidth: 'fit-content',
           }}
         >
-          <LogoSmall />
+          <LogoSmall onClick={() => navigate('/')} />
         </Box>
 
         {/* Центральная часть */}
         <Box
           sx={{
+            width: '100%',
             flexGrow: 1,
             display: 'flex',
             justifyContent: 'center',

@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { Box, Grid, Typography, Button, IconButton, Modal } from '@mui/material';
 import { ArrowBackIos, ArrowForwardIos, ZoomIn, Close } from '@mui/icons-material';
 import { IProductDetails } from '../../../common/types/product/ProductDetailsTypes';
+import { IProduct } from '../../../common/types/product/productTypes';
 import { styled } from '@mui/material/styles';
 import useStyles from './ProductDetails.styles';
+import { useShoppingCart } from '../../../store/hooks/useShoppingCart';
 
 interface ProductDetailsProps {
   product: IProductDetails;
@@ -11,7 +13,9 @@ interface ProductDetailsProps {
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const classes = useStyles();
+  const { items, addToCart, removeFromCart } = useShoppingCart();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [showSizeError, setShowSizeError] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
@@ -25,8 +29,47 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     setImageIndex((prev) => (prev === 0 ? product.images.length - 1 : prev - 1));
   const handleNext = () =>
     setImageIndex((prev) => (prev === product.images.length - 1 ? 0 : prev + 1));
-  const handleSizeClick = (size: string) => setSelectedSize(size);
+
+  const handleSizeClick = (size: string) => {
+    setSelectedSize(size);
+    setShowSizeError(false);
+  };
+
   const handleThumbnailClick = (index: number) => setImageIndex(index);
+
+  const isInCart = items.some((item) => item.product.id === product.id);
+
+  const handleCartClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    if (isInCart) {
+      removeFromCart(product.id);
+      return;
+    }
+
+    // Проверяем, есть ли размеры и выбран ли размер
+    if (product.size.length > 0 && !selectedSize) {
+      setShowSizeError(true);
+      return;
+    }
+
+    // Формируем объект, соответствующий типу IProduct
+    const productToAdd: IProduct = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      categoryId: product.categoryId,
+      brandId: product.brandId,
+      size: selectedSize || undefined,
+      article: product.article,
+      inStock: product.inStock,
+      internalCode: product.internalCode,
+      description: product.description,
+      images: product.images,
+    };
+
+    addToCart(productToAdd);
+  };
 
   return (
     <Box className={classes.root}>
@@ -245,32 +288,44 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           <Typography variant="subtitle1" className={classes.productArticle}>
             Артикул: {product.article}
           </Typography>
-          <Box className={classes.sizeBlock}>
-            <Typography variant="subtitle2">Размеры:</Typography>
-            <Box className={classes.sizeButtons}>
-              {product.size.map((size: string) => (
-                <Button
-                  key={size}
-                  variant={selectedSize === size ? 'contained' : 'outlined'}
-                  color={selectedSize === size ? 'primary' : 'inherit'}
-                  onClick={() => handleSizeClick(size)}
-                  className={classes.sizeBtn}
-                >
-                  {size}
-                </Button>
-              ))}
+          {product.size.length > 0 && (
+            <Box className={classes.sizeBlock}>
+              <Typography variant="subtitle2">Размеры:</Typography>
+              <Box className={classes.sizeButtons}>
+                {product.size.map((size: string) => (
+                  <Button
+                    key={size}
+                    variant={selectedSize === size ? 'contained' : 'outlined'}
+                    color={selectedSize === size ? 'primary' : 'inherit'}
+                    onClick={() => handleSizeClick(size)}
+                    className={classes.sizeBtn}
+                  >
+                    {size}
+                  </Button>
+                ))}
+              </Box>
+              {showSizeError && (
+                <Typography color="error" sx={{ mt: 1 }}>
+                  Необходимо выбрать размер
+                </Typography>
+              )}
             </Box>
-          </Box>
+          )}
           <Grid container spacing={2} className={classes.priceRow} alignItems="center">
-            <Grid size={4}>
+            <Grid size={3}>
               <Typography variant="h6">{product.price} ₽</Typography>
             </Grid>
-            <Grid size={4}>
-              <Button variant="contained" color="primary" fullWidth>
-                В КОРЗИНУ
+            <Grid size={6}>
+              <Button
+                className={isInCart ? classes.inCart : classes.notInCart}
+                onClick={handleCartClick}
+                variant="contained"
+                fullWidth
+              >
+                {isInCart ? 'УДАЛИТЬ ИЗ КОРЗИНЫ' : 'В КОРЗИНУ'}
               </Button>
             </Grid>
-            <Grid size={4}>
+            <Grid size={3}>
               <Typography
                 className={product.inStock ? classes.inStock : classes.preOrder}
                 variant="body2"

@@ -8,7 +8,7 @@ export const useStyles = makeStyles(() => ({
   adminToolbar: {
     height: '64px', // Устанавливаем фиксированную высоту Toolbar
     minHeight: '64px', // Убираем минимальную высоту по умолчанию
-    maxWidth: '1920px',
+    maxWidth: '100vw',
     width: '100%',
     margin: '0 auto',
     display: 'flex',
