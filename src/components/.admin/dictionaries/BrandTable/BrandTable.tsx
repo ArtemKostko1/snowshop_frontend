@@ -1,28 +1,34 @@
-import React, { useCallback, useEffect, useRef } from "react";
-import DataTable from "../../../_common/dataTable/dataTable";
-import { brandColumns } from "./tableColumns";
-import { ITableOptions } from "../../../../common/types/table/tableTypes";
-import { useBrands } from "../../../../store/hooks/brands/useBrands";
+import React, { useCallback, useEffect, useRef } from 'react';
+import DataTable from '../../../_common/dataTable/dataTable';
+import { brandColumns } from './tableColumns';
+import { ITableOptions } from '../../../../common/types/table/tableTypes';
+import { useBrands } from '../../../../store/hooks/brands/useBrands';
 import {
   createBrandThunk,
   getAllBrandsThunk,
   updateBrandThunk,
   deleteBrandThunk,
-} from "../../../../store/thunks/brands/brandsThunk";
-import { useAppDispatch } from "../../../../store/hooks/app";
-import { IBrand } from "../../../../common/types/brand/brandTypes";
-import { INavigationItem } from "../../../../common/types/table/toolbarTypes";
+} from '../../../../store/thunks/brands/brandsThunk';
+import { useAppDispatch } from '../../../../store/hooks/app';
+import { IBrand } from '../../../../common/types/brand/brandTypes';
+import { INavigationItem } from '../../../../common/types/table/toolbarTypes';
 
 interface IBrandsTableProps {
   navigationValue: number;
   navigationItems: INavigationItem[];
   onNavigationChange: (value: number) => void;
+  canEdit?: boolean;
+  canDelete?: boolean;
+  canAdd?: boolean;
 }
 
 const BrandsTable: React.FC<IBrandsTableProps> = ({
   navigationValue,
   navigationItems,
   onNavigationChange,
+  canEdit = true,
+  canDelete = true,
+  canAdd = true,
 }): JSX.Element => {
   const dispatch = useAppDispatch();
   const fetchBrandsRef = useRef(false);
@@ -40,11 +46,9 @@ const BrandsTable: React.FC<IBrandsTableProps> = ({
   }, [fetchData]);
 
   // Функция для создания продукта
-  const createBrand = async (
-    newBrandData: Omit<IBrand, "id">
-  ): Promise<IBrand> => {
+  const createBrand = async (newBrandData: Omit<IBrand, 'id'>): Promise<IBrand> => {
     const result = await dispatch(createBrandThunk(newBrandData));
-    if (result.meta.requestStatus === "rejected") {
+    if (result.meta.requestStatus === 'rejected') {
       throw new Error(result.payload as string);
     }
     return result.payload as IBrand;
@@ -53,7 +57,7 @@ const BrandsTable: React.FC<IBrandsTableProps> = ({
   // Функция для обновления продукта
   const updateBrand = async (updatedBrandData: IBrand): Promise<IBrand> => {
     const result = await dispatch(updateBrandThunk(updatedBrandData));
-    if (result.meta.requestStatus === "rejected") {
+    if (result.meta.requestStatus === 'rejected') {
       throw new Error(result.payload as string);
     }
     return result.payload as IBrand;
@@ -62,7 +66,7 @@ const BrandsTable: React.FC<IBrandsTableProps> = ({
   // Функция для удаления продукта
   const deleteBrand = async (brandId: number): Promise<void> => {
     const result = await dispatch(deleteBrandThunk(brandId));
-    if (result.meta.requestStatus === "rejected") {
+    if (result.meta.requestStatus === 'rejected') {
       throw new Error(result.payload as string);
     }
   };
@@ -70,13 +74,13 @@ const BrandsTable: React.FC<IBrandsTableProps> = ({
   const { brands, isBrandsLoading } = useBrands();
 
   const getRequiredColumns = () => {
-    const baseRequiredColumns = ["name"];
+    const baseRequiredColumns = ['name'];
     return baseRequiredColumns;
   };
 
   const tableOptions: ITableOptions<IBrand> = {
-    name: "Бренды",
-    table: "brands",
+    name: 'Бренды',
+    table: 'brands',
     columns: brandColumns(),
     requiredColumns: getRequiredColumns, // Список обязательных колонок
     data: brands,
@@ -84,8 +88,11 @@ const BrandsTable: React.FC<IBrandsTableProps> = ({
     pageSizeOptions: [15, 20, 50, 100],
     rowHeight: 42,
     isLoading: isBrandsLoading,
+    canEdit,
+    canDelete: false,
+    canAdd,
     fieldsInitial: {
-      name: "",
+      name: '',
     },
     navigation: {
       items: navigationItems,
@@ -94,8 +101,8 @@ const BrandsTable: React.FC<IBrandsTableProps> = ({
     },
     defaultSort: [
       {
-        field: "name",
-        sort: "asc",
+        field: 'name',
+        sort: 'asc',
       },
     ],
   };

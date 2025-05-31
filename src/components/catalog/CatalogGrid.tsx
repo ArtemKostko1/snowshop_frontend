@@ -1,10 +1,10 @@
 import React from "react";
-import { IProduct } from "../../common/types/product/productTypes";
+import { IProductDetails } from "../../common/types/product/ProductDetailsTypes";
 import ProductCard from "./productCard/ProductCard";
 import Grid from "@mui/material/Grid";
 
 interface CatalogGridProps {
-  products: IProduct[];
+  products: IProductDetails[];
 }
 
 const CatalogGrid: React.FC<CatalogGridProps> = ({ products }) => {

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Box,
   Button,
@@ -6,17 +6,18 @@ import {
   BottomNavigation,
   BottomNavigationAction,
   Toolbar,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import { EditToolbarProps } from "../../../../common/types/table/toolbarTypes";
-import { navigationStyles, navigationActionStyles } from "./EditToolbar.styles";
-import { IProduct } from "../../../../common/types/product/productTypes";
-import { IBrand } from "../../../../common/types/brand/brandTypes";
-import { ICategory } from "../../../../common/types/category/categoryTypes";
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { EditToolbarProps } from '../../../../common/types/table/toolbarTypes';
+import { navigationStyles, navigationActionStyles } from './EditToolbar.styles';
+import { IProduct } from '../../../../common/types/product/productTypes';
+import { IBrand } from '../../../../common/types/brand/brandTypes';
+import { ICategory } from '../../../../common/types/category/categoryTypes';
 
 export function EditToolbar<T extends IProduct | IBrand | ICategory>({
   onAdd,
   navigation,
+  canAdd = true,
 }: EditToolbarProps<T>) {
   return (
     <Toolbar>
@@ -38,9 +39,11 @@ export function EditToolbar<T extends IProduct | IBrand | ICategory>({
           </BottomNavigation>
         )}
         <Box flexGrow={1} />
-        <Button color="primary" startIcon={<AddIcon />} onClick={onAdd}>
-          Добавить
-        </Button>
+        {canAdd && (
+          <Button color="primary" startIcon={<AddIcon />} onClick={onAdd}>
+            Добавить
+          </Button>
+        )}
       </Stack>
     </Toolbar>
   );

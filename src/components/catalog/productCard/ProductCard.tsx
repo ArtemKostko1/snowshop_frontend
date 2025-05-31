@@ -6,9 +6,10 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import { useShoppingCart } from '../../../store/hooks/useShoppingCart';
 import { useNavigate } from 'react-router-dom';
+import { IProductDetails } from '../../../common/types/product/ProductDetailsTypes';
 
 interface ProductCardProps {
-  product: IProduct;
+  product: IProductDetails;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {

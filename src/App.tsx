@@ -14,6 +14,7 @@ import ProductDetailsWrapper from './components/catalog/productDetails/ProductDe
 // Клиентские маршруты
 const clientRoutes = [
   { path: '/', element: <HomePage /> },
+  { path: '/catalog/category/:categoryName', element: <HomePage /> },
   { path: '/catalog/:articleRoute', element: <ProductDetailsWrapper /> },
 ];
 

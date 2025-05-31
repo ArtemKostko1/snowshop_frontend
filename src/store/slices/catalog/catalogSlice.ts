@@ -2,12 +2,13 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   getAllCatalogProductsThunk,
   getProductByArticleRouteThunk,
+  getProductsByCategoryThunk,
 } from '../../thunks/catalog/catalogThunk';
 import { IProductDetails } from '../../../common/types/product/ProductDetailsTypes';
 import { IProduct } from '../../../common/types/product/productTypes';
 
 const initialState = {
-  catalogProducts: [] as IProduct[],
+  catalogProducts: [] as IProductDetails[],
   productDetails: {} as IProductDetails,
   isCatalogProductsLoading: false,
   isProductDetailsLoading: false,
@@ -16,7 +17,11 @@ const initialState = {
 export const catalogSlice = createSlice({
   name: 'catalog',
   initialState,
-  reducers: {},
+  reducers: {
+    clearCatalogProducts: (state) => {
+      state.catalogProducts = [];
+    },
+  },
   extraReducers: (builder) => {
     // getAllCatalogProductsThunk
     // Событие в момент выполенения запроса
@@ -30,6 +35,23 @@ export const catalogSlice = createSlice({
     });
     // Событие в случае неудачного выполнения запроса
     builder.addCase(getAllCatalogProductsThunk.rejected, (state) => {
+      state.isCatalogProductsLoading = false;
+    });
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    // getProductsByCategoryThunk
+    // Событие в момент выполенения запроса
+    builder.addCase(getProductsByCategoryThunk.pending, (state) => {
+      state.isCatalogProductsLoading = true;
+    });
+    // Событие после успешного выполнения запроса
+    builder.addCase(getProductsByCategoryThunk.fulfilled, (state, action) => {
+      state.catalogProducts = action.payload;
+      state.isCatalogProductsLoading = false;
+    });
+    // Событие в случае неудачного выполнения запроса
+    builder.addCase(getProductsByCategoryThunk.rejected, (state) => {
       state.isCatalogProductsLoading = false;
     });
 
@@ -51,5 +73,7 @@ export const catalogSlice = createSlice({
     });
   },
 });
+
+export const { clearCatalogProducts } = catalogSlice.actions;
 
 export default catalogSlice.reducer;

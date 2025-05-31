@@ -10,6 +10,15 @@ export const getAllCatalogProducts = async () => {
   }
 };
 
+export const getProductsByCategory = async (categoryName: string) => {
+  try {
+    const response = await instance.get(`${CATALOG}/category/${categoryName}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getProductByArticleRoute = async (articleRoute: string) => {
   try {
     const response = await instance.get(`${CATALOG}/${articleRoute}`);

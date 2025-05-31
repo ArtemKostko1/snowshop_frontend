@@ -1,14 +1,15 @@
 export interface IProductDetails {
   id: number;
   name: string;
+  price: number;
   categoryId: number;
   brandId: number;
-  article: string;
-  articleRoute: string;
   size: string[];
-  price: number;
+  article: string;
   inStock: boolean;
-  images: string[];
-  description: string;
   internalCode: string;
+  description: string;
+  isNew?: boolean;
+  images: string[];
+  [key: string]: unknown;
 }

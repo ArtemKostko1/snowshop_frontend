@@ -77,6 +77,11 @@ const Header: React.FC = () => {
     navigate('/login');
   };
 
+  const handleCategoryClick = (categoryValue: string) => {
+    handleMenuClose();
+    navigate(`/catalog/category/${categoryValue}`);
+  };
+
   return (
     <AppBar
       className={classes.appBar}
@@ -135,12 +140,7 @@ const Header: React.FC = () => {
               }}
             >
               {categories.map((item) => (
-                <MenuItem
-                  key={item.id}
-                  component={Link}
-                  to={`/${item.value}`}
-                  onClick={handleMenuClose}
-                >
+                <MenuItem key={item.id} onClick={() => handleCategoryClick(item.value as string)}>
                   {item.name}
                 </MenuItem>
               ))}

@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState, useCallback } from "react";
-import { Box } from "@mui/material";
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import { Box } from '@mui/material';
 import {
   GridRowModes,
   DataGrid,
@@ -7,17 +7,17 @@ import {
   GridRowModesModel,
   GridEventListener,
   GridRowId,
-} from "@mui/x-data-grid";
-import { randomId } from "@mui/x-data-grid-generator";
-import { useStyles } from "./dataTable.styles";
-import { russianLocaleText } from "./utils/russianLocaleText";
-import { checkRequiredFields } from "./utils/checkingTableRequiredFields";
-import { getActionsColumn } from "./tableActions";
-import { EditToolbar } from "./toolbar/EditToolbar";
-import { IDataTable, TableRow } from "../../../common/types/table/tableTypes";
-import { IProduct } from "../../../common/types/product/productTypes";
-import { IBrand } from "../../../common/types/brand/brandTypes";
-import { ICategory } from "../../../common/types/category/categoryTypes";
+} from '@mui/x-data-grid';
+import { randomId } from '@mui/x-data-grid-generator';
+import { useStyles } from './dataTable.styles';
+import { russianLocaleText } from './utils/russianLocaleText';
+import { checkRequiredFields } from './utils/checkingTableRequiredFields';
+import { getActionsColumn } from './tableActions';
+import { EditToolbar } from './toolbar/EditToolbar';
+import { IDataTable, TableRow } from '../../../common/types/table/tableTypes';
+import { IProduct } from '../../../common/types/product/productTypes';
+import { IBrand } from '../../../common/types/brand/brandTypes';
+import { ICategory } from '../../../common/types/category/categoryTypes';
 
 const DataTable = <T extends IProduct | IBrand | ICategory>({
   tableOptions,
@@ -29,16 +29,20 @@ const DataTable = <T extends IProduct | IBrand | ICategory>({
   const [rows, setRows] = useState<TableRow<T>[]>([]);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
+  // Настройки прав на редактирование и удаление с дефолтными значениями
+  const canEdit = tableOptions.canEdit !== undefined ? tableOptions.canEdit : true;
+  const canDelete = tableOptions.canDelete !== undefined ? tableOptions.canDelete : true;
+  const canAdd = tableOptions.canAdd !== undefined ? tableOptions.canAdd : true;
+
   useEffect(() => {
     setRows(tableOptions.data as TableRow<T>[]);
   }, [tableOptions.data]);
 
-  const columns = useMemo(
-    () => [...tableOptions.columns],
-    [tableOptions.columns]
-  );
+  const columns = useMemo(() => [...tableOptions.columns], [tableOptions.columns]);
 
   const handleAddRow = useCallback(() => {
+    if (!canAdd) return;
+
     const id = randomId();
 
     // Создаем новую строку с начальными значениями из fieldsInitial
@@ -53,19 +57,18 @@ const DataTable = <T extends IProduct | IBrand | ICategory>({
       ...oldModel,
       [id]: { mode: GridRowModes.Edit },
     }));
-  }, [tableOptions]);
+  }, [tableOptions, canAdd]);
 
   const handleEditClick = (id: GridRowId) => () => {
+    if (!canEdit) return;
+
     setRowModesModel({
       ...rowModesModel,
       [id]: { mode: GridRowModes.Edit },
     });
   };
 
-  const handleRowEditStop: GridEventListener<"rowEditStop"> = (
-    params,
-    event
-  ) => {
+  const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       event.defaultMuiPrevented = true;
     }
@@ -95,7 +98,7 @@ const DataTable = <T extends IProduct | IBrand | ICategory>({
     const requiredColumns = tableOptions.requiredColumns();
 
     if (!checkRequiredFields(newRow, requiredColumns)) {
-      throw new Error("Заполните обязательные поля");
+      throw new Error('Заполните обязательные поля');
     }
 
     try {
@@ -108,25 +111,23 @@ const DataTable = <T extends IProduct | IBrand | ICategory>({
       }
 
       if (!success) {
-        throw new Error("Не удалось сохранить изменения");
+        throw new Error('Не удалось сохранить изменения');
       }
 
       return success;
     } catch (error) {
-      throw new Error(
-        error instanceof Error ? error.message : "Неизвестная ошибка"
-      );
+      throw new Error(error instanceof Error ? error.message : 'Неизвестная ошибка');
     }
   };
 
   const handleDeleteClick = (id: GridRowId) => async () => {
+    if (!canDelete) return;
+
     try {
-      await deleteFunction(typeof id === "string" ? parseInt(id) : id);
+      await deleteFunction(typeof id === 'string' ? parseInt(id) : id);
       setRows(rows.filter((row) => row.id !== id));
     } catch (error) {
-      throw new Error(
-        error instanceof Error ? error.message : "Не удалось удалить запись"
-      );
+      throw new Error(error instanceof Error ? error.message : 'Не удалось удалить запись');
     }
   };
 
@@ -146,6 +147,8 @@ const DataTable = <T extends IProduct | IBrand | ICategory>({
             handleCancelClick,
             handleEditClick,
             handleDeleteClick,
+            canEdit,
+            canDelete,
           }),
         ]}
         rows={rows}
@@ -174,6 +177,7 @@ const DataTable = <T extends IProduct | IBrand | ICategory>({
             <EditToolbar<T>
               onAdd={handleAddRow}
               navigation={tableOptions.navigation}
+              canAdd={canAdd}
             />
           ),
         }}

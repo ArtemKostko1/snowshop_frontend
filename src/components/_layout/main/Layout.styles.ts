@@ -10,7 +10,7 @@ export const useStyles = makeStyles(() => ({
   },
   main: {
     position: 'relative',
-    width: '100vw',
+    width: '100%',
     height: 'calc(100vh - 64px) !important',
     backgroundColor: '#f1f1f1',
     boxSizing: 'border-box',

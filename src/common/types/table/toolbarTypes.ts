@@ -1,6 +1,6 @@
-import { IProduct } from "../product/productTypes";
-import { IBrand } from "../brand/brandTypes";
-import { ICategory } from "../category/categoryTypes";
+import { IProduct } from '../product/productTypes';
+import { IBrand } from '../brand/brandTypes';
+import { ICategory } from '../category/categoryTypes';
 
 export interface INavigationItem {
   label: string;
@@ -9,6 +9,7 @@ export interface INavigationItem {
 
 export interface EditToolbarProps<T extends IProduct | IBrand | ICategory> {
   onAdd: () => void;
+  canAdd?: boolean;
   navigation?: {
     items: INavigationItem[];
     value: number;

@@ -1,16 +1,12 @@
-import React from "react";
-import {
-  GridRowModes,
-  GridActionsCellItem,
-  GridColDef,
-} from "@mui/x-data-grid";
-import { Tooltip } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import SaveIcon from "@mui/icons-material/Save";
-import CancelIcon from "@mui/icons-material/Cancel";
-import EditIcon from "@mui/icons-material/Edit";
-import appToolltips from "../../../assets/constants/tooltips";
-import { IActionsColumn } from "../../../common/types/table/tableTypes";
+import React from 'react';
+import { GridRowModes, GridActionsCellItem, GridColDef } from '@mui/x-data-grid';
+import { Tooltip } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
+import EditIcon from '@mui/icons-material/Edit';
+import appToolltips from '../../../assets/constants/tooltips';
+import { IActionsColumn } from '../../../common/types/table/tableTypes';
 
 export const getActionsColumn = ({
   rowModesModel,
@@ -18,13 +14,15 @@ export const getActionsColumn = ({
   handleCancelClick,
   handleEditClick,
   handleDeleteClick,
+  canEdit = true,
+  canDelete = true,
 }: IActionsColumn): GridColDef => ({
-  field: "actions",
-  headerName: "Инструменты",
-  type: "actions",
-  align: "center",
-  headerAlign: "center",
-  cellClassName: "actions",
+  field: 'actions',
+  headerName: 'Инструменты',
+  type: 'actions',
+  align: 'center',
+  headerAlign: 'center',
+  cellClassName: 'actions',
   sortable: false,
   width: 150,
 
@@ -42,10 +40,7 @@ export const getActionsColumn = ({
             color="primary"
           />
         </Tooltip>,
-        <Tooltip
-          key={`cancel-${id}`}
-          title={appToolltips.systemToolltips.CANCEL}
-        >
+        <Tooltip key={`cancel-${id}`} title={appToolltips.systemToolltips.CANCEL}>
           <GridActionsCellItem
             icon={<CancelIcon />}
             label="Cancel"
@@ -56,23 +51,34 @@ export const getActionsColumn = ({
       ];
     }
 
-    return [
-      <Tooltip title={appToolltips.systemToolltips.EDIT}>
-        <GridActionsCellItem
-          icon={<EditIcon />}
-          label="Edit"
-          onClick={handleEditClick(id)}
-          color="primary"
-        />
-      </Tooltip>,
-      <Tooltip title={appToolltips.systemToolltips.DELETE}>
-        <GridActionsCellItem
-          icon={<DeleteIcon sx={{ color: "error.main" }} />}
-          label="Delete"
-          onClick={handleDeleteClick(id)}
-          color="default"
-        />
-      </Tooltip>,
-    ];
+    const actions = [];
+
+    if (canEdit) {
+      actions.push(
+        <Tooltip key={`edit-${id}`} title={appToolltips.systemToolltips.EDIT}>
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Edit"
+            onClick={handleEditClick(id)}
+            color="primary"
+          />
+        </Tooltip>,
+      );
+    }
+
+    if (canDelete) {
+      actions.push(
+        <Tooltip key={`delete-${id}`} title={appToolltips.systemToolltips.DELETE}>
+          <GridActionsCellItem
+            icon={<DeleteIcon sx={{ color: 'error.main' }} />}
+            label="Delete"
+            onClick={handleDeleteClick(id)}
+            color="default"
+          />
+        </Tooltip>,
+      );
+    }
+
+    return actions;
   },
 });
