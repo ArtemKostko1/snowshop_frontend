@@ -1,10 +1,7 @@
 import React from 'react';
-import { IProduct } from '../../../common/types/product/productTypes';
 import styles from './ProductCard.styles';
 import { Card, CardContent, CardMedia, Typography, Box, IconButton } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
-import { useShoppingCart } from '../../../store/hooks/useShoppingCart';
 import { useNavigate } from 'react-router-dom';
 import { IProductDetails } from '../../../common/types/product/ProductDetailsTypes';
 
@@ -13,11 +10,8 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { items } = useShoppingCart();
   const previewCarImage = product.images[0];
   const navigate = useNavigate();
-
-  const isInCart = items.some((item) => item.product.id === product.id);
 
   return (
     <Box onClick={() => navigate(`/catalog/${product.articleRoute}`)} style={{ cursor: 'pointer' }}>
@@ -43,13 +37,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               <IconButton
                 onClick={() => navigate(`/catalog/${product.articleRoute}`)}
                 sx={{
-                  color: isInCart ? '#4caf50' : '#f44336',
+                  color: '#f44336',
                   '&:hover': {
-                    backgroundColor: isInCart ? 'rgba(76, 175, 80, 0.1)' : 'rgba(244, 67, 54, 0.1)',
+                    backgroundColor: 'rgba(244, 67, 54, 0.1)',
                   },
                 }}
               >
-                {isInCart ? <ShoppingCartCheckoutIcon /> : <ShoppingCartIcon />}
+                <ShoppingCartIcon />
               </IconButton>
             </Box>
           </Box>

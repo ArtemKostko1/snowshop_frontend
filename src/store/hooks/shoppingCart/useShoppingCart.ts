@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store';
+import { RootState } from '../../store';
 import {
   addToCart,
   removeFromCart,
   updateQuantity,
   clearCart,
-} from '../slices/shoppingCart/shoppingCartSlice';
-import { IProduct } from '../../common/types/product/productTypes';
+} from '../../slices/shoppingCart/shoppingCartSlice';
+import { IProduct } from '../../../common/types/product/productTypes';
 
 export const useShoppingCart = () => {
   const dispatch = useDispatch();

@@ -22,7 +22,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks/app';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import { logoutAction } from '../../../store/slices/auth/authSlice';
-import { useShoppingCart } from '../../../store/hooks/useShoppingCart';
+import { useShoppingCart } from '../../../store/hooks/shoppingCart/useShoppingCart';
 import { getAllCategoriesThunk } from '../../../store/thunks/categories/categoriesThunk';
 import { useCategories } from '../../../store/hooks/categories/useCategories';
 
@@ -206,7 +206,7 @@ const Header: React.FC = () => {
               </Menu>
             </>
           )}
-          <IconButton aria-label="cart" color="inherit" component={Link} to="/cart">
+          <IconButton aria-label="cart" color="inherit" component={Link} to="/shopping-cart">
             <Badge
               badgeContent={totalItems}
               sx={{

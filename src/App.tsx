@@ -10,12 +10,14 @@ import store from './store/store';
 import AuthRootPage from './components/auth/AuthRootComponent';
 import RoleBasedRoute from './common/utils/router/RoleBasedRoute';
 import ProductDetailsWrapper from './components/catalog/productDetails/ProductDetailsWrapper';
+import ShoppingCartPage from './components/shoppingCart/ShoppingCartPage';
 
 // Клиентские маршруты
 const clientRoutes = [
   { path: '/', element: <HomePage /> },
   { path: '/catalog/category/:categoryName', element: <HomePage /> },
   { path: '/catalog/:articleRoute', element: <ProductDetailsWrapper /> },
+  { path: '/shopping-cart', element: <ShoppingCartPage /> },
 ];
 
 // Админские маршруты

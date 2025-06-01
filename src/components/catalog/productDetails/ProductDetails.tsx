@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Box, Grid, Typography, Button, IconButton, Modal } from '@mui/material';
-import { ArrowBackIos, ArrowForwardIos, ZoomIn, Close } from '@mui/icons-material';
+import { ArrowBackIos, ArrowForwardIos, Close } from '@mui/icons-material';
 import { IProductDetails } from '../../../common/types/product/ProductDetailsTypes';
 import { IProduct } from '../../../common/types/product/productTypes';
-import { styled } from '@mui/material/styles';
 import useStyles from './ProductDetails.styles';
-import { useShoppingCart } from '../../../store/hooks/useShoppingCart';
+import { useShoppingCart } from '../../../store/hooks/shoppingCart/useShoppingCart';
 
 interface ProductDetailsProps {
   product: IProductDetails;
@@ -13,7 +12,7 @@ interface ProductDetailsProps {
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const classes = useStyles();
-  const { items, addToCart, removeFromCart } = useShoppingCart();
+  const { addToCart } = useShoppingCart();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [showSizeError, setShowSizeError] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
@@ -37,15 +36,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
 
   const handleThumbnailClick = (index: number) => setImageIndex(index);
 
-  const isInCart = items.some((item) => item.product.id === product.id);
-
   const handleCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-
-    if (isInCart) {
-      removeFromCart(product.id);
-      return;
-    }
 
     // Проверяем, есть ли размеры и выбран ли размер
     if (product.size.length > 0 && !selectedSize) {
@@ -317,12 +309,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             </Grid>
             <Grid size={6}>
               <Button
-                className={isInCart ? classes.inCart : classes.notInCart}
+                className={classes.notInCart}
                 onClick={handleCartClick}
                 variant="contained"
                 fullWidth
               >
-                {isInCart ? 'УДАЛИТЬ ИЗ КОРЗИНЫ' : 'В КОРЗИНУ'}
+                В КОРЗИНУ
               </Button>
             </Grid>
             <Grid size={3}>
