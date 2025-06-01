@@ -61,7 +61,7 @@ const CatalogPage: React.FC = (): JSX.Element => {
         arr.sort((a, b) => (a.price || 0) - (b.price || 0));
         break;
       case 'price-desc':
-        arr.sort((a, b) => (a.price || 0) - (b.price || 0));
+        arr.sort((a, b) => (b.price || 0) - (a.price || 0));
         break;
       default:
         break;
