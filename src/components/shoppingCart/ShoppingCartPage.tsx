@@ -25,34 +25,47 @@ import { useAppSelector } from '../../store/hooks/app';
 import { useAuth } from '../../store/hooks/auth/useAuth';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { createOrderThunk } from '../../store/thunks/orders/ordersThunk';
+import { ICreateOrderDto } from '../../common/types/order/orderTypes';
+import { AppDispatch } from '../../store/store';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { OrderFormSchema } from '../../utils/yup/yupSchemas';
 
 const ShoppingCartPage: React.FC = () => {
-  const { items } = useShoppingCart();
+  const { items, clearCart } = useShoppingCart();
   const isAuth = useAuth();
   const user = useAppSelector((state) => state.auth.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const [formData, setFormData] = useState<IShoppingCartForm>({
-    email: '',
-    phone: '',
-    deliveryMethod: 'pickup',
-    paymentMethod: 'card',
-    comment: '',
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm<IShoppingCartForm>({
+    resolver: yupResolver(OrderFormSchema) as any,
+    defaultValues: {
+      email: '',
+      phone: '',
+      deliveryMethod: 'pickup',
+      paymentMethod: 'card',
+      comment: '',
+    },
   });
 
   useEffect(() => {
     if (isAuth && user) {
-      setFormData((prev) => ({
-        ...prev,
-        email: user.email || '',
-        //phone: user.phoneNumber || '',
-      }));
+      setValue('email', user.email || '');
+      //setValue('phone', user.phoneNumber || '');
     }
-  }, [isAuth, user]);
+  }, [isAuth, user, setValue]);
 
-  // Группировка товаров по уникальному ключу (internalCode + size)
+  // Группировка товаров по уникальному ключу (id + size)
   const groupedItems = items.reduce((acc, current) => {
-    const key: string = `${current.product.internalCode}_${current.product.size || 'default'}`;
+    const key: string = `${current.product.id}_${current.product.size || 'default'}`;
 
     if (!acc[key]) {
       acc[key] = {
@@ -74,18 +87,34 @@ const ShoppingCartPage: React.FC = () => {
     return total + (item.product.price || 0) * item.quantity;
   }, 0);
 
-  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const onSubmitOrder: SubmitHandler<IShoppingCartForm> = (formData) => {
+    try {
+      // Формируем объект orderData на основе данных формы
+      const orderData: ICreateOrderDto = {
+        email: formData.email,
+        phoneNumber: formData.phone,
+        userId: isAuth && user ? user.id : undefined,
+        delivery: formData.deliveryMethod,
+        paymentMethod: formData.paymentMethod,
+        comment: formData.comment || undefined,
+        orderItems: uniqueItems.map((item) => ({
+          productInternalCode: item.product.internalCode,
+          productSize: item.product.size,
+          quantity: item.quantity,
+        })),
+      };
 
-  const handleSubmitOrder = () => {
-    // Здесь будет логика оформления заказа
-    console.log('Оформление заказа с данными:', formData);
-    console.log('Товары в корзине:', uniqueItems);
+      // Отправляем заказ на сервер
+      dispatch(createOrderThunk(orderData));
+
+      // Очищаем корзину после успешного оформления заказа
+      clearCart();
+
+      // Перенаправляем на страницу подтверждения заказа
+      navigate('/');
+    } catch (error) {
+      console.error('Ошибка при оформлении заказа:', error);
+    }
   };
 
   if (items.length === 0) {
@@ -131,7 +160,7 @@ const ShoppingCartPage: React.FC = () => {
             <Box>
               {uniqueItems.map((item, index) => (
                 <React.Fragment
-                  key={`${item.product.internalCode}_${item.product.size || 'default'}_${index}`}
+                  key={`${item.product.id}_${item.product.size || 'default'}_${index}`}
                 >
                   <CartItemCard product={item.product} quantity={item.quantity} />
                   {index < uniqueItems.length - 1 && <Divider sx={{ my: 2 }} />}
@@ -157,62 +186,92 @@ const ShoppingCartPage: React.FC = () => {
               Оформление заказа
             </Typography>
 
-            <Box component="form" sx={{ mt: 3 }}>
-              <TextField
-                required
-                fullWidth
-                margin="normal"
-                label="Email"
+            <Box component="form" sx={{ mt: 3 }} onSubmit={handleSubmit(onSubmitOrder)}>
+              <Controller
                 name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleFormChange}
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    required
+                    fullWidth
+                    margin="normal"
+                    label="Email"
+                    type="email"
+                    error={!!errors.email}
+                    helperText={errors.email?.message}
+                  />
+                )}
               />
 
-              <TextField
-                required
-                fullWidth
-                margin="normal"
-                label="Телефон"
+              <Controller
                 name="phone"
-                type="tel"
-                value={formData.phone}
-                onChange={handleFormChange}
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    required
+                    fullWidth
+                    margin="normal"
+                    label="Телефон"
+                    type="tel"
+                    error={!!errors.phone}
+                    helperText={errors.phone?.message}
+                  />
+                )}
               />
 
               <FormControl component="fieldset" margin="normal" fullWidth>
                 <FormLabel component="legend">Способ доставки</FormLabel>
-                <RadioGroup
+                <Controller
                   name="deliveryMethod"
-                  value={formData.deliveryMethod}
-                  onChange={handleFormChange}
-                >
-                  <FormControlLabel value="pickup" control={<Radio />} label="Самовывоз" />
-                  <FormControlLabel value="delivery" control={<Radio />} label="Доставка" />
-                </RadioGroup>
+                  control={control}
+                  render={({ field }) => (
+                    <RadioGroup {...field}>
+                      <FormControlLabel value="pickup" control={<Radio />} label="Самовывоз" />
+                      <FormControlLabel value="delivery" control={<Radio />} label="Доставка" />
+                    </RadioGroup>
+                  )}
+                />
+                {errors.deliveryMethod && (
+                  <Typography color="error" variant="caption">
+                    {errors.deliveryMethod.message}
+                  </Typography>
+                )}
               </FormControl>
 
               <FormControl component="fieldset" margin="normal" fullWidth>
                 <FormLabel component="legend">Способ оплаты</FormLabel>
-                <RadioGroup
+                <Controller
                   name="paymentMethod"
-                  value={formData.paymentMethod}
-                  onChange={handleFormChange}
-                >
-                  <FormControlLabel value="cash" control={<Radio />} label="Наличные" />
-                  <FormControlLabel value="card" control={<Radio />} label="Оплата картой" />
-                </RadioGroup>
+                  control={control}
+                  render={({ field }) => (
+                    <RadioGroup {...field}>
+                      <FormControlLabel value="cash" control={<Radio />} label="Наличные" />
+                      <FormControlLabel value="card" control={<Radio />} label="Оплата картой" />
+                    </RadioGroup>
+                  )}
+                />
+                {errors.paymentMethod && (
+                  <Typography color="error" variant="caption">
+                    {errors.paymentMethod.message}
+                  </Typography>
+                )}
               </FormControl>
 
-              <TextField
-                fullWidth
-                margin="normal"
-                label="Комментарий к заказу"
+              <Controller
                 name="comment"
-                multiline
-                rows={4}
-                value={formData.comment}
-                onChange={handleFormChange}
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    margin="normal"
+                    label="Комментарий к заказу"
+                    multiline
+                    rows={4}
+                  />
+                )}
               />
 
               <Button
@@ -220,7 +279,7 @@ const ShoppingCartPage: React.FC = () => {
                 variant="contained"
                 color="primary"
                 size="large"
-                onClick={handleSubmitOrder}
+                type="submit"
                 sx={{ mt: 3 }}
               >
                 Оформить заказ

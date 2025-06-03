@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
-import appToolltips from '../../../assets/constants/tooltips';
+import appToolltips from '../../../common/constants/tooltips';
 import { IActionsColumn } from '../../../common/types/table/tableTypes';
 
 export const getActionsColumn = ({

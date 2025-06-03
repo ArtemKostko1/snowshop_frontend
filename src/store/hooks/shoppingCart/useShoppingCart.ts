@@ -7,6 +7,8 @@ import {
   clearCart,
 } from '../../slices/shoppingCart/shoppingCartSlice';
 import { IProduct } from '../../../common/types/product/productTypes';
+import { toast } from 'react-toastify';
+import toastMessages from '../../../common/constants/toastMessages';
 
 export const useShoppingCart = () => {
   const dispatch = useDispatch();
@@ -14,14 +16,15 @@ export const useShoppingCart = () => {
 
   const handleAddToCart = (product: IProduct) => {
     dispatch(addToCart(product));
+    toast.success(toastMessages.shoppingCartMessages.PRODUCT_ADDED_TO_CART);
   };
 
-  const handleRemoveFromCart = (productId: number) => {
-    dispatch(removeFromCart(productId));
+  const handleRemoveFromCart = (productId: number, size?: string) => {
+    dispatch(removeFromCart({ productId, size }));
   };
 
-  const handleUpdateQuantity = (productId: number, quantity: number) => {
-    dispatch(updateQuantity({ productId, quantity }));
+  const handleUpdateQuantity = (productId: number, quantity: number, size?: string) => {
+    dispatch(updateQuantity({ productId, quantity, size }));
   };
 
   const handleClearCart = () => {

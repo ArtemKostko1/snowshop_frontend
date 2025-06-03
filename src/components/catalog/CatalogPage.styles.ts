@@ -1,27 +1,30 @@
-const sortingPanel = {
-  width: "100%",
-  display: "flex",
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "space-between",
+const styles = {
+  sortingPanel: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '32px',
+    flexWrap: 'wrap',
+    marginBottom: '16px',
+  },
+  sorting: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    minWidth: '200px',
+  },
+  search: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    flex: 1,
+    margin: '0 24px',
+  },
+  showSize: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+  },
 };
 
-const sorting = {
-  display: "flex",
-  flexDirection: "row",
-  alignItems: "center",
-  gap: 2,
-};
-
-const showSize = {
-  display: "flex",
-  flexDirection: "row",
-  alignItems: "center",
-  gap: 2,
-};
-
-export default {
-  sortingPanel,
-  sorting,
-  showSize,
-};
+export default styles;

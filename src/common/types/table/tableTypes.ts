@@ -10,6 +10,7 @@ import { IProduct } from '../product/productTypes';
 import { ICategory } from '../category/categoryTypes';
 import { IBrand } from '../brand/brandTypes';
 import { INavigationItem } from './toolbarTypes';
+import { IOrder } from '../order/orderTypes';
 
 // Базовый интерфейс для всех типов строк
 export interface IBaseRow {
@@ -19,9 +20,9 @@ export interface IBaseRow {
 }
 
 // Дженерик тип для строк таблицы
-export type TableRow<T extends IProduct | ICategory | IBrand> = T & IBaseRow;
+export type TableRow<T extends IProduct | ICategory | IBrand | IOrder> = T & IBaseRow;
 
-export interface ITableOptions<T extends IProduct | ICategory | IBrand> {
+export interface ITableOptions<T extends IProduct | ICategory | IBrand | IOrder> {
   name: string;
   table: string;
   columns: GridColDef[];
@@ -43,11 +44,11 @@ export interface ITableOptions<T extends IProduct | ICategory | IBrand> {
   };
 }
 
-export interface IDataTable<T extends IProduct | ICategory | IBrand> {
+export interface IDataTable<T extends IProduct | ICategory | IBrand | IOrder> {
   tableOptions: ITableOptions<T>;
-  createFunction: (row: Omit<T, 'id' | 'isNew'>) => Promise<T>;
-  updateFunction: (row: T) => Promise<T>;
-  deleteFunction: (id: number) => Promise<void>;
+  createFunction?: (row: Omit<T, 'id' | 'isNew'>) => Promise<T>;
+  updateFunction?: (row: T) => Promise<T>;
+  deleteFunction?: (id: number) => Promise<void>;
 }
 
 export interface IActionsColumn {

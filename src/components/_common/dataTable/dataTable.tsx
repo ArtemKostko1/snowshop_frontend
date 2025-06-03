@@ -18,8 +18,9 @@ import { IDataTable, TableRow } from '../../../common/types/table/tableTypes';
 import { IProduct } from '../../../common/types/product/productTypes';
 import { IBrand } from '../../../common/types/brand/brandTypes';
 import { ICategory } from '../../../common/types/category/categoryTypes';
+import { IOrder } from '../../../common/types/order/orderTypes';
 
-const DataTable = <T extends IProduct | IBrand | ICategory>({
+const DataTable = <T extends IProduct | IBrand | ICategory | IOrder>({
   tableOptions,
   createFunction,
   updateFunction,
@@ -102,12 +103,14 @@ const DataTable = <T extends IProduct | IBrand | ICategory>({
     }
 
     try {
-      let success: T | null;
+      let success: T | null = null;
       if (isNewRow) {
         const { id, isNew, ...newRowData } = newRow;
-        success = await createFunction(newRowData);
+        const result = await createFunction?.(newRowData as T);
+        success = result || null;
       } else {
-        success = await updateFunction(newRow);
+        const result = await updateFunction?.(newRow as T);
+        success = result || null;
       }
 
       if (!success) {
@@ -124,7 +127,7 @@ const DataTable = <T extends IProduct | IBrand | ICategory>({
     if (!canDelete) return;
 
     try {
-      await deleteFunction(typeof id === 'string' ? parseInt(id) : id);
+      await deleteFunction?.(typeof id === 'string' ? parseInt(id) : id);
       setRows(rows.filter((row) => row.id !== id));
     } catch (error) {
       throw new Error(error instanceof Error ? error.message : 'Не удалось удалить запись');

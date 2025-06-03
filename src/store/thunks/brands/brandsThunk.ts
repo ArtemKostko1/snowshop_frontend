@@ -1,8 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import appErrors from "../../../assets/constants/errors";
+import appErrors from "../../../common/constants/errors/appErrors";
 import { errorsHandling } from "../_utils/errorsHandling";
-import toastMessages from "../../../assets/constants/toastMessages";
+import toastMessages from "../../../common/constants/toastMessages";
 import { ErrorResponse } from "../../../common/types/error/errorTypes";
 import { IBrand } from "../../../common/types/brand/brandTypes";
 import { createBrand, deleteBrand, getAllBrands, getBrandById, updateBrand } from "../../../api/BrandService";

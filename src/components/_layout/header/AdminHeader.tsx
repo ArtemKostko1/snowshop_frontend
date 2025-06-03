@@ -8,7 +8,7 @@ import {
   Button,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import LogoSmall from "../../../assets/logo/logo small";
+import LogoSmall from "../../../common/assets/logoSmall";
 import { useStyles } from "./Header.styles";
 import { useAppDispatch } from "../../../store/hooks/app";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -64,6 +64,12 @@ const AdminHeader: React.FC = () => {
               },
             }}
           >
+            <Tab
+              className={classes.tab}
+              label="Заказы"
+              component={Link}
+              to="/admin/orders"
+            />
             <Tab
               className={classes.tab}
               label="Товары"

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import appErrors from '../../../assets/constants/errors';
+import appErrors from '../../../common/constants/errors/appErrors';
 import { errorsHandling } from '../_utils/errorsHandling';
 import { ErrorResponse } from '../../../common/types/error/errorTypes';
 import { getAllCatalogProducts, getProductByArticleRoute, getProductsByCategory } from '../../../api/CatalogService';

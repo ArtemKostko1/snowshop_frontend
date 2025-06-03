@@ -36,7 +36,7 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
       const userRole = sessionStorage.getItem('role')?.toUpperCase();
       if (token) {
         if (userRole === 'ADMIN') {
-          navigate('/admin/products');
+          navigate('/admin/orders');
         } else {
           navigate('/');
         }

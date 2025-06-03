@@ -11,6 +11,7 @@ import AuthRootPage from './components/auth/AuthRootComponent';
 import RoleBasedRoute from './common/utils/router/RoleBasedRoute';
 import ProductDetailsWrapper from './components/catalog/productDetails/ProductDetailsWrapper';
 import ShoppingCartPage from './components/shoppingCart/ShoppingCartPage';
+import OrdersPage from './components/.admin/orders/OrdersPage';
 
 // Клиентские маршруты
 const clientRoutes = [
@@ -22,6 +23,7 @@ const clientRoutes = [
 
 // Админские маршруты
 const adminRoutes = [
+  { path: '/admin/orders', element: <OrdersPage /> },
   { path: '/admin/products', element: <ProductsPage /> },
   { path: '/admin/dictionaries', element: <DictionariesPage /> },
 ];

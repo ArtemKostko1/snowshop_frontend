@@ -20,6 +20,5 @@ export interface IShoppingCartForm {
   phone: string;
   deliveryMethod: 'pickup' | 'delivery';
   paymentMethod: 'cash' | 'card';
-  comment: string;
+  comment?: string;
 }
-

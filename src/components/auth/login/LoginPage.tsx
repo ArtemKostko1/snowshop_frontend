@@ -3,7 +3,7 @@ import { TextField, Typography } from '@mui/material';
 import { useLoginPageStyles } from './LoginPage.styles';
 //import VisibilityIcon from "@mui/icons-material/Visibility";
 //import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import Logo from '../../../assets/logo/logo';
+import Logo from '../../../common/assets/logo';
 import { IPropsLogin } from '../../../common/types/auth/authTypes';
 import { AppLoadingButton } from '../../_common/loading-button/AppLoadingButton.styles';
 import { useAuth } from '../../../store/hooks/auth/useAuth';

@@ -1,8 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { login, register } from "../../../api/AuthService";
 import { toast } from "react-toastify";
-import toastMessages from "../../../assets/constants/toastMessages";
-import appErrors from "../../../assets/constants/errors";
+import toastMessages from "../../../common/constants/toastMessages";
+import appErrors from "../../../common/constants/errors/appErrors";
 import { errorsHandling } from "../_utils/errorsHandling";
 import { ILoginForm, IRegisterData } from "../../../common/types/auth/authTypes";
 
@@ -12,6 +12,7 @@ const register_baseError = appErrors.authErrors.REGISTER_ERROR;
 interface AuthResponse {
   token: string;
   user: {
+    id: number;
     email: string;
     role: string;
   };
@@ -32,6 +33,7 @@ export const loginThunk = createAsyncThunk(
       sessionStorage.setItem("token", data.token);
       sessionStorage.setItem("email", data.user.email);
       sessionStorage.setItem("role", data.user.role);
+      sessionStorage.setItem("id", data.user.id.toString());
       data && toast.success(toastMessages.authMessages.USER_AUTHORUZED);
       return data;
     } catch (error: any) {
@@ -55,6 +57,7 @@ export const registerThunk = createAsyncThunk(
       sessionStorage.setItem("token", data.token);
       sessionStorage.setItem("email", data.user.email);
       sessionStorage.setItem("role", data.user.role);
+      sessionStorage.setItem("id", data.user.id.toString());
       data && toast.success(toastMessages.authMessages.USER_AUTHORUZED);
       return data;
     } catch (error: any) {

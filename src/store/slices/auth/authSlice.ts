@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { loginThunk, registerThunk } from "../../thunks/auth/authThunk";
 
 interface User {
+  id?: number;
   email?: string;
   role?: string;
 }
@@ -15,6 +16,7 @@ interface AuthState {
 interface AuthResponse {
   token: string;
   user: {
+    id: number;
     email: string;
     role: string;
   };
@@ -22,9 +24,10 @@ interface AuthResponse {
 }
 
 const getInitialUser = (): User => {
+  const id = sessionStorage.getItem("id");
   const email = sessionStorage.getItem("email");
   const role = sessionStorage.getItem("role");
-  return email && role ? { email, role } : {};
+  return id && email && role ? { id: parseInt(id), email, role } : {};
 };
 
 const initialState: AuthState = {
@@ -56,6 +59,7 @@ export const authSlice = createSlice({
       (state, action: PayloadAction<AuthResponse | undefined>) => {
         if (action.payload) {
           state.user = {
+            id: action.payload.user.id,
             email: action.payload.user.email,
             role: action.payload.user.role,
           };
@@ -79,6 +83,7 @@ export const authSlice = createSlice({
       (state, action: PayloadAction<AuthResponse | undefined>) => {
         if (action.payload) {
           state.user = {
+            id: action.payload.user.id,
             email: action.payload.user.email,
             role: action.payload.user.role,
           };

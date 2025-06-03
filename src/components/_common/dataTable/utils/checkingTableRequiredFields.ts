@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import toastMessages from "../../../../assets/constants/toastMessages";
+import toastMessages from "../../../../common/constants/toastMessages";
 
 export const checkRequiredFields = (
   data: Record<string, unknown>,

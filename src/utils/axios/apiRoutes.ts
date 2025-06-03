@@ -10,6 +10,7 @@ export const CATALOG = `${API_PREFIX}/catalog`;
 export const CATEGORIES = `${API_PREFIX}/categories`;
 export const BRANDS = `${API_PREFIX}/brands`;
 export const USERS = `${API_PREFIX}/users`;
+export const ORDERS = `${API_PREFIX}/orders`;
 
 const API = {
   API_URL,
@@ -21,6 +22,7 @@ const API = {
   CATEGORIES,
   BRANDS,
   USERS,
+  ORDERS,
 };
 
 export default API;

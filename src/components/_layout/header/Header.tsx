@@ -16,7 +16,7 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LogoSmall from '../../../assets/logo/logo small';
+import LogoSmall from '../../../common/assets/logoSmall';
 import { useStyles } from './Header.styles';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks/app';
 import LogoutIcon from '@mui/icons-material/Logout';

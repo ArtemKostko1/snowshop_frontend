@@ -7,36 +7,23 @@ export const common = {
   REQUIRED_TABLE_FIELDS: "Все обязательные поля должны быть заполнены",
 };
 
-export const dispatcherMessages = {
-  CARD_ON: "Запись включается. Ожидайте...",
-  CARD_RESTART: "Запись перезапускается. Ожидайте...",
-  CARD_OFF: "Запись останавливается. Ожидайте...",
-  DEVICE_RESTART: "Устройство перезагружается. Ожидайте..."
-};
+  export const productsMessages = {
+    PRODUCT_CREATED: "Товар успешно добавлен",
+    PRODUCT_UPDATED: "Товар успешно изменен",
+    PRODUCT_DELETED: "Товар успешно удален",
+  };
 
-export const cardsAddressesMessages = {
-  CARDS_ADDRESS_CREATED: "Устройство по адресу успешно добавлено",
-  CARDS_ADDRESS_UPDATED: "Устройство по адресу успешно изменено",
-  CARDS_ADDRESS_DELETED: "Устройство по адресу успешно удалено",
-};
+  export const categoriesMessages = {
+    CATEGORY_CREATED: "Категория успешно добавлена",
+    CATEGORY_UPDATED: "Категория успешно изменена",
+    CATEGORY_DELETED: "Категория успешно удалена",
+  };
 
-export const addressesMessages = {
-  ADDRESS_CREATED: "Адрес успешно добавлен",
-  ADDRESS_UPDATED: "Адрес успешно изменен",
-  ADDRESS_DELETED: "Адрес успешно удален",
-};
-
-export const devicesMessages = {
-  DEVICE_CREATED: "Устройство успешно добавлено",
-  DEVICE_UPDATED: "Устройство успешно изменено",
-  DEVICE_DELETED: "Устройство успешно удалено",
-};
-
-export const cardsMessages = {
-  CARD_CREATED: "Канал устройства успешно добавлен",
-  CARD_UPDATED: "Канал устройства успешно изменен",
-  CARD_DELETED: "Канал устройства успешно удален",
-};
+export const brandsMessages = {
+    BRAND_CREATED: "Бренд успешно добавлен",
+    BRAND_UPDATED: "Бренд успешно изменен",
+    BRAND_DELETED: "Бренд успешно удален",
+  };
 
 export const usersMessages = {
   USER_CREATED: "Пользователь успешно создан",
@@ -44,15 +31,25 @@ export const usersMessages = {
   USER_DELETED: "Пользователь успешно удален",
 };
 
+export const ordersMessages = {
+  ORDER_CREATED: "Заказ успешно создан",
+  ORDER_UPDATED: "Статус заказа успешно изменен",
+  ORDER_DELETED: "Заказ успешно удален",
+};
+
+export const shoppingCartMessages = {
+  PRODUCT_ADDED_TO_CART: "Товар успешно добавлен в корзину",
+};
+
 const toastMessages = {
   authMessages,
   common,
-  dispatcherMessages,
-  cardsAddressesMessages,
-  addressesMessages,
-  devicesMessages,
-  cardsMessages,
+  productsMessages,
   usersMessages,
+  categoriesMessages,
+  brandsMessages,
+  shoppingCartMessages,
+  ordersMessages,
 };
 
 export default toastMessages;

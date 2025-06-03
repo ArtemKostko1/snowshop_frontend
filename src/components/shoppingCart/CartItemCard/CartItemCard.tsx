@@ -25,17 +25,17 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ product, quantity }) => {
   const { updateQuantity, removeFromCart } = useShoppingCart();
 
   const handleIncreaseQuantity = () => {
-    updateQuantity(product.id, quantity + 1);
+    updateQuantity(product.id, quantity + 1, product.size);
   };
 
   const handleDecreaseQuantity = () => {
     if (quantity > 1) {
-      updateQuantity(product.id, quantity - 1);
+      updateQuantity(product.id, quantity - 1, product.size);
     }
   };
 
   const handleRemoveItem = () => {
-    removeFromCart(product.id);
+    removeFromCart(product.id, product.size);
   };
 
   const imageUrl =
@@ -88,7 +88,12 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ product, quantity }) => {
             Артикул: {product.article}
           </Typography>
           {product.size && (
-            <Typography variant="body2" color="text.secondary" gutterBottom>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ fontWeight: 'bold' }}
+              gutterBottom
+            >
               Размер: {product.size}
             </Typography>
           )}

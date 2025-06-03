@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import CatalogSort from './CatalogSort';
 import CatalogGrid from './CatalogGrid';
 import SelectDefault from '../../components/_common/select/SelectDefault';
+import SearchDefault from '../../components/_common/search/SearchDefault';
 import styles from './CatalogPage.styles';
 import {
   getAllCatalogProductsThunk,
@@ -32,6 +33,7 @@ const CatalogPage: React.FC = (): JSX.Element => {
   const [sort, setSort] = useState<SortType>('default');
   const [pageSize, setPageSize] = useState<number>(12);
   const [page, setPage] = useState<number>(1);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   useEffect(() => {
     dispatch(getAllCategoriesThunk());
@@ -47,9 +49,20 @@ const CatalogPage: React.FC = (): JSX.Element => {
     }
   }, [dispatch, categoryName]);
 
+  // Фильтрация по поиску
+  const filteredProducts = useMemo(() => {
+    if (!searchQuery.trim()) return catalogProducts;
+
+    const query = searchQuery.toLowerCase().trim();
+    return catalogProducts.filter(
+      (product) =>
+        product.name.toLowerCase().includes(query) || product.article.toLowerCase().includes(query),
+    );
+  }, [catalogProducts, searchQuery]);
+
   // сортировка
   const sortedProducts = useMemo(() => {
-    let arr = [...catalogProducts];
+    let arr = [...filteredProducts];
     switch (sort) {
       case 'name-asc':
         arr.sort((a, b) => a.name.localeCompare(b.name));
@@ -67,7 +80,7 @@ const CatalogPage: React.FC = (): JSX.Element => {
         break;
     }
     return arr;
-  }, [catalogProducts, sort]);
+  }, [filteredProducts, sort]);
 
   // пагинация
   const pagedProducts = useMemo(() => {
@@ -75,10 +88,10 @@ const CatalogPage: React.FC = (): JSX.Element => {
     return sortedProducts.slice(start, start + pageSize);
   }, [sortedProducts, page, pageSize]);
 
-  // сброс страницы при изменении pageSize или сортировки
+  // сброс страницы при изменении pageSize, сортировки или поиска
   useEffect(() => {
     setPage(1);
-  }, [pageSize, sort]);
+  }, [pageSize, sort, searchQuery]);
 
   // получение имени категории
   //  id
@@ -109,6 +122,16 @@ const CatalogPage: React.FC = (): JSX.Element => {
     </Box>
   );
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
   return (
     <Box>
       <Stack spacing={3}>
@@ -119,6 +142,17 @@ const CatalogPage: React.FC = (): JSX.Element => {
               value={sort}
               onChange={setSort}
               isCatalogProductsLoading={isCatalogProductsLoading}
+            />
+          </Box>
+
+          <Box sx={styles.search}>
+            <SearchDefault
+              label=""
+              value={searchQuery}
+              onChange={handleSearch}
+              disabled={isCatalogProductsLoading}
+              handleKeyDown={handleSearchKeyDown}
+              placeholder="Поиск товара по каталогу"
             />
           </Box>
 

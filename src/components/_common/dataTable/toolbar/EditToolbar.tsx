@@ -13,8 +13,9 @@ import { navigationStyles, navigationActionStyles } from './EditToolbar.styles';
 import { IProduct } from '../../../../common/types/product/productTypes';
 import { IBrand } from '../../../../common/types/brand/brandTypes';
 import { ICategory } from '../../../../common/types/category/categoryTypes';
+import { IOrder } from '../../../../common/types/order/orderTypes';
 
-export function EditToolbar<T extends IProduct | IBrand | ICategory>({
+export function EditToolbar<T extends IProduct | IBrand | ICategory | IOrder>({
   onAdd,
   navigation,
   canAdd = true,
