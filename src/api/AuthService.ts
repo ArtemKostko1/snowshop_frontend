@@ -1,6 +1,6 @@
-import { instance } from "../utils/axios/axios";
-import { LOGIN, REGISTER } from "../utils/axios/apiRoutes";
-import { ILoginForm, IRegisterData } from "../common/types/auth/authTypes";
+import { instance } from '../utils/axios/axios';
+import { LOGIN, REGISTER } from '../utils/axios/apiRoutes';
+import { ILoginForm, IRegisterData } from '../common/types/auth/authTypes';
 
 export const login = async (data: ILoginForm) => {
   try {

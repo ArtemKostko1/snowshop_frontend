@@ -42,6 +42,10 @@ export interface ITableOptions<T extends IProduct | ICategory | IBrand | IOrder>
     value: number;
     onChange: (value: number) => void;
   };
+  customActions?: {
+    viewOrderProducts?: (orderId: number) => void;
+    [key: string]: ((id: number) => void) | undefined;
+  };
 }
 
 export interface IDataTable<T extends IProduct | ICategory | IBrand | IOrder> {
@@ -59,4 +63,8 @@ export interface IActionsColumn {
   handleDeleteClick: (id: GridRowId) => () => void;
   canEdit?: boolean;
   canDelete?: boolean;
+  customActions?: {
+    viewOrderProducts?: (orderId: number) => void;
+    [key: string]: ((id: number) => void) | undefined;
+  };
 }

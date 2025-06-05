@@ -16,6 +16,7 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import HistoryIcon from '@mui/icons-material/History';
 import LogoSmall from '../../../common/assets/logoSmall';
 import { useStyles } from './Header.styles';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks/app';
@@ -30,7 +31,7 @@ const Header: React.FC = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { totalItems } = useShoppingCart();
+  const { totalItems, clearCart } = useShoppingCart();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [profileMenuAnchorEl, setProfileMenuAnchorEl] = useState<null | HTMLElement>(null);
   const user = useAppSelector((state) => state.auth.user);
@@ -69,6 +70,7 @@ const Header: React.FC = () => {
 
   const handleLogout = () => {
     dispatch(logoutAction());
+    clearCart();
     setProfileMenuAnchorEl(null);
     navigate('/');
   };
@@ -191,11 +193,17 @@ const Header: React.FC = () => {
                 open={Boolean(profileMenuAnchorEl)}
                 onClose={handleProfileMenuClose}
               >
-                <MenuItem onClick={handleProfileMenuClose}>
+                <MenuItem onClick={handleProfileMenuClose} component={Link} to="/user-profile">
                   <ListItemIcon>
                     <PersonIcon fontSize="small" />
                   </ListItemIcon>
                   <ListItemText>Профиль</ListItemText>
+                </MenuItem>
+                <MenuItem onClick={handleProfileMenuClose} component={Link} to="/order-history">
+                  <ListItemIcon>
+                    <HistoryIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>История заказов</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>
                   <ListItemIcon>

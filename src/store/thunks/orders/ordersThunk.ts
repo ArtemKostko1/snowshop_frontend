@@ -9,11 +9,13 @@ import {
   createOrder,
   updateOrder,
   deleteOrder,
+  getOrdersByUserId,
 } from '../../../api/OrderService';
 import { ErrorResponse } from '../../../common/types/error/errorTypes';
 import { IOrder, IUpdateOrderDto, ICreateOrderDto } from '../../../common/types/order/orderTypes';
 const getAllOrders_baseError = appErrors.ordersErrors.GET_ALL_ORDERS;
 const getOrderById_baseError = appErrors.ordersErrors.GET_ORDER_BY_ID;
+const getOrdersByUserId_baseError = appErrors.ordersErrors.GET_ORDERS_BY_USER_ID;
 const createOrder_baseError = appErrors.ordersErrors.CREATE_ORDER;
 const updateOrder_baseError = appErrors.ordersErrors.UPDATE_ORDER;
 const deleteOrder_baseError = appErrors.ordersErrors.DELETE_ORDER;
@@ -25,6 +27,18 @@ export const getAllOrdersThunk = createAsyncThunk<IOrder[], void, { rejectValue:
       return await getAllOrders();
     } catch (error) {
       const errorMessage = errorsHandling(getAllOrders_baseError, error as ErrorResponse);
+      return rejectWithValue(errorMessage);
+    }
+  },
+);
+
+export const getOrdersByUserIdThunk = createAsyncThunk<IOrder[], number, { rejectValue: string }>(
+  'orders/getOrdersByUserId',
+  async (userId, { rejectWithValue }) => {
+    try {
+      return await getOrdersByUserId(userId);
+    } catch (error) {
+      const errorMessage = errorsHandling(getOrdersByUserId_baseError, error as ErrorResponse);
       return rejectWithValue(errorMessage);
     }
   },

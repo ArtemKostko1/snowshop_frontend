@@ -152,6 +152,7 @@ const DataTable = <T extends IProduct | IBrand | ICategory | IOrder>({
             handleDeleteClick,
             canEdit,
             canDelete,
+            customActions: tableOptions.customActions,
           }),
         ]}
         rows={rows}

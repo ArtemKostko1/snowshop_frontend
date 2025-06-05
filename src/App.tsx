@@ -12,6 +12,11 @@ import RoleBasedRoute from './common/utils/router/RoleBasedRoute';
 import ProductDetailsWrapper from './components/catalog/productDetails/ProductDetailsWrapper';
 import ShoppingCartPage from './components/shoppingCart/ShoppingCartPage';
 import OrdersPage from './components/.admin/orders/OrdersPage';
+import UserProfileContainer from './components/userProfile/UserProfileContainer';
+import OrderHistoryPage from './components/orderHistory/OrderHistoryPage';
+import DeliveryPage from './components/delivery/DeliveryPage';
+import ContactsPage from './components/contacts/ContactsPage';
+import AboutPage from './components/about/AboutPage';
 
 // Клиентские маршруты
 const clientRoutes = [
@@ -19,6 +24,11 @@ const clientRoutes = [
   { path: '/catalog/category/:categoryName', element: <HomePage /> },
   { path: '/catalog/:articleRoute', element: <ProductDetailsWrapper /> },
   { path: '/shopping-cart', element: <ShoppingCartPage /> },
+  { path: '/user-profile', element: <UserProfileContainer /> },
+  { path: '/order-history', element: <OrderHistoryPage /> },
+  { path: '/delivery', element: <DeliveryPage /> },
+  { path: '/contacts', element: <ContactsPage /> },
+  { path: '/about', element: <AboutPage /> },
 ];
 
 // Админские маршруты

@@ -20,6 +20,7 @@ export interface IOrderItem {
   quantity: number;
   price: number;
   productName: string;
+  productArticle: string;
   productInternalCode: string;
   productSize?: string;
   productImage: string;

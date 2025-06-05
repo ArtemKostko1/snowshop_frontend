@@ -59,7 +59,7 @@ const ShoppingCartPage: React.FC = () => {
   useEffect(() => {
     if (isAuth && user) {
       setValue('email', user.email || '');
-      //setValue('phone', user.phoneNumber || '');
+      setValue('phone', user.phoneNumber || '');
     }
   }, [isAuth, user, setValue]);
 
@@ -229,6 +229,13 @@ const ShoppingCartPage: React.FC = () => {
                   render={({ field }) => (
                     <RadioGroup {...field}>
                       <FormControlLabel value="pickup" control={<Radio />} label="Самовывоз" />
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        sx={{ ml: 4, mt: -1, mb: 1 }}
+                      >
+                        ул. Притыцкого, дом 54
+                      </Typography>
                       <FormControlLabel value="delivery" control={<Radio />} label="Доставка" />
                     </RadioGroup>
                   )}

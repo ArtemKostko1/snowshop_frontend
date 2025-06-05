@@ -4,6 +4,7 @@ import { loginThunk, registerThunk } from "../../thunks/auth/authThunk";
 interface User {
   id?: number;
   email?: string;
+  phoneNumber?: string;
   role?: string;
 }
 
@@ -18,6 +19,7 @@ interface AuthResponse {
   user: {
     id: number;
     email: string;
+    phoneNumber?: string;
     role: string;
   };
   status: number;
@@ -26,8 +28,9 @@ interface AuthResponse {
 const getInitialUser = (): User => {
   const id = sessionStorage.getItem("id");
   const email = sessionStorage.getItem("email");
+  const phoneNumber = sessionStorage.getItem("phoneNumber");
   const role = sessionStorage.getItem("role");
-  return id && email && role ? { id: parseInt(id), email, role } : {};
+  return id && email && role && phoneNumber ? { id: parseInt(id), email, role, phoneNumber } : {};
 };
 
 const initialState: AuthState = {
@@ -45,7 +48,9 @@ export const authSlice = createSlice({
       state.isAuth = false;
       sessionStorage.removeItem("token");
       sessionStorage.removeItem("email");
+      sessionStorage.removeItem("phoneNumber");
       sessionStorage.removeItem("role");
+      sessionStorage.removeItem("id");
     },
   },
 
@@ -61,6 +66,7 @@ export const authSlice = createSlice({
           state.user = {
             id: action.payload.user.id,
             email: action.payload.user.email,
+            phoneNumber: action.payload.user.phoneNumber || '',
             role: action.payload.user.role,
           };
           state.isAuth = true;
@@ -85,6 +91,7 @@ export const authSlice = createSlice({
           state.user = {
             id: action.payload.user.id,
             email: action.payload.user.email,
+            phoneNumber: action.payload.user.phoneNumber || '',
             role: action.payload.user.role,
           };
           state.isAuth = true;

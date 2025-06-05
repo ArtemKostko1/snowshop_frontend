@@ -12,24 +12,6 @@ export const orderColumns = (): GridColDef[] => {
       width: 70,
     },
     {
-      field: 'email',
-      headerName: 'Email',
-      type: 'string',
-      align: 'left',
-      headerAlign: 'center',
-      flex: 1,
-      minWidth: 200,
-    },
-    {
-      field: 'phoneNumber',
-      headerName: 'Телефон',
-      type: 'string',
-      align: 'center',
-      headerAlign: 'center',
-      flex: 1,
-      minWidth: 150,
-    },
-    {
       field: 'status',
       headerName: 'Статус',
       type: 'singleSelect',
@@ -51,23 +33,23 @@ export const orderColumns = (): GridColDef[] => {
 
         switch (status) {
           case 'pending':
-            color = '#FFE0B2'; // ещё светлее оранжевый
+            color = '#FFE0B2'; // оранжевый
             text = 'Ожидает';
             break;
           case 'processing':
-            color = '#BBDEFB'; // ещё светлее синий
+            color = '#BBDEFB'; // синий
             text = 'В обработке';
             break;
           case 'completed':
-            color = '#C8E6C9'; // ещё светлее зеленый
+            color = '#C8E6C9'; // зеленый
             text = 'Завершен';
             break;
           case 'cancelled':
-            color = '#FFCDD2'; // ещё светлее красный
+            color = '#FFCDD2'; // красный
             text = 'Отменен';
             break;
           default:
-            color = '#E0E0E0'; // ещё светлее серый
+            color = '#E0E0E0'; // серый
             text = status;
         }
 
@@ -91,6 +73,24 @@ export const orderColumns = (): GridColDef[] => {
           </div>
         );
       },
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      type: 'string',
+      align: 'left',
+      headerAlign: 'center',
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: 'phoneNumber',
+      headerName: 'Телефон',
+      type: 'string',
+      align: 'center',
+      headerAlign: 'center',
+      flex: 1,
+      minWidth: 150,
     },
     {
       field: 'totalPrice',

@@ -1,4 +1,4 @@
-import { instance } from "../utils/axios/axios";
+import { instance, instanceAuth } from "../utils/axios/axios";
 import { CATEGORIES } from "../utils/axios/apiRoutes";
 import { ICategory } from "../common/types/category/categoryTypes";
 
@@ -22,7 +22,7 @@ export const getCategoryById = async (categoryId: number) => {
 
 export const createCategory = async (categoryData: ICategory) => {
   try {
-    const response = await instance.post(`${CATEGORIES}/create`, categoryData);
+    const response = await instanceAuth.post(`${CATEGORIES}/create`, categoryData);
     return response.data;
   } catch (error) {
     throw error;
@@ -31,7 +31,7 @@ export const createCategory = async (categoryData: ICategory) => {
 
 export const updateCategory = async (categoryId: number, categoryData: ICategory) => {
   try {
-    const response = await instance.patch(`${CATEGORIES}/${categoryId}`, categoryData);
+    const response = await instanceAuth.patch(`${CATEGORIES}/${categoryId}`, categoryData);
     return response.data;
   } catch (error) {
     throw error;
@@ -40,7 +40,7 @@ export const updateCategory = async (categoryId: number, categoryData: ICategory
 
 export const deleteCategory = async (categoryId: number) => {
   try {
-    const response = await instance.delete(`${CATEGORIES}/${categoryId}`);
+    const response = await instanceAuth.delete(`${CATEGORIES}/${categoryId}`);
     return response.data;
   } catch (error) {
     throw error;

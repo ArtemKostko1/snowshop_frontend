@@ -5,6 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import appToolltips from '../../../common/constants/tooltips';
 import { IActionsColumn } from '../../../common/types/table/tableTypes';
 
@@ -16,6 +17,7 @@ export const getActionsColumn = ({
   handleDeleteClick,
   canEdit = true,
   canDelete = true,
+  customActions,
 }: IActionsColumn): GridColDef => ({
   field: 'actions',
   headerName: 'Инструменты',
@@ -52,6 +54,20 @@ export const getActionsColumn = ({
     }
 
     const actions = [];
+
+    // Добавляем кнопку просмотра товаров в заказе, если она определена
+    if (customActions?.viewOrderProducts) {
+      actions.push(
+        <Tooltip key={`view-${id}`} title="Просмотреть товары">
+          <GridActionsCellItem
+            icon={<VisibilityIcon color="primary" />}
+            label="View Products"
+            onClick={() => customActions.viewOrderProducts?.(Number(id))}
+            color="default"
+          />
+        </Tooltip>,
+      );
+    }
 
     if (canEdit) {
       actions.push(

@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createOrderThunk, deleteOrderThunk, getAllOrdersThunk, updateOrderThunk } from "../../thunks/orders/ordersThunk";
+import { createOrderThunk, deleteOrderThunk, getAllOrdersThunk, getOrdersByUserIdThunk, updateOrderThunk } from "../../thunks/orders/ordersThunk";
 import { IOrder } from "../../../common/types/order/orderTypes";
 
 const initialState = {
   orders: [] as IOrder[],
+  userOrders: [] as IOrder[],
+  isUserOrdersLoading: false,
   isOrdersLoading: false,
 };
 
@@ -25,6 +27,23 @@ export const ordersSlice = createSlice({
     // Событие в случае неудачного выполнения запроса
     builder.addCase(getAllOrdersThunk.rejected, (state) => {
       state.isOrdersLoading = false;
+    });
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    // getOrdersByUserIdThunk
+    // Событие в момент выполенения запроса
+    builder.addCase(getOrdersByUserIdThunk.pending, (state) => {
+      state.isUserOrdersLoading = true;
+    });
+    // Событие после успешного выполнения запроса
+    builder.addCase(getOrdersByUserIdThunk.fulfilled, (state, action) => {
+      state.userOrders = action.payload;
+      state.isUserOrdersLoading = false;
+    });
+    // Событие в случае неудачного выполнения запроса
+    builder.addCase(getOrdersByUserIdThunk.rejected, (state) => {
+      state.isUserOrdersLoading = false;
     });
 
     ////////////////////////////////////////////////////////////////////////////

@@ -1,26 +1,17 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import DataTable from '../../../_common/dataTable/dataTable';
 import { orderColumns } from './tableColumns';
 import { ITableOptions } from '../../../../common/types/table/tableTypes';
-import { IProduct } from '../../../../common/types/product/productTypes';
-import { useProducts } from '../../../../store/hooks/products/useProducts';
-import { useBrands } from '../../../../store/hooks/brands/useBrands';
-import { useCategories } from '../../../../store/hooks/categories/useCategories';
-import { deleteProductThunk } from '../../../../store/thunks/products/productsThunk';
-import { getAllBrandsThunk } from '../../../../store/thunks/brands/brandsThunk';
-import { getAllCategoriesThunk } from '../../../../store/thunks/categories/categoriesThunk';
 import { useAppDispatch } from '../../../../store/hooks/app';
-import {
-  createProductThunk,
-  updateProductThunk,
-  getAllProductsThunk,
-} from '../../../../store/thunks/products/productsThunk';
 import { getAllOrdersThunk, updateOrderThunk } from '../../../../store/thunks/orders/ordersThunk';
-import { useOrders } from '../../../../store/hooks/products copy/useOrders';
+import { useOrders } from '../../../../store/hooks/orders/useOrders';
 import { IOrder } from '../../../../common/types/order/orderTypes';
+import OrderProductModal from './orderProductModal/OrderProductModal';
 
 const OrdersTable: React.FC = (): JSX.Element => {
   const dispatch = useAppDispatch();
+  const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchOrdersRef = useRef(false);
 
@@ -47,6 +38,18 @@ const OrdersTable: React.FC = (): JSX.Element => {
       throw new Error(result.payload as string);
     }
     return result.payload as IOrder;
+  };
+
+  const handleViewOrderProducts = (orderId: number) => {
+    const order = orders.find((o) => o.id === orderId);
+    if (order) {
+      setSelectedOrder(order);
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   const getRequiredColumns = () => {
@@ -81,9 +84,17 @@ const OrdersTable: React.FC = (): JSX.Element => {
         sort: 'desc',
       },
     ],
+    customActions: {
+      viewOrderProducts: handleViewOrderProducts,
+    },
   };
 
-  return <DataTable<IOrder> tableOptions={tableOptions} updateFunction={updateOrder} />;
+  return (
+    <>
+      <DataTable<IOrder> tableOptions={tableOptions} updateFunction={updateOrder} />
+      <OrderProductModal open={isModalOpen} onClose={handleCloseModal} order={selectedOrder} />
+    </>
+  );
 };
 
 export default OrdersTable;

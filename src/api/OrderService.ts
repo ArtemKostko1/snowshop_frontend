@@ -1,10 +1,19 @@
-import { instance } from "../utils/axios/axios";
+import { instance, instanceAuth } from "../utils/axios/axios";
 import { ORDERS } from "../utils/axios/apiRoutes";
 import { ICreateOrderDto, IUpdateOrderDto } from "../common/types/order/orderTypes";
 
 export const getAllOrders = async () => {
   try {
-    const response = await instance.get(ORDERS);
+    const response = await instanceAuth.get(ORDERS);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getOrdersByUserId = async (userId: number) => {
+  try {
+    const response = await instanceAuth.get(`${ORDERS}/order-history/${userId}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -13,7 +22,7 @@ export const getAllOrders = async () => {
 
 export const getOrderById = async (orderId: number) => {
   try {
-    const response = await instance.get(`${ORDERS}/${orderId}`);
+    const response = await instanceAuth.get(`${ORDERS}/${orderId}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -31,7 +40,7 @@ export const createOrder = async (orderData: ICreateOrderDto) => {
 
 export const updateOrder = async (orderId: number, orderData: IUpdateOrderDto) => {
   try {
-    const response = await instance.patch(`${ORDERS}/${orderId}`, orderData);
+    const response = await instanceAuth.patch(`${ORDERS}/${orderId}`, orderData);
     return response.data;
   } catch (error) {
     throw error;
@@ -40,7 +49,7 @@ export const updateOrder = async (orderId: number, orderData: IUpdateOrderDto) =
 
 export const deleteOrder = async (orderId: number) => {
   try {
-    const response = await instance.delete(`${ORDERS}/${orderId}`);
+    const response = await instanceAuth.delete(`${ORDERS}/${orderId}`);
     return response.data;
   } catch (error) {
     throw error;
