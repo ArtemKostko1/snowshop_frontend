@@ -4,12 +4,10 @@ import Logo from '../../../common/assets/logo';
 import { TextField, Typography } from '@mui/material';
 import { AppLoadingButton } from '../../_common/loading-button/AppLoadingButton.styles';
 import { useRegisterPageStyles } from './RegisterPage.styles';
-import { useAuth } from '../../../store/hooks/auth/useAuth';
 
 const RegisterPage: React.FC<IPropsRegister> = (props: IPropsRegister): JSX.Element => {
   const { navigate, register, errors, loading } = props;
   const classes = useRegisterPageStyles();
-  const isAuth = useAuth();
 
   return (
     <>

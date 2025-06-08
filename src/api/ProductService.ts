@@ -1,6 +1,6 @@
-import { instance, instanceAuth } from "../utils/axios/axios";
-import { PRODUCTS } from "../utils/axios/apiRoutes";
-import { IProduct } from "../common/types/product/productTypes";
+import { instanceAuth } from '../utils/axios/axios';
+import { PRODUCTS } from '../utils/axios/apiRoutes';
+import { IProduct } from '../common/types/product/productTypes';
 
 export const getAllProducts = async () => {
   try {

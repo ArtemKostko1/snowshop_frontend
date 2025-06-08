@@ -5,7 +5,6 @@ import {
   getProductsByCategoryThunk,
 } from '../../thunks/catalog/catalogThunk';
 import { IProductDetails } from '../../../common/types/product/ProductDetailsTypes';
-import { IProduct } from '../../../common/types/product/productTypes';
 
 const initialState = {
   catalogProducts: [] as IProductDetails[],

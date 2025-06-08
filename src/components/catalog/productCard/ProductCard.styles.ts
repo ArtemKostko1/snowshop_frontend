@@ -56,7 +56,7 @@ const inStock = (inStock: boolean): SxProps => ({
   fontSize: 14,
 });
 
-export default {
+const styles = {
   card,
   image,
   name,
@@ -64,3 +64,5 @@ export default {
   price,
   inStock,
 };
+
+export default styles;

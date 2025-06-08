@@ -50,7 +50,7 @@ const Header: React.FC = () => {
     fetchCategoriesRef.current = true;
   }, [fetchData]);
 
-  const { categories, isCategoriesLoading } = useCategories();
+  const { categories } = useCategories();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

@@ -1,18 +1,13 @@
 import React from 'react';
 import { TextField, Typography } from '@mui/material';
 import { useLoginPageStyles } from './LoginPage.styles';
-//import VisibilityIcon from "@mui/icons-material/Visibility";
-//import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Logo from '../../../common/assets/logo';
 import { IPropsLogin } from '../../../common/types/auth/authTypes';
 import { AppLoadingButton } from '../../_common/loading-button/AppLoadingButton.styles';
-import { useAuth } from '../../../store/hooks/auth/useAuth';
 
 const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
   const { navigate, register, errors, loading } = props;
   const classes = useLoginPageStyles();
-  const isAuth = useAuth();
-  //const [showPassword, setShowPassword] = useState<boolean>(false);
 
   return (
     <>

@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Container,
   Typography,
   Grid,
   Card,
@@ -147,6 +146,7 @@ const ContactsPage: React.FC = () => {
                     width="100%"
                     height="500px"
                     frameBorder="0"
+                    title="Карта расположения магазина SNOWSHOP"
                     allowFullScreen={true}
                     style={{ position: 'relative', zIndex: 1 }}
                   />

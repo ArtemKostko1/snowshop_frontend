@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store/store';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store/store';
 import { useUser } from '../../store/hooks/user/useUser';
 import {
   getUserByIdThunk,
@@ -13,7 +13,7 @@ import styles from './UserProfile.styles';
 
 const UserProfileContainer: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { user, isUserLoading, passwordChangeSuccess } = useUser();
+  const { user, isUserLoading } = useUser();
   const userId = sessionStorage.getItem('id');
 
   useEffect(() => {

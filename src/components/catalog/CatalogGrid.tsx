@@ -11,7 +11,7 @@ const CatalogGrid: React.FC<CatalogGridProps> = ({ products }) => {
   return (
     <Grid container spacing={2}>
       {products.map((product) => (
-        <Grid size={3} key={product.id}>
+        <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={product.id}>
           <ProductCard product={product} />
         </Grid>
       ))}

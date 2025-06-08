@@ -18,7 +18,7 @@ const ProductDetailsWrapper: React.FC = (): JSX.Element => {
     }
   }, [articleRoute, dispatch]);
 
-  const { productDetails, isProductDetailsLoading } = useCatalog();
+  const { productDetails } = useCatalog();
 
   return <ProductDetails product={productDetails} />;
 };

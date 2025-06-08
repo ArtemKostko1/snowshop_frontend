@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
-  Container,
   Typography,
   Grid,
   Paper,
@@ -12,13 +11,11 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Alert,
   Divider,
 } from '@mui/material';
 import CartItemCard from './CartItemCard/CartItemCard';
 import { useShoppingCart } from '../../store/hooks/shoppingCart/useShoppingCart';
 import {
-  ICartItemUniqueKey,
   IShoppingCartForm,
 } from '../../common/types/shoppingCart/shoppingCartTypes';
 import { useAppSelector } from '../../store/hooks/app';
