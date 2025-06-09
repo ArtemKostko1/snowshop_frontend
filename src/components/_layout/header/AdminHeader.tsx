@@ -41,7 +41,7 @@ const AdminHeader: React.FC = () => {
             minWidth: "fit-content",
           }}
         >
-          <LogoSmall />
+          <LogoSmall onClick={() => navigate("/admin/orders")} />
         </Box>
 
         {/* Центральная часть */}
