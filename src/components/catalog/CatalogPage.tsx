@@ -44,6 +44,7 @@ const CatalogPage: React.FC = (): JSX.Element => {
 
     if (categoryName) {
       dispatch(getProductsByCategoryThunk(categoryName));
+      setPage(1);
     } else {
       dispatch(getAllCatalogProductsThunk());
     }
